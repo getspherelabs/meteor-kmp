@@ -3,7 +3,7 @@ package io.spherelabs.meteor.configs
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 
- /**
+/**
  * A [MeteorConfigs] represents the configuration for a Store implementation,
  * including initial state, store name, and dispatchers for different asynchronous operations.
  *
@@ -46,27 +46,27 @@ interface MeteorConfigs<State : Any> {
         var storeName: String? = null,
         var mainDispatcher: CoroutineDispatcher = Dispatchers.Default,
         var ioDispatcher: CoroutineDispatcher = Dispatchers.Default
-    ) {
-        companion object {
-            /**
-             * A [build] function takes a configuration block to set properties of the builder class and
-             * constructs a fully configured MeteorConfigs object using the provided settings.
-             */
-            inline fun <State : Any> build(
-                block: Builder<State>.() -> Unit
-            ): MeteorConfigs<State> {
-                val builder = Builder<State>().apply(block)
+    )
 
-                return object : MeteorConfigs<State> {
-                    override val initialState: State = checkNotNull(builder.initialState) {
-                        "State is not initialised"
-                    }
-                    override val storeName: String = checkNotNull(builder.storeName) {
-                        "Store name is not initialised"
-                    }
-                    override val mainDispatcher: CoroutineDispatcher = builder.mainDispatcher
-                    override val ioDispatcher: CoroutineDispatcher = builder.ioDispatcher
+    companion object {
+        /**
+         * A [build] function takes a configuration block to set properties of the builder class and
+         * constructs a fully configured MeteorConfigs object using the provided settings.
+         */
+        inline fun <State : Any> build(
+            block: Builder<State>.() -> Unit
+        ): MeteorConfigs<State> {
+            val builder = Builder<State>().apply(block)
+
+            return object : MeteorConfigs<State> {
+                override val initialState: State = checkNotNull(builder.initialState) {
+                    "State is not initialised"
                 }
+                override val storeName: String = checkNotNull(builder.storeName) {
+                    "Store name is not initialised"
+                }
+                override val mainDispatcher: CoroutineDispatcher = builder.mainDispatcher
+                override val ioDispatcher: CoroutineDispatcher = builder.ioDispatcher
             }
         }
     }
