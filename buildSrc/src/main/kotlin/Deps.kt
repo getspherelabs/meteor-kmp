@@ -1,0 +1,7 @@
+object Version {
+
+}
+
+object Libs {
+
+}
