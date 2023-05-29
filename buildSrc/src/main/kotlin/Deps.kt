@@ -1,6 +1,7 @@
 object Version {
     const val coroutine = "1.7.1"
     const val viewModel = "2.2.0"
+    const val ktlint = "10.3.0"
 }
 
 object Libs {
