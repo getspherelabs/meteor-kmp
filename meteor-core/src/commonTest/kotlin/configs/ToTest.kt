@@ -9,21 +9,17 @@ class ToTest {
 
     @Test
     fun `test To class`() = runBlocking {
-        // Given
         val initialState = "Initial State"
         val effect = "Effect"
         var sentEffect: String? = null
 
-        // When
         val to = To<String, String>(
             send = { sentEffect = it },
             state = initialState
         )
 
-        // Then
         assertEquals(initialState, to.state)
 
-        // Verify that the effect is sent correctly
         to.send(effect)
 
         assertEquals(effect, sentEffect)
