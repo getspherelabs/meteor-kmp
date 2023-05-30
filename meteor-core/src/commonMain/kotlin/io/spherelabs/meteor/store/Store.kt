@@ -21,7 +21,7 @@ interface Store<State : Any, Wish : Any, Effect : Any> {
     /**
      * A [effect] represents the flow of effects produced by the store.
      */
-    val effect: Flow<Wish>
+    val effect: Flow<Effect>
 
     /**
      * A [wish] function is used to send a wish (action/intent) to the store for processing.
