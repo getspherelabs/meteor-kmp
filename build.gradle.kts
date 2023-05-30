@@ -8,6 +8,7 @@ plugins {
     id("com.android.library").version("8.0.1").apply(false)
     kotlin("multiplatform").version("1.8.10").apply(false)
     id("org.jlleitschuh.gradle.ktlint") version Version.ktlint
+    id("org.jetbrains.dokka") version Version.dokka
 }
 
 tasks.register("clean", Delete::class) {
@@ -16,6 +17,7 @@ tasks.register("clean", Delete::class) {
 
 subprojects {
     apply(plugin = "org.jlleitschuh.gradle.ktlint")
+    apply(plugin = "org.jetbrains.dokka")
 
     ktlint {
         debug.set(false)
@@ -36,6 +38,29 @@ subprojects {
             dependsOn(tasks.getByName("ktlintCheck"))
         }
     }
+
+    val dokkaOutputDir = "$buildDir/dokka"
+
+    tasks.dokkaHtml {
+        outputDirectory.set(file(dokkaOutputDir))
+    }
+
+    val deleteDokkaOutputDir by tasks.register<Delete>("deleteDokkaOutputDirectory") {
+        delete(dokkaOutputDir)
+    }
+
+    val javadocJar = tasks.register<Jar>("javadocJar") {
+        dependsOn(deleteDokkaOutputDir, tasks.dokkaHtml)
+        archiveClassifier.set("javadoc")
+        from(dokkaOutputDir)
+    }
+
+    tasks.withType<org.jetbrains.dokka.gradle.DokkaTask>().configureEach {
+        dokkaSourceSets {
+            moduleName.set("Meteor")
+        }
+    }
+
 }
 
 
