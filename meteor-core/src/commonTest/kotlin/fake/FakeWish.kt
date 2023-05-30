@@ -1,4 +1,4 @@
-package reducer
+package fake
 
 sealed interface FakeWish {
     object Increment: FakeWish

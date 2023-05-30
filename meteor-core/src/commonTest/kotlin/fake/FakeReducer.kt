@@ -1,4 +1,4 @@
-package reducer
+package fake
 
 import io.spherelabs.meteor.reducer.Reducer
 
