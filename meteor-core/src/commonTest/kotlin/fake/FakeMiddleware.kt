@@ -13,13 +13,10 @@ object FakeMiddleware : Middleware<FakeState, FakeWish, FakeEffect> {
         when(wish)   {
             FakeWish.Decrement -> {
                 effect.send(FakeEffect(message = "Decrement is not triggered"))
-                next(wish)
             }
             FakeWish.Increment -> {
                 next(wish)
             }
         }
-
-
     }
 }
