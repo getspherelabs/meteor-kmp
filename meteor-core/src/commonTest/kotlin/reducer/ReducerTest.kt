@@ -1,12 +1,15 @@
 package reducer
 
+import fake.FakeReducer
+import fake.FakeState
+import fake.FakeWish
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -22,7 +25,7 @@ class ReducerTest {
     }
 
     @Test
-    fun `test reducer class works properly in increment`() = runBlocking {
+    fun `test reducer class works properly in increment`() = runTest {
         val internalState = MutableStateFlow(FakeState())
         val state = internalState.asStateFlow()
 
@@ -38,7 +41,7 @@ class ReducerTest {
     }
 
     @Test
-    fun `test reducer class works properly in decrement`() = runBlocking {
+    fun `test reducer class works properly in decrement`() = runTest{
         val internalState = MutableStateFlow(FakeState(count = 5))
         val state = internalState.asStateFlow()
 
