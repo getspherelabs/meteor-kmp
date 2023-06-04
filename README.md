@@ -7,7 +7,7 @@
 
 ## Documentation 📖
 - [What is the MVI?]()
-- [What is the Meteor?]()
+- [What is the Meteor?](https://github.com/getspherelabs/meteor/blob/main/docs/meteor.md)
 
 ## What is the MVI?
 
