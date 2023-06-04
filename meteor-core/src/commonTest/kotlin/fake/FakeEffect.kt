@@ -1,5 +1,6 @@
 package fake
 
-data class FakeEffect(
-    val message: String = ""
-)
+
+sealed interface FakeEffect {
+    data class Toast(val message:  String):FakeEffect
+}
