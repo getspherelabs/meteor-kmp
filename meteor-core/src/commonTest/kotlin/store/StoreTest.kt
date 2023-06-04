@@ -8,19 +8,12 @@ import fake.FakeWish
 import io.spherelabs.meteor.configs.MeteorConfigs
 import io.spherelabs.meteor.store.Store
 import io.spherelabs.meteor.store.createMeteor
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestDispatcher
 import kotlinx.coroutines.test.TestScope
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
@@ -29,7 +22,6 @@ import kotlin.test.assertEquals
 
 class StoreTest {
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     private val testCoroutineDispatcher: TestDispatcher = StandardTestDispatcher()
     private val testScope = TestScope(testCoroutineDispatcher + Job())
 
