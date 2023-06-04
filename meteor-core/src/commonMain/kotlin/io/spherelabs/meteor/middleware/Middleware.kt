@@ -1,4 +1,4 @@
-package io.spherelabs.meteor
+package io.spherelabs.meteor.middleware
 
 import io.spherelabs.meteor.configs.To
 
