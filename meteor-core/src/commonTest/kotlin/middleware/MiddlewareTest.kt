@@ -21,6 +21,6 @@ class MiddlewareTest {
 
         FakeMiddleware.process(To(effectFunction, FakeState()), FakeWish.Decrement, nextFunction)
 
-        assertEquals(FakeEffect("Decrement is not triggered"), processedEffect)
+        assertEquals(FakeEffect.Toast("Decrement is not triggered"), processedEffect)
     }
 }
