@@ -1,6 +1,6 @@
 package fake
 
-import io.spherelabs.meteor.Middleware
+import io.spherelabs.meteor.middleware.Middleware
 import io.spherelabs.meteor.configs.To
 
 object FakeMiddleware : Middleware<FakeState, FakeWish, FakeEffect> {
@@ -12,10 +12,13 @@ object FakeMiddleware : Middleware<FakeState, FakeWish, FakeEffect> {
     ) {
         when(wish)   {
             FakeWish.Decrement -> {
-                effect.send(FakeEffect(message = "Decrement is not triggered"))
+                effect.send(FakeEffect.Toast(message = "Decrement is not triggered"))
             }
             FakeWish.Increment -> {
                 next(wish)
+            }
+            else -> {
+
             }
         }
     }

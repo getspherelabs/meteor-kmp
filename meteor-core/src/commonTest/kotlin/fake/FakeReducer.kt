@@ -13,6 +13,9 @@ object FakeReducer : Reducer<FakeState, FakeWish> {
             FakeWish.Increment -> {
                 state.copy(count = state.count + 1)
             }
+             else -> {
+                 state
+             }
         }
     }
 }
