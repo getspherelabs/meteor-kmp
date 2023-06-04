@@ -8,7 +8,7 @@
 ## Documentation 📖
 - [What is the MVI?]()
 - [What is the Meteor?]()
-- 
+
 ## What is the MVI?
 
 **`Model-View-Intent`** is an architectural pattern used in software development, particularly in user interface (UI) design. It is commonly applied in the context of reactive and functional programming paradigms.
