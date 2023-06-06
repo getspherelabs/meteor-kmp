@@ -11,17 +11,13 @@ class ToTest {
     fun `test To class`() = runTest {
         val initialState = "Initial State"
         val effect = "Effect"
-        var sentEffect: String? = null
 
-        val to = To<String, String>(
-            send = { sentEffect = it },
+        val to = To(
+            effect = effect,
             state = initialState
         )
 
         assertEquals(initialState, to.state)
-
-        to.send(effect)
-
-        assertEquals(effect, sentEffect)
+        assertEquals(effect, to.effect)
     }
 }
