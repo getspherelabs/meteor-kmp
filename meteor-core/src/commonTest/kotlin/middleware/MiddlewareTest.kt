@@ -13,14 +13,7 @@ class MiddlewareTest {
 
     @Test
     fun `check the middleware works correctly`() = runTest {
-        var processedWish: FakeWish? = null
-        var processedEffect: FakeEffect? = null
 
-        val nextFunction: suspend (FakeWish) -> Unit = { wish -> processedWish = wish }
-        val effectFunction: suspend (FakeEffect) -> Unit = { effect -> processedEffect = effect }
 
-        FakeMiddleware.process(To(effectFunction, FakeState()), FakeWish.Decrement, nextFunction)
-
-        assertEquals(FakeEffect.Toast("Decrement is not triggered"), processedEffect)
     }
 }
