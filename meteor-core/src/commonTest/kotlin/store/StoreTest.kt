@@ -23,7 +23,7 @@ import kotlin.test.assertEquals
 class StoreTest {
 
     private val testCoroutineDispatcher: TestDispatcher = StandardTestDispatcher()
-    private val testScope = TestScope(testCoroutineDispatcher + Job())
+    private val mainScope = TestScope(testCoroutineDispatcher + Job())
 
     private lateinit var store: Store<FakeState, FakeWish, FakeEffect>
 
@@ -33,7 +33,7 @@ class StoreTest {
             configs = MeteorConfigs.build {
                 initialState = FakeState()
                 storeName = "Test Meteor Store"
-            }, reducer = FakeReducer, middleware = FakeMiddleware, scope = testScope
+            }, reducer = FakeReducer, middleware = FakeMiddleware, mainScope = mainScope
         )
     }
 
@@ -42,7 +42,7 @@ class StoreTest {
         store.wish(FakeWish.Increment)
 
         var count = 0
-        testScope.launch {
+        mainScope.launch {
             store.state.collect {
                 count = it.count
             }
@@ -75,7 +75,7 @@ class StoreTest {
 
     @AfterTest
     fun teardown() {
-        testScope.cancel()
+        mainScope.cancel()
     }
 
 }
