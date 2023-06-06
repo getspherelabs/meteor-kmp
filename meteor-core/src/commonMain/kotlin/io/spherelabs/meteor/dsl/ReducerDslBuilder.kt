@@ -2,36 +2,39 @@ package io.spherelabs.meteor.dsl
 
 import io.spherelabs.meteor.annotation.MeteorDsl
 import io.spherelabs.meteor.annotation.MeteorInternal
+import io.spherelabs.meteor.configs.To
 import io.spherelabs.meteor.reducer.Reducer
 import kotlin.reflect.KClass
 
 @MeteorInternal
 @MeteorDsl
-class ReducerBuilder<State : Any, Wish : Any> internal constructor() {
+class ReducerBuilder<State : Any, Wish : Any, Effect : Any> internal constructor() {
 
-    val reducers: MutableMap<KClass<out Wish>, ComplexReducerContext<State, Wish>> = mutableMapOf()
+    val reducers: MutableMap<KClass<out Wish>, ToReducerContext<State, Wish, Effect>> = mutableMapOf()
 
-    inline fun <reified W : Wish> on(noinline action: State.(Wish) -> State) {
-        reducers[W::class] = { state, wish ->
-            if (wish is W) {
-                action(state, wish)
-            } else {
-                state
-            }
-        }
+    private var currentState: State? = null
+
+    inline fun <reified W : Wish> on(noinline action: State.(W) -> To<State, Effect>) {
+        reducers[W::class] = action as State.(Wish) -> To<State, Effect>
     }
 
-    fun <State> transition(state : State): State {
-        return state
+    fun <State : Any> transition(
+        action: () -> State,
+    ): To<State, Effect> {
+        return To(state = action())
     }
 
-    internal fun build(): Reducer<State, Wish> {
+    fun build(): Reducer<State, Wish, Effect> {
         return Reducer { state, wish ->
-            reducers[wish::class]?.invoke(state, wish) ?: state
+            reducers[wish::class]?.let {
+                it(state, wish)
+            } ?: throw IllegalArgumentException("No reducer found for wish: $wish")
         }
     }
 
 }
 
 typealias ComplexReducerContext<State, Wish> = (State, Wish) -> State
+
+typealias ToReducerContext <State, Wish, Effect> = (State, Wish) -> To<State, Effect>
 

@@ -28,4 +28,6 @@ interface Store<State : Any, Wish : Any, Effect : Any> {
      * [Wish] represent the intent to change the state of the application.
      */
     suspend fun wish(wish: Wish)
+
+    fun cancel()
 }

@@ -47,25 +47,23 @@ class MeteorDslBuilderTest {
 
             reducer {
                 on<FakeWish.Decrement> {
-                    transition(copy(count = count - 1))
+                    transition(
+                        action = {
+                            copy(count = count - 1)
+                        }
+                    )
                 }
                 on<FakeWish.Increment> {
-                    transition(copy(count = count + 1))
+                    transition(
+                        action = {
+                            copy(count = count + 1)
+                        }
+                    )
                 }
             }
 
             middleware {
-                on { to, wish, next ->
-                    when (wish) {
-                        is FakeWish.Loading -> {
-                            to.send(FakeEffect.Toast("1"))
-                        }
-                        is FakeWish.Increment -> {
-                            next.invoke(FakeWish.Loading)
-                        }
-                        else -> {}
-                    }
-                }
+                on { fakeWish, suspendFunction1 -> }
             }
 
         }
@@ -74,18 +72,20 @@ class MeteorDslBuilderTest {
 
         testScope.launch {
             meteor.wish(FakeWish.Increment)
-            meteor.wish(FakeWish.Increment)
+            meteor.wish(FakeWish.Decrement)
+            meteor.wish(FakeWish.Decrement)
+            meteor.wish(FakeWish.Decrement)
 
 
             meteor.effect.onEach {
-                 fakeEffect = it
+                fakeEffect = it
 
             }.launchIn(testScope)
-
         }
 
-        assertEquals(2, meteor.currentState.count)
-        assertEquals(FakeEffect.Toast("1"),fakeEffect)
+        println("Fake Effect is $fakeEffect")
+
+        assertEquals(-2, meteor.currentState.count)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)

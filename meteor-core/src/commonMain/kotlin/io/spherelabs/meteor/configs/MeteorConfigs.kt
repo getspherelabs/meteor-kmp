@@ -1,5 +1,7 @@
 package io.spherelabs.meteor.configs
 
+import io.spherelabs.meteor.middleware.Middleware
+import io.spherelabs.meteor.reducer.Reducer
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 
@@ -32,20 +34,24 @@ import kotlinx.coroutines.Dispatchers
  * ```
  *
  */
-interface MeteorConfigs<State : Any> {
+interface MeteorConfigs<State : Any, Wish : Any, Effect : Any> {
     val initialState: State
     val storeName: String
     val mainDispatcher: CoroutineDispatcher
     val ioDispatcher: CoroutineDispatcher
+    val reducer: Reducer<State, Wish, Effect>
+    val middleware: Middleware<Wish>
 
     /**
      * A [Builder] class for constructing instance of [MeteorConfigs].
      */
-    data class Builder<State : Any>(
+    data class Builder<State : Any, Wish : Any, Effect : Any>(
         var initialState: State? = null,
         var storeName: String? = null,
         var mainDispatcher: CoroutineDispatcher = Dispatchers.Default,
-        var ioDispatcher: CoroutineDispatcher = Dispatchers.Default
+        var ioDispatcher: CoroutineDispatcher = Dispatchers.Default,
+        var reducer: Reducer<State, Wish, Effect>? = null,
+        var middleware: Middleware<Wish>? = null
     )
 
     companion object {
@@ -53,20 +59,26 @@ interface MeteorConfigs<State : Any> {
          * A [build] function takes a configuration block to set properties of the builder class and
          * constructs a fully configured MeteorConfigs object using the provided settings.
          */
-        inline fun <State : Any> build(
-            block: Builder<State>.() -> Unit
-        ): MeteorConfigs<State> {
-            val builder = Builder<State>().apply(block)
+        inline fun <State : Any, Wish : Any, Effect : Any> build(
+            block: Builder<State, Wish, Effect>.() -> Unit
+        ): MeteorConfigs<State, Wish, Effect> {
+            val builder = Builder<State, Wish, Effect>().apply(block)
 
-            return object : MeteorConfigs<State> {
+            return object : MeteorConfigs<State, Wish, Effect> {
                 override val initialState: State = checkNotNull(builder.initialState) {
-                    "State is not initialised"
+                    "State is not initialized."
                 }
                 override val storeName: String = checkNotNull(builder.storeName) {
-                    "Store name is not initialised"
+                    "Store name is not initialized."
                 }
                 override val mainDispatcher: CoroutineDispatcher = builder.mainDispatcher
                 override val ioDispatcher: CoroutineDispatcher = builder.ioDispatcher
+                override val reducer: Reducer<State, Wish, Effect> = checkNotNull(builder.reducer) {
+                    "Reducer is not initialized."
+                }
+                override val middleware: Middleware<Wish> = checkNotNull(builder.middleware) {
+                    "Middleware is not initialized."
+                }
             }
         }
     }

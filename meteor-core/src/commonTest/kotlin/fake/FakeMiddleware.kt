@@ -1,22 +1,21 @@
 package fake
 
 import io.spherelabs.meteor.middleware.Middleware
-import io.spherelabs.meteor.configs.To
 
-object FakeMiddleware : Middleware<FakeState, FakeWish, FakeEffect> {
+object FakeMiddleware : Middleware<FakeWish> {
 
     override suspend fun process(
-        effect: To<FakeState, FakeEffect>,
         wish: FakeWish,
         next: suspend (FakeWish) -> Unit
     ) {
-        when(wish)   {
+        when (wish) {
             FakeWish.Decrement -> {
-                effect.send(FakeEffect.Toast(message = "Decrement is not triggered"))
             }
+
             FakeWish.Increment -> {
                 next(wish)
             }
+
             else -> {
 
             }

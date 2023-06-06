@@ -15,10 +15,10 @@ class MeteorDslBuilder<State : Any, Wish : Any, Effect : Any> internal construct
     private var currentState: State? = null
     private var storeName: String? = null
 
-    private val scope: CoroutineScope = CoroutineScope(SupervisorJob())
+    private val mainScope: CoroutineScope = CoroutineScope(SupervisorJob())
 
-    private var reducer: Reducer<State, Wish>? = null
-    private var middleware: Middleware<State, Wish, Effect>? = null
+    private var reducer: Reducer<State, Wish, Effect>? = null
+    private var middleware: Middleware<Wish>? = null
 
     fun config(block: ConfigDslBuilder<State>.() -> Unit) {
         ConfigDslBuilder<State>().also {
@@ -28,24 +28,24 @@ class MeteorDslBuilder<State : Any, Wish : Any, Effect : Any> internal construct
         }
     }
 
-    fun reducer(block: ReducerBuilder<State, Wish>.() -> Unit) {
-        ReducerBuilder<State, Wish>().also {
+    fun reducer(block: ReducerBuilder<State, Wish, Effect>.() -> Unit) {
+        ReducerBuilder<State, Wish, Effect>().also {
             block(it)
             this.reducer = it.build()
         }
     }
 
     fun middleware(
-        block: MiddlewareDslBuilder<State, Wish, Effect>.() -> Unit
+        block: MiddlewareDslBuilder<Wish>.() -> Unit
     ) {
-        MiddlewareDslBuilder<State, Wish, Effect>().also {
+        MiddlewareDslBuilder<Wish>().also {
             block(it)
             this.middleware = it.build()
         }
     }
 
     fun build(): Store<State, Wish, Effect> {
-        return createMeteor(
+        return mainScope.createMeteor(
             configs = MeteorConfigs.build {
                 initialState = this@MeteorDslBuilder.currentState
                 storeName = if (this@MeteorDslBuilder.storeName.isNullOrBlank()) {
@@ -53,10 +53,14 @@ class MeteorDslBuilder<State : Any, Wish : Any, Effect : Any> internal construct
                 } else {
                     this@MeteorDslBuilder.storeName
                 }
-            },
-            reducer = checkNotNull(reducer),
-            middleware = checkNotNull(middleware),
-            scope = scope
+                reducer= checkNotNull(reducer) {
+                    "Reducer is not initialized. Please, check the reducer instance!"
+                }
+                middleware = checkNotNull(middleware) {
+                    "Middleware is not initialized. Please, check the middleware instance!"
+
+                }
+            }
         )
     }
 }

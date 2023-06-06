@@ -1,5 +1,10 @@
 package configs
 
+import fake.FakeEffect
+import fake.FakeMiddleware
+import fake.FakeReducer
+import fake.FakeState
+import fake.FakeWish
 import io.spherelabs.meteor.configs.MeteorConfigs
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -10,13 +15,15 @@ import kotlin.test.assertEquals
 
 class MeteorConfigsTest {
 
-    private lateinit var configs: MeteorConfigs<FakeConfigState>
+    private lateinit var configs: MeteorConfigs<FakeState, FakeWish, FakeEffect>
 
     @BeforeTest
     fun setup() {
         configs = MeteorConfigs.build {
-            initialState = FakeConfigState()
+            initialState = FakeState()
             storeName = "MeteorConfigs Test Store Name"
+            middleware = FakeMiddleware
+            reducer = FakeReducer
             mainDispatcher = Dispatchers.Main
             ioDispatcher = Dispatchers.IO
         }
@@ -24,7 +31,7 @@ class MeteorConfigsTest {
 
     @Test
     fun `check meteor configs is initialised correctly`() {
-        assertEquals(configs.initialState, FakeConfigState())
+        assertEquals(configs.initialState, FakeState())
     }
 
     @Test
