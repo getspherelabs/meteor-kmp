@@ -29,7 +29,7 @@ class ReducerTest {
         val internalState = MutableStateFlow(FakeState())
         val state = internalState.asStateFlow()
 
-        internalState.value = FakeReducer.reduce(FakeState(), FakeWish.Increment)
+        internalState.value = checkNotNull(FakeReducer.reduce(FakeState(), FakeWish.Increment).state)
 
 
         scope.launch {
@@ -41,17 +41,18 @@ class ReducerTest {
     }
 
     @Test
-    fun `test reducer class works properly in decrement`() = runTest{
+    fun `test reducer class works properly in decrement`() = runTest {
         val internalState = MutableStateFlow(FakeState(count = 5))
         val state = internalState.asStateFlow()
 
-        internalState.value = FakeReducer.reduce(internalState.value, FakeWish.Decrement)
+        internalState.value = FakeReducer.reduce(internalState.value, FakeWish.Decrement).state ?: FakeState()
 
         scope.launch {
             state.collect { state ->
                 println("State: $state")
             }
         }
+
         assertEquals(4, state.value.count)
     }
 
