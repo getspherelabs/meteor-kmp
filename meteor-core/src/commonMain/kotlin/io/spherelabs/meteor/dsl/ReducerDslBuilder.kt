@@ -2,7 +2,7 @@ package io.spherelabs.meteor.dsl
 
 import io.spherelabs.meteor.annotation.MeteorDsl
 import io.spherelabs.meteor.annotation.MeteorInternal
-import io.spherelabs.meteor.configs.To
+import io.spherelabs.meteor.configs.Change
 import io.spherelabs.meteor.reducer.Reducer
 import kotlin.reflect.KClass
 
@@ -14,14 +14,14 @@ class ReducerBuilder<State : Any, Wish : Any, Effect : Any> internal constructor
 
     private var currentState: State? = null
 
-    inline fun <reified W : Wish> on(noinline action: State.(W) -> To<State, Effect>) {
-        reducers[W::class] = action as State.(Wish) -> To<State, Effect>
+    inline fun <reified W : Wish> on(noinline action: State.(W) -> Change<State, Effect>) {
+        reducers[W::class] = action as State.(Wish) -> Change<State, Effect>
     }
 
     fun <State : Any> transition(
         action: () -> State,
-    ): To<State, Effect> {
-        return To(state = action())
+    ): Change<State, Effect> {
+        return Change(state = action())
     }
 
     fun build(): Reducer<State, Wish, Effect> {
@@ -34,7 +34,6 @@ class ReducerBuilder<State : Any, Wish : Any, Effect : Any> internal constructor
 
 }
 
-typealias ComplexReducerContext<State, Wish> = (State, Wish) -> State
 
-typealias ToReducerContext <State, Wish, Effect> = (State, Wish) -> To<State, Effect>
+typealias ToReducerContext <State, Wish, Effect> = (State, Wish) -> Change<State, Effect>
 
