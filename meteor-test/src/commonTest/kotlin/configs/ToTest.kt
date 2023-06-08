@@ -1,6 +1,6 @@
 package configs
 
-import io.spherelabs.meteor.configs.To
+import io.spherelabs.meteor.configs.Change
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -12,12 +12,12 @@ class ToTest {
         val initialState = "Initial State"
         val effect = "Effect"
 
-        val to = To(
+        val change = Change(
             effect = effect,
             state = initialState
         )
 
-        assertEquals(initialState, to.state)
-        assertEquals(effect, to.effect)
+        assertEquals(initialState, change.state)
+        assertEquals(effect, change.effect)
     }
 }

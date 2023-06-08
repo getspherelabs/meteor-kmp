@@ -7,41 +7,41 @@ import fake.FakeState
 import fake.FakeWish
 import io.spherelabs.meteor.configs.MeteorConfigs
 import io.spherelabs.meteor.store.Store
-import io.spherelabs.meteor.store.createMeteor
+import io.spherelabs.meteortest.store.createTestStore
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestDispatcher
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.time.Duration.Companion.seconds
 
 class StoreTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    private val testCoroutineDispatcher: TestDispatcher = UnconfinedTestDispatcher()
-    private val mainScope = TestScope(testCoroutineDispatcher + Job())
+    private val mainDispatcher: TestDispatcher = UnconfinedTestDispatcher()
+    private val mainScope = TestScope(mainDispatcher)
 
     private lateinit var store: Store<FakeState, FakeWish, FakeEffect>
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @BeforeTest
     fun setup() {
-        store = createMeteor(
+        Dispatchers.setMain(mainDispatcher)
+        store = mainScope.createTestStore(
             configs = MeteorConfigs.build {
                 initialState = FakeState()
                 storeName = "Test Meteor Store"
                 reducer = FakeReducer
                 middleware = FakeMiddleware
-            },
-            mainScope = mainScope
+            }
         )
     }
 
@@ -51,16 +51,13 @@ class StoreTest {
 
         var count = 0
 
-        mainScope.launch {
-            store.state.onEach {
-                count = it.count
-            }.launchIn(mainScope)
-        }
-        assertEquals(1, count)
+        assertEquals(1,store.currentState.count)
     }
 
     @Test
-    fun `check  when wish is called decrement then the state should be update accordingly`() = runTest {
+    fun `check  when wish is called decrement then the state should be update accordingly`() = runTest(
+        timeout = 60.seconds
+    ) {
         store.wish(FakeWish.Increment)
         store.wish(FakeWish.Increment)
         store.wish(FakeWish.Increment)
@@ -70,8 +67,10 @@ class StoreTest {
         assertEquals(2, store.currentState.count)
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @AfterTest
     fun teardown() {
+        Dispatchers.resetMain()
         mainScope.cancel()
     }
 

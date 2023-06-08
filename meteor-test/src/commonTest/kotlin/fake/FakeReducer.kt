@@ -1,13 +1,13 @@
 package fake
 
-import io.spherelabs.meteor.configs.To
+import io.spherelabs.meteor.configs.Change
 import io.spherelabs.meteor.reducer.Reducer
 import io.spherelabs.meteor.reducer.expect
 import io.spherelabs.meteor.reducer.unexpected
 
 object FakeReducer : Reducer<FakeState, FakeWish, FakeEffect> {
 
-    override fun reduce(state: FakeState, wish: FakeWish): To<FakeState, FakeEffect> {
+    override fun reduce(state: FakeState, wish: FakeWish): Change<FakeState, FakeEffect> {
         return when (wish) {
             FakeWish.Decrement -> {
                 expect {

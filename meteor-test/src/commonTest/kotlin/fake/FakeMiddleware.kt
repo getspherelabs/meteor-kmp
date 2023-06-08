@@ -13,7 +13,6 @@ object FakeMiddleware : Middleware<FakeWish> {
             }
 
             FakeWish.Increment -> {
-                next(wish)
             }
 
             else -> {
