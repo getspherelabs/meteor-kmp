@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "meteor"
 include(":meteor-core")
+include(":meteor-test")

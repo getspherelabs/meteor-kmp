@@ -1,9 +1,7 @@
 package io.spherelabs.meteor.store
 
-import io.spherelabs.meteor.middleware.Middleware
 import io.spherelabs.meteor.configs.MeteorConfigs
-import io.spherelabs.meteor.configs.To
-import io.spherelabs.meteor.reducer.Reducer
+import io.spherelabs.meteor.configs.Change
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.Channel
@@ -33,39 +31,38 @@ class MeteorStore<State : Any, Wish : Any, Effect : Any>(
     private val lock = Mutex()
 
     override suspend fun wish(wish: Wish) {
-        lock.withLock {
+            lock.withLock {
 
-            val oldState = _state.value
+                val oldState = _state.value
 
-            val newState = applyReducer(oldState, wish)
-            println("New state is $newState")
-            println("New wish is $wish")
-            newState.state?.let {
-                _state.value = it
-                currentState = it
-                println("Current state is $it")
-            }
+                val newState = applyReducer(oldState, wish)
+                println("New state is $newState")
+                println("New wish is $wish")
+                newState.state?.let {
+                    _state.value = it
+                    currentState = it
+                    println("Current state is $it")
+                }
 
-            newState.effect?.let { newEffect ->
+                newState.effect?.let { newEffect ->
+                    mainScope.launch {
+                        _effect.send(newEffect)
+                    }
+                }
+
                 mainScope.launch {
-                    _effect.send(newEffect)
+                    configs.middleware.process(
+                        wish = wish,
+                        next = { newWish ->
+                            println("New wish: $newWish")
+                            wish(newWish)
+                        })
+
                 }
             }
-
-            mainScope.launch {
-                configs.middleware.process(
-                    wish = wish,
-                    next = { newWish ->
-                        println("New wish: $newWish")
-                        wish(newWish)
-                    })
-            }
-
-        }
-
     }
 
-    private fun applyReducer(state: State, wish: Wish): To<State, Effect> {
+    private fun applyReducer(state: State, wish: Wish): Change<State, Effect> {
         return configs.reducer.reduce(state, wish)
     }
 
