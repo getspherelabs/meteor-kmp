@@ -5,7 +5,7 @@ import io.spherelabs.meteor.annotation.MeteorInternal
 
 @MeteorInternal
 @MeteorDsl
-class ConfigDslBuilder<State : Any> {
+class ConfigDslBuilder<State : Any> internal constructor() {
     var initialState: State? = null
     var name: String? = null
 }

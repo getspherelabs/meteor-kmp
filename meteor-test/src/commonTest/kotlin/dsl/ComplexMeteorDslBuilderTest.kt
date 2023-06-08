@@ -3,8 +3,6 @@ package dsl
 import fake.FakeComplexEffect
 import fake.FakeComplexState
 import fake.FakeComplexWish
-import fake.FakeEffect
-import fake.FakeWish
 import io.spherelabs.meteor.dsl.meteor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

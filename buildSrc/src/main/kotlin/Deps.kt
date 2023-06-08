@@ -17,3 +17,7 @@ object Libs {
     }
 
 }
+
+object Projects {
+    const val core = ""
+}
