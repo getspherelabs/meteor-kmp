@@ -1,11 +1,11 @@
 buildscript {
     dependencies {
-        classpath("com.android.tools.build:gradle:7.3.1")
+        classpath("com.android.tools.build:gradle:7.4.2")
         classpath("org.jlleitschuh.gradle:ktlint-gradle:${Version.ktlint}")
     }
 }
 plugins {
-    id("com.android.library").version("8.0.1").apply(false)
+    id("com.android.library").version("7.4.2").apply(false)
     kotlin("multiplatform").version("1.8.10").apply(false)
     id("org.jlleitschuh.gradle.ktlint") version Version.ktlint
     id("org.jetbrains.dokka") version Version.dokka
