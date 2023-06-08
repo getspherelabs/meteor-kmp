@@ -53,10 +53,10 @@ class MeteorDslBuilder<State : Any, Wish : Any, Effect : Any> internal construct
                 } else {
                     this@MeteorDslBuilder.storeName
                 }
-                reducer= checkNotNull(reducer) {
+                reducer= checkNotNull(this@MeteorDslBuilder.reducer) {
                     "Reducer is not initialized. Please, check the reducer instance!"
                 }
-                middleware = checkNotNull(middleware) {
+                middleware = checkNotNull(this@MeteorDslBuilder.middleware) {
                     "Middleware is not initialized. Please, check the middleware instance!"
 
                 }
