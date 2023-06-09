@@ -2,6 +2,7 @@ package fake
 
 import io.spherelabs.meteor.configs.Change
 import io.spherelabs.meteor.reducer.Reducer
+import io.spherelabs.meteor.reducer.effect
 import io.spherelabs.meteor.reducer.expect
 import io.spherelabs.meteor.reducer.unexpected
 
@@ -12,6 +13,9 @@ object FakeReducer : Reducer<FakeState, FakeWish, FakeEffect> {
             FakeWish.Decrement -> {
                 expect {
                     state.copy(count = state.count - 1)
+                }
+                effect {
+                    FakeEffect.Toast("Value is decremented.")
                 }
             }
 
