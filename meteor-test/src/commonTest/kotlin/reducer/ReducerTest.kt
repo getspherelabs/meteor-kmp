@@ -1,8 +1,10 @@
 package reducer
 
+import fake.FakeEffect
 import fake.FakeReducer
 import fake.FakeState
 import fake.FakeWish
+import io.spherelabs.meteortest.reducer.runReducerTestWithEffect
 import io.spherelabs.meteortest.reducer.runReducerTestWithState
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -53,6 +55,18 @@ class ReducerTest {
             testScope
         ) { newState ->
             assertEquals(4, newState.count)
+        }
+    }
+
+    @Test
+    fun `test reducer class works properly in decrement effect`() = runTest {
+        val fakeState = FakeState(count = 5)
+        FakeReducer.runReducerTestWithEffect(
+            fakeState,
+            FakeWish.Decrement,
+            testScope
+        ) { fakeEffect ->
+            assertEquals(FakeEffect.Toast("Value is decremented."), fakeEffect)
         }
     }
 
