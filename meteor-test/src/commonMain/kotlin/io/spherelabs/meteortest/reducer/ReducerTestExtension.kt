@@ -1,13 +1,21 @@
 package io.spherelabs.meteortest.reducer
 
+import io.spherelabs.meteor.exception.NotInitializedException
 import io.spherelabs.meteor.reducer.Reducer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.toList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
+/**
+ * [runReducerTest] runs a test for a [Reducer].
+ * It takes the initial state, a wish (action/intent) and [CoroutineScope] for collecting state updates.
+ * Also, the action callback helps us to handle the resulting state and effect.
+ *
+ */
 fun <State : Any, Wish : Any, Effect : Any> Reducer<State, Wish, Effect>.runReducerTest(
     initialState: State,
     wish: Wish,
@@ -20,7 +28,7 @@ fun <State : Any, Wish : Any, Effect : Any> Reducer<State, Wish, Effect>.runRedu
     val (newEffect, newState) = reduce(initialState, wish)
 
     internalState.value = checkNotNull(newState) {
-        "State is not initialized"
+        throw NotInitializedException()
     }
 
     scope.launch {
@@ -45,7 +53,7 @@ fun <State : Any, Wish : Any, Effect : Any> Reducer<State, Wish, Effect>.runRedu
     val (newEffect, newState) = reduce(initialState, wish)
 
     internalState.value = checkNotNull(newState) {
-        "State is not initialized"
+        throw NotInitializedException()
     }
 
     scope.launch {
@@ -69,7 +77,13 @@ fun <State : Any, Wish : Any, Effect : Any> Reducer<State, Wish, Effect>.runRedu
 
     val (newEffect, newState) = reduce(initialState, wish)
 
-    internalEffect.trySend(checkNotNull(newEffect))
+    scope.launch {
+
+        internalEffect.send(checkNotNull(newEffect) {
+            throw NotInitializedException("Effect is not initialized.")
+        })
+    }
+
 
     scope.launch {
         effect.collect {
@@ -77,5 +91,7 @@ fun <State : Any, Wish : Any, Effect : Any> Reducer<State, Wish, Effect>.runRedu
         }
     }
 
-    action(checkNotNull(updatedEffect))
+    action(checkNotNull(updatedEffect) {
+        throw NotInitializedException("Effect is not initialized.")
+    })
 }
