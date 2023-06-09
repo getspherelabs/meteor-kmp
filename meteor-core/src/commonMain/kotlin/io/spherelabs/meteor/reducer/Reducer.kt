@@ -19,3 +19,7 @@ public fun <State : Any, Wish : Any, Effect : Any> Reducer<State, Wish, Effect>.
 public fun <State : Any, Wish : Any, Effect : Any> Reducer<State, Wish, Effect>.unexpected(): Change<State, Effect> {
     return Change(null, null)
 }
+
+public fun <State : Any, Wish : Any, Effect : Any> Reducer<State, Wish, Effect>.effect(action: () -> Effect): Change<State, Effect> {
+    return Change(effect = action())
+}
