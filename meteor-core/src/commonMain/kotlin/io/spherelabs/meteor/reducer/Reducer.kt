@@ -23,3 +23,7 @@ public fun <State : Any, Wish : Any, Effect : Any> Reducer<State, Wish, Effect>.
 public fun <State : Any, Wish : Any, Effect : Any> Reducer<State, Wish, Effect>.effect(action: () -> Effect): Change<State, Effect> {
     return Change(effect = action())
 }
+
+public fun <State : Any, Wish : Any, Effect : Any> Reducer<State, Wish, Effect>.route(action: () -> Effect): Change<State, Effect> {
+    return Change(effect = action())
+}
