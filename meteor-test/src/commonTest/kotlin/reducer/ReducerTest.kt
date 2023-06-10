@@ -70,6 +70,19 @@ class ReducerTest {
         }
     }
 
+    @Test
+    fun `test fake reducer works properly in home effect`() = runTest {
+        val fakeState = FakeState()
+
+        FakeReducer.runReducerTestWithEffect(
+            fakeState,
+            FakeWish.Route.Home,
+            testScope
+        ) { newEffect ->
+            assertEquals(FakeEffect.Route.Home, newEffect)
+        }
+    }
+
     @OptIn(ExperimentalCoroutinesApi::class)
     @AfterTest
     fun teardown() {
