@@ -4,7 +4,7 @@ import io.spherelabs.meteor.configs.Change
 
 /**
  * A  [Reducer] are responsible for taking the current state and an wish,
- * and producing a new state based on the given inputs.
+ * and producing new state and new effect based on the given inputs.
  */
 fun interface Reducer<State : Any, Wish : Any, Effect : Any> {
     fun reduce(state: State, wish: Wish): Change<State, Effect>
@@ -21,5 +21,9 @@ public fun <State : Any, Wish : Any, Effect : Any> Reducer<State, Wish, Effect>.
 }
 
 public fun <State : Any, Wish : Any, Effect : Any> Reducer<State, Wish, Effect>.effect(action: () -> Effect): Change<State, Effect> {
+    return Change(effect = action())
+}
+
+public fun <State : Any, Wish : Any, Effect : Any> Reducer<State, Wish, Effect>.route(action: () -> Effect): Change<State, Effect> {
     return Change(effect = action())
 }
