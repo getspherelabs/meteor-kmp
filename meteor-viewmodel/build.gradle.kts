@@ -11,14 +11,14 @@ kotlin {
             }
         }
     }
-
+    
     listOf(
         iosX64(),
         iosArm64(),
         iosSimulatorArm64()
     ).forEach {
         it.binaries.framework {
-            baseName = "meteor-core"
+            baseName = "meteor-viewmodel"
         }
     }
 
@@ -36,7 +36,9 @@ kotlin {
         }
         val androidMain by getting {
             dependencies {
-                implementation(Libs.Android.viewModel)
+                with(Libs.Android) {
+                    implementation(viewModel)
+                }
             }
         }
         val androidUnitTest by getting
@@ -48,6 +50,10 @@ kotlin {
             iosX64Main.dependsOn(this)
             iosArm64Main.dependsOn(this)
             iosSimulatorArm64Main.dependsOn(this)
+
+            dependencies {
+
+            }
         }
         val iosX64Test by getting
         val iosArm64Test by getting
@@ -62,7 +68,7 @@ kotlin {
 }
 
 android {
-    namespace = "io.spherelabs.meteor"
+    namespace = "io.spherelabs.meteorviewmodel"
     compileSdk = 33
     defaultConfig {
         minSdk = 24

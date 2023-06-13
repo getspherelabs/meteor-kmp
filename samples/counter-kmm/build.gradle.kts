@@ -11,34 +11,30 @@ kotlin {
             }
         }
     }
-
+    
     listOf(
         iosX64(),
         iosArm64(),
         iosSimulatorArm64()
     ).forEach {
         it.binaries.framework {
-            baseName = "meteor-core"
+            baseName = "counter-kmm"
         }
     }
 
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(Libs.Coroutine.core)
+                implementation(project(":meteor-core"))
+                implementation(Libs.Android.viewModel)
             }
         }
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
-                implementation(Libs.Coroutine.test)
             }
         }
-        val androidMain by getting {
-            dependencies {
-                implementation(Libs.Android.viewModel)
-            }
-        }
+        val androidMain by getting
         val androidUnitTest by getting
         val iosX64Main by getting
         val iosArm64Main by getting
@@ -62,7 +58,7 @@ kotlin {
 }
 
 android {
-    namespace = "io.spherelabs.meteor"
+    namespace = "io.spherelabs.counterkmm"
     compileSdk = 33
     defaultConfig {
         minSdk = 24
