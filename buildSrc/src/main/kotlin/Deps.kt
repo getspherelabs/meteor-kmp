@@ -4,6 +4,8 @@ object Version {
     const val ktlint = "10.3.0"
     const val coroutineTest = "1.7.1"
     const val dokka = "1.8.10"
+    const val lifecycle = "2.6.0"
+    const val stately = "2.0.0"
 }
 
 object Libs {
@@ -13,7 +15,11 @@ object Libs {
     }
 
     object Android {
-        const val viewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Version.viewModel}"
+        const val viewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Version.lifecycle}"
+    }
+
+    object Ios {
+        const val stately = "co.touchlab:stately-concurrency:${Version.stately}"
     }
 
 }
