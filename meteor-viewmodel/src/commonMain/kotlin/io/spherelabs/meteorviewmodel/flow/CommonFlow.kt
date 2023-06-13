@@ -12,33 +12,10 @@ public abstract class CommonFlow<out T>(private val flow: Flow<T>) : Flow<T> by 
     public open fun watchFlow(
         scope: CoroutineScope,
         values: (T) -> Unit,
-        failure: (failure: Throwable) -> Unit,
-        completion: () -> Unit
+        failure: ((failure: Throwable) -> Unit)? = null,
+        completion: (() -> Unit)? = null
     ): Cancelable {
         return flow.watch(scope, values, failure, completion)
-    }
-
-    public open fun watchFlow(
-        scope: CoroutineScope,
-        values: (T) -> Unit,
-    ): Cancelable {
-        return flow.watch(scope, values, null, null)
-    }
-
-    public open fun watchFlow(
-        scope: CoroutineScope,
-        values: (T) -> Unit,
-        failure: (failure: Throwable) -> Unit,
-    ): Cancelable {
-        return flow.watch(scope, values, failure, null)
-    }
-
-    public open fun watchFlow(
-        scope: CoroutineScope,
-        values: (T) -> Unit,
-        completion: () -> Unit
-    ): Cancelable {
-        return flow.watch(scope, values, null, completion)
     }
 }
 
