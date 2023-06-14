@@ -9,6 +9,6 @@ public open class NullableCommonFlow<out T : Any?> @OptIn(ExperimentalObjCName::
     flow: Flow<T>
 ) : CommonFlow<T>(flow)
 
-public fun <T> Flow<T>.wrap(): NullableCommonFlow<T> {
+public fun <T> Flow<T>.asCommonFlow(): NullableCommonFlow<T> {
     return this as? NullableCommonFlow<T> ?: NullableCommonFlow(this)
 }
