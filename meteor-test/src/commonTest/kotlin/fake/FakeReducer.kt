@@ -15,9 +15,6 @@ object FakeReducer : Reducer<FakeState, FakeWish, FakeEffect> {
                 expect {
                     state.copy(count = state.count - 1)
                 }
-                effect {
-                    FakeEffect.Toast("Value is decremented.")
-                }
             }
 
             FakeWish.Increment -> {

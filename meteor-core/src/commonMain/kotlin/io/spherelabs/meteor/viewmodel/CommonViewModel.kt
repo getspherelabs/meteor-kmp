@@ -17,12 +17,12 @@ abstract class CommonViewModel<State : Any, Wish : Any, Effect : Any> : ViewMode
 
     abstract val host: Store<State, Wish, Effect>
 
-    val effect: NonNullCommonFlow<Effect> = host.effect.asCommonFlow()
-
-    val state: NotNullCommonStateFlow<State> = host.state.asCommonFlow()
-
+    var count = 0
     fun wish(wish: Wish) {
         viewModelScope.launch {
+            count++
+            println("Wish is $count")
+            println("Viewmodelscope is $viewModelScope")
             host.wish(wish)
         }
     }

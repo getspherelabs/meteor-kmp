@@ -14,7 +14,7 @@ public abstract class CommonFlow<out T>(private val flow: Flow<T>) : Flow<T> by 
         values: (T) -> Unit,
         failure: ((failure: Throwable) -> Unit)? = null,
         completion: (() -> Unit)? = null
-    ): Cancelable {
+    ): Cancellable {
         return flow.watch(scope, values, failure, completion)
     }
 }
@@ -25,7 +25,7 @@ internal fun <T> Flow<T>.watch(
     values: (T) -> Unit,
     failure: ((failure: Throwable) -> Unit)?,
     completion: (() -> Unit)?
-): Cancelable {
+): Cancellable {
     val currentJob = this.onEach(values)
         .run {
             println("Values are $values")
@@ -46,5 +46,5 @@ internal fun <T> Flow<T>.watch(
         }
         .launchIn(scope)
 
-    return DefaultCancelable(currentJob)
+    return DefaultCancellable(currentJob)
 }

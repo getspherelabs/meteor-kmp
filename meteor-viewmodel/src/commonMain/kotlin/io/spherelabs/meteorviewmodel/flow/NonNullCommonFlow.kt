@@ -15,7 +15,7 @@ open class NonNullCommonFlow<out T : Any> @OptIn(ExperimentalObjCName::class) co
         values: (T) -> Unit,
         failure: ((failure: Throwable) -> Unit)?,
         completion: (() -> Unit)?
-    ): Cancelable {
+    ): Cancellable {
          println("The values are $values")
         return super.watchFlow(scope, values, failure, completion)
     }

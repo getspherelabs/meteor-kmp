@@ -7,9 +7,9 @@ interface Joinable {
     public suspend fun join()
 }
 
-public interface Cancelable : Joinable, Closeable
+public interface Cancellable : Joinable, Closeable
 
-class DefaultCancelable(private val job: Job) : Cancelable {
+class DefaultCancellable(private val job: Job) : Cancellable {
     override fun close() {
         job.cancel()
     }
