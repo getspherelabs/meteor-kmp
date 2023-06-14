@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 /**
- * [runReducerTest] runs a test for a [Reducer].
+ * A [runReducerTest] runs a test for a [Reducer].
  * It takes the initial state, a wish (action/intent) and [CoroutineScope] for collecting state updates.
  * Also, the action callback helps us to handle the resulting state and effect.
  *
