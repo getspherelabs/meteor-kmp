@@ -28,6 +28,7 @@ internal fun <T> Flow<T>.watch(
 ): Cancelable {
     val currentJob = this.onEach(values)
         .run {
+            println("Values are $values")
             if (completion !== null) {
                 onCompletion { failure ->
                     if (failure === null) completion() else throw failure
