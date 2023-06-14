@@ -4,6 +4,7 @@ import io.spherelabs.meteor.configs.MeteorConfigs
 import io.spherelabs.meteor.store.Store
 import io.spherelabs.meteor.store.createMeteor
 import io.spherelabs.meteor.viewmodel.CommonViewModel
+import io.spherelabs.meteor.viewmodel.createViewModelScope
 
 class FakeViewModel: CommonViewModel<FakeCountState, FakeCountWish, FakeCountEffect>() {
 
@@ -15,7 +16,7 @@ class FakeViewModel: CommonViewModel<FakeCountState, FakeCountWish, FakeCountEff
                 reducer = FakeCountReducer
                 middleware = FakeCountMiddleware
             },
-            mainScope = viewModelScope
+            mainScope = createViewModelScope()
     )
 
 

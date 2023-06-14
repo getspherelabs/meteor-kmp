@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -44,12 +45,14 @@ class MeteorStore<State : Any, Wish : Any, Effect : Any>(
                     println("Current state is $it")
                 }
 
+                println("Debug scope  MS: $mainScope")
+
                 newState.effect?.let { newEffect ->
                     mainScope.launch {
                         _effect.send(newEffect)
                     }
                 }
-
+                println("Current new state is ${state.value}")
                 mainScope.launch {
                     configs.middleware.process(
                         wish = wish,
@@ -84,10 +87,17 @@ fun <State : Any, Wish : Any, Effect : Any> createMeteor(
 fun <State : Any, Wish : Any, Effect : Any> CoroutineScope.createMeteor(
     configs: MeteorConfigs<State, Wish, Effect>,
 ): Store<State, Wish, Effect> {
-    return MeteorStore(
+    val store =  MeteorStore(
         configs = configs,
         mainScope = this
     )
+
+    coroutineContext.job.invokeOnCompletion {
+        store.cancel()
+    }
+
+    return store
+
 }
 
 
