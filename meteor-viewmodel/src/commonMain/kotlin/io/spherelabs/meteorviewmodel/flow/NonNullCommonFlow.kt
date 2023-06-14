@@ -16,10 +16,11 @@ open class NonNullCommonFlow<out T : Any> @OptIn(ExperimentalObjCName::class) co
         failure: ((failure: Throwable) -> Unit)?,
         completion: (() -> Unit)?
     ): Cancelable {
+         println("The values are $values")
         return super.watchFlow(scope, values, failure, completion)
     }
 
 }
 
-public fun <T : Any> Flow<T>.wrap(): NonNullCommonFlow<T> =
+public fun <T : Any> Flow<T>.asCommonFlow(): NonNullCommonFlow<T> =
     this as? NonNullCommonFlow<T> ?: NonNullCommonFlow(this)
