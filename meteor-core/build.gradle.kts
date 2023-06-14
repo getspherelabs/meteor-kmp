@@ -33,6 +33,7 @@ kotlin {
             dependencies {
                 implementation(kotlin("test"))
                 implementation(Libs.Coroutine.test)
+                implementation(Libs.Coroutine.turbine)
             }
         }
         val androidMain by getting {
@@ -40,7 +41,11 @@ kotlin {
                 implementation(Libs.Android.viewModel)
             }
         }
-        val androidUnitTest by getting
+        val androidUnitTest by getting {
+            dependencies {
+                implementation(Libs.Coroutine.testJvm)
+            }
+        }
         val iosX64Main by getting
         val iosArm64Main by getting
         val iosSimulatorArm64Main by getting
