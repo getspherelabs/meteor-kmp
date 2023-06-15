@@ -1,0 +1,71 @@
+public final class io/spherelabs/meteorviewmodel/BuildConfig {
+	public static final field BUILD_TYPE Ljava/lang/String;
+	public static final field DEBUG Z
+	public static final field LIBRARY_PACKAGE_NAME Ljava/lang/String;
+	public fun <init> ()V
+}
+
+public abstract class io/spherelabs/meteorviewmodel/commonflow/CommonFlow : kotlinx/coroutines/flow/Flow {
+	public fun <init> (Lkotlinx/coroutines/flow/Flow;)V
+	public fun bind (Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;)Lio/spherelabs/meteorviewmodel/commonflow/CommonJob;
+	public static synthetic fun bind$default (Lio/spherelabs/meteorviewmodel/commonflow/CommonFlow;Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)Lio/spherelabs/meteorviewmodel/commonflow/CommonJob;
+	public fun collect (Lkotlinx/coroutines/flow/FlowCollector;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class io/spherelabs/meteorviewmodel/commonflow/CommonJob : java/io/Closeable {
+	public abstract fun join (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class io/spherelabs/meteorviewmodel/commonflow/CoroutineCommonJob : io/spherelabs/meteorviewmodel/commonflow/CommonJob {
+	public fun <init> (Lkotlinx/coroutines/Job;)V
+	public fun close ()V
+	public fun join (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public class io/spherelabs/meteorviewmodel/commonflow/NonNullCommonFlow : io/spherelabs/meteorviewmodel/commonflow/CommonFlow {
+	public fun <init> (Lkotlinx/coroutines/flow/Flow;)V
+	public final fun bind (Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;)Lio/spherelabs/meteorviewmodel/commonflow/CommonJob;
+}
+
+public final class io/spherelabs/meteorviewmodel/commonflow/NonNullCommonFlowKt {
+	public static final fun asCommonFlow (Lkotlinx/coroutines/flow/Flow;)Lio/spherelabs/meteorviewmodel/commonflow/NonNullCommonFlow;
+}
+
+public final class io/spherelabs/meteorviewmodel/commonflow/NonNullCommonStateFlow : io/spherelabs/meteorviewmodel/commonflow/NonNullCommonFlow, kotlinx/coroutines/flow/StateFlow {
+	public fun <init> (Lkotlinx/coroutines/flow/StateFlow;)V
+	public fun collect (Lkotlinx/coroutines/flow/FlowCollector;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getReplayCache ()Ljava/util/List;
+	public fun getValue ()Ljava/lang/Object;
+}
+
+public final class io/spherelabs/meteorviewmodel/commonflow/NonNullCommonStateFlowKt {
+	public static final fun asCommonStateFlow (Lkotlinx/coroutines/flow/StateFlow;)Lio/spherelabs/meteorviewmodel/commonflow/NonNullCommonStateFlow;
+}
+
+public class io/spherelabs/meteorviewmodel/commonflow/NullableCommonFlow : io/spherelabs/meteorviewmodel/commonflow/CommonFlow {
+	public fun <init> (Lkotlinx/coroutines/flow/Flow;)V
+}
+
+public final class io/spherelabs/meteorviewmodel/commonflow/NullableCommonFlowKt {
+	public static final fun asCommonFlow (Lkotlinx/coroutines/flow/Flow;)Lio/spherelabs/meteorviewmodel/commonflow/NullableCommonFlow;
+}
+
+public final class io/spherelabs/meteorviewmodel/commonflow/NullableCommonStateFlow : io/spherelabs/meteorviewmodel/commonflow/NullableCommonFlow, kotlinx/coroutines/flow/StateFlow {
+	public fun <init> (Lkotlinx/coroutines/flow/StateFlow;)V
+	public fun collect (Lkotlinx/coroutines/flow/FlowCollector;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getReplayCache ()Ljava/util/List;
+	public fun getValue ()Ljava/lang/Object;
+}
+
+public final class io/spherelabs/meteorviewmodel/commonflow/NullableCommonStateFlowKt {
+	public static final fun asCommonStateFlow (Lkotlinx/coroutines/flow/StateFlow;)Lio/spherelabs/meteorviewmodel/commonflow/NullableCommonStateFlow;
+}
+
+public abstract class io/spherelabs/meteorviewmodel/viewmodel/ViewModel : androidx/lifecycle/ViewModel {
+	public fun <init> ()V
+	public fun <init> ([Ljava/io/Closeable;)V
+	public fun addCloseable (Ljava/io/Closeable;)V
+	public final fun getViewModelScope ()Lkotlinx/coroutines/CoroutineScope;
+	protected fun onCleared ()V
+}
+

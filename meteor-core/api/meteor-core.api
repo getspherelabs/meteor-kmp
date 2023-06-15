@@ -1,0 +1,167 @@
+public final class io/spherelabs/meteor/BuildConfig {
+	public static final field BUILD_TYPE Ljava/lang/String;
+	public static final field DEBUG Z
+	public static final field LIBRARY_PACKAGE_NAME Ljava/lang/String;
+	public fun <init> ()V
+}
+
+public abstract interface class io/spherelabs/meteor/ReducerScope {
+	public abstract fun reducer (Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+}
+
+public abstract interface annotation class io/spherelabs/meteor/annotation/MeteorDsl : java/lang/annotation/Annotation {
+}
+
+public abstract interface annotation class io/spherelabs/meteor/annotation/MeteorInternal : java/lang/annotation/Annotation {
+}
+
+public final class io/spherelabs/meteor/configs/Change {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/Object;Ljava/lang/Object;)V
+	public synthetic fun <init> (Ljava/lang/Object;Ljava/lang/Object;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/Object;
+	public final fun component2 ()Ljava/lang/Object;
+	public final fun copy (Ljava/lang/Object;Ljava/lang/Object;)Lio/spherelabs/meteor/configs/Change;
+	public static synthetic fun copy$default (Lio/spherelabs/meteor/configs/Change;Ljava/lang/Object;Ljava/lang/Object;ILjava/lang/Object;)Lio/spherelabs/meteor/configs/Change;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getEffect ()Ljava/lang/Object;
+	public final fun getState ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class io/spherelabs/meteor/configs/MeteorConfigs {
+	public static final field Companion Lio/spherelabs/meteor/configs/MeteorConfigs$Companion;
+	public abstract fun getInitialState ()Ljava/lang/Object;
+	public abstract fun getIoDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
+	public abstract fun getMainDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
+	public abstract fun getMiddleware ()Lio/spherelabs/meteor/middleware/Middleware;
+	public abstract fun getReducer ()Lio/spherelabs/meteor/reducer/Reducer;
+	public abstract fun getStoreName ()Ljava/lang/String;
+}
+
+public final class io/spherelabs/meteor/configs/MeteorConfigs$Builder {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/Object;Ljava/lang/String;Lkotlinx/coroutines/CoroutineDispatcher;Lkotlinx/coroutines/CoroutineDispatcher;Lio/spherelabs/meteor/reducer/Reducer;Lio/spherelabs/meteor/middleware/Middleware;)V
+	public synthetic fun <init> (Ljava/lang/Object;Ljava/lang/String;Lkotlinx/coroutines/CoroutineDispatcher;Lkotlinx/coroutines/CoroutineDispatcher;Lio/spherelabs/meteor/reducer/Reducer;Lio/spherelabs/meteor/middleware/Middleware;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/Object;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Lkotlinx/coroutines/CoroutineDispatcher;
+	public final fun component4 ()Lkotlinx/coroutines/CoroutineDispatcher;
+	public final fun component5 ()Lio/spherelabs/meteor/reducer/Reducer;
+	public final fun component6 ()Lio/spherelabs/meteor/middleware/Middleware;
+	public final fun copy (Ljava/lang/Object;Ljava/lang/String;Lkotlinx/coroutines/CoroutineDispatcher;Lkotlinx/coroutines/CoroutineDispatcher;Lio/spherelabs/meteor/reducer/Reducer;Lio/spherelabs/meteor/middleware/Middleware;)Lio/spherelabs/meteor/configs/MeteorConfigs$Builder;
+	public static synthetic fun copy$default (Lio/spherelabs/meteor/configs/MeteorConfigs$Builder;Ljava/lang/Object;Ljava/lang/String;Lkotlinx/coroutines/CoroutineDispatcher;Lkotlinx/coroutines/CoroutineDispatcher;Lio/spherelabs/meteor/reducer/Reducer;Lio/spherelabs/meteor/middleware/Middleware;ILjava/lang/Object;)Lio/spherelabs/meteor/configs/MeteorConfigs$Builder;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getInitialState ()Ljava/lang/Object;
+	public final fun getIoDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
+	public final fun getMainDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
+	public final fun getMiddleware ()Lio/spherelabs/meteor/middleware/Middleware;
+	public final fun getReducer ()Lio/spherelabs/meteor/reducer/Reducer;
+	public final fun getStoreName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public final fun setInitialState (Ljava/lang/Object;)V
+	public final fun setIoDispatcher (Lkotlinx/coroutines/CoroutineDispatcher;)V
+	public final fun setMainDispatcher (Lkotlinx/coroutines/CoroutineDispatcher;)V
+	public final fun setMiddleware (Lio/spherelabs/meteor/middleware/Middleware;)V
+	public final fun setReducer (Lio/spherelabs/meteor/reducer/Reducer;)V
+	public final fun setStoreName (Ljava/lang/String;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/spherelabs/meteor/configs/MeteorConfigs$Companion {
+	public final fun build (Lkotlin/jvm/functions/Function1;)Lio/spherelabs/meteor/configs/MeteorConfigs;
+}
+
+public final class io/spherelabs/meteor/dsl/ConfigDslBuilder {
+	public final fun getInitialState ()Ljava/lang/Object;
+	public final fun getName ()Ljava/lang/String;
+	public final fun setInitialState (Ljava/lang/Object;)V
+	public final fun setName (Ljava/lang/String;)V
+}
+
+public final class io/spherelabs/meteor/dsl/MeteorDslBuilder {
+	public final fun build ()Lio/spherelabs/meteor/store/Store;
+	public final fun config (Lkotlin/jvm/functions/Function1;)V
+	public final fun middleware (Lkotlin/jvm/functions/Function1;)V
+	public final fun reducer (Lkotlin/jvm/functions/Function1;)V
+}
+
+public final class io/spherelabs/meteor/dsl/MeteorDslBuilderKt {
+	public static final fun meteor (Lkotlin/jvm/functions/Function1;)Lio/spherelabs/meteor/store/Store;
+}
+
+public final class io/spherelabs/meteor/dsl/MiddlewareDslBuilder {
+	public final fun build ()Lio/spherelabs/meteor/middleware/Middleware;
+	public final fun getProcess ()Lkotlin/jvm/functions/Function3;
+	public final fun on (Lkotlin/jvm/functions/Function3;)V
+	public final fun setProcess (Lkotlin/jvm/functions/Function3;)V
+}
+
+public final class io/spherelabs/meteor/dsl/ReducerBuilder {
+	public final fun build ()Lio/spherelabs/meteor/reducer/Reducer;
+	public final fun getReducers ()Ljava/util/Map;
+	public final fun transition (Lkotlin/jvm/functions/Function0;)Lio/spherelabs/meteor/configs/Change;
+}
+
+public final class io/spherelabs/meteor/exception/NotInitializedException : java/lang/RuntimeException {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+
+public abstract interface class io/spherelabs/meteor/middleware/Middleware {
+	public abstract fun process (Ljava/lang/Object;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class io/spherelabs/meteor/reducer/Reducer {
+	public abstract fun reduce (Ljava/lang/Object;Ljava/lang/Object;)Lio/spherelabs/meteor/configs/Change;
+}
+
+public final class io/spherelabs/meteor/reducer/ReducerKt {
+	public static final fun effect (Lio/spherelabs/meteor/reducer/Reducer;Lkotlin/jvm/functions/Function0;)Lio/spherelabs/meteor/configs/Change;
+	public static final fun expect (Lio/spherelabs/meteor/reducer/Reducer;Lkotlin/jvm/functions/Function0;)Lio/spherelabs/meteor/configs/Change;
+	public static final fun route (Lio/spherelabs/meteor/reducer/Reducer;Lkotlin/jvm/functions/Function0;)Lio/spherelabs/meteor/configs/Change;
+	public static final fun unexpected (Lio/spherelabs/meteor/reducer/Reducer;)Lio/spherelabs/meteor/configs/Change;
+}
+
+public final class io/spherelabs/meteor/store/MeteorStore : io/spherelabs/meteor/store/Store {
+	public fun <init> (Lio/spherelabs/meteor/configs/MeteorConfigs;Lkotlinx/coroutines/CoroutineScope;)V
+	public fun cancel ()V
+	public fun getCurrentState ()Ljava/lang/Object;
+	public fun getEffect ()Lkotlinx/coroutines/flow/Flow;
+	public fun getState ()Lkotlinx/coroutines/flow/StateFlow;
+	public fun setCurrentState (Ljava/lang/Object;)V
+	public fun wish (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class io/spherelabs/meteor/store/MeteorStoreKt {
+	public static final fun createMeteor (Lio/spherelabs/meteor/configs/MeteorConfigs;Lkotlinx/coroutines/CoroutineScope;)Lio/spherelabs/meteor/store/Store;
+	public static final fun createMeteor (Lkotlinx/coroutines/CoroutineScope;Lio/spherelabs/meteor/configs/MeteorConfigs;)Lio/spherelabs/meteor/store/Store;
+}
+
+public abstract interface class io/spherelabs/meteor/store/Store {
+	public abstract fun cancel ()V
+	public abstract fun getCurrentState ()Ljava/lang/Object;
+	public abstract fun getEffect ()Lkotlinx/coroutines/flow/Flow;
+	public abstract fun getState ()Lkotlinx/coroutines/flow/StateFlow;
+	public abstract fun wish (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract class io/spherelabs/meteor/viewmodel/CommonViewModel : io/spherelabs/meteorviewmodel/viewmodel/ViewModel {
+	public fun <init> ()V
+	public fun <init> (Ljava/util/List;)V
+	public abstract fun getStore ()Lio/spherelabs/meteor/store/Store;
+	protected fun onCleared ()V
+	public final fun wish (Ljava/lang/Object;)V
+}
+
+public final class io/spherelabs/meteor/viewmodel/CommonViewModelExtensionKt {
+	public static final fun createMeteor (Lio/spherelabs/meteor/viewmodel/CommonViewModel;Lio/spherelabs/meteor/configs/MeteorConfigs;)Lio/spherelabs/meteor/store/Store;
+}
+
+public final class io/spherelabs/meteor/viewmodel/ViewModelScopeKt {
+	public static final fun getCreateViewModelScope ()Lkotlin/jvm/functions/Function0;
+	public static final fun setCreateViewModelScope (Lkotlin/jvm/functions/Function0;)V
+}
+
