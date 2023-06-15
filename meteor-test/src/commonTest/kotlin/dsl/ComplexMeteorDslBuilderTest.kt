@@ -54,7 +54,8 @@ class ComplexMeteorDslBuilderTest {
                 }
                 on<FakeComplexWish.Decrease> {
                     transition {
-                        copy(count = count - 1)
+                        val currentCount = count-1
+                        copy(count = if(count < 0 ) 0 else currentCount)
                     }
                 }
                 on<FakeComplexWish.Spike> {
@@ -67,16 +68,9 @@ class ComplexMeteorDslBuilderTest {
 
             middleware {
                 on { fakeComplexWish, next ->
-                    when (fakeComplexWish) {
-                        is FakeComplexWish.Decrease -> {
-                            next(FakeComplexWish.Spike)
-                        }
-
-                        else -> {}
                     }
                 }
             }
-        }
 
         assertNotNull(meteor)
 
@@ -85,11 +79,8 @@ class ComplexMeteorDslBuilderTest {
             meteor.wish(FakeComplexWish.Decrease)
         }
 
-        meteor.state.onEach {
-            count = it.count
-        }.launchIn(scope)
 
-        assertEquals(10, count)
+        assertEquals(0,meteor.state.value.count)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)

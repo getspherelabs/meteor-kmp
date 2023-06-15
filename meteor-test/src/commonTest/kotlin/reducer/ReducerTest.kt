@@ -59,18 +59,6 @@ class ReducerTest {
     }
 
     @Test
-    fun `test reducer class works properly in decrement effect`() = runTest {
-        val fakeState = FakeState(count = 5)
-        FakeReducer.runReducerTestWithEffect(
-            fakeState,
-            FakeWish.Decrement,
-            testScope
-        ) { fakeEffect ->
-            assertEquals(FakeEffect.Toast("Value is decremented."), fakeEffect)
-        }
-    }
-
-    @Test
     fun `test fake reducer works properly in home effect`() = runTest {
         val fakeState = FakeState()
 

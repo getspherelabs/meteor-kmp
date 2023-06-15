@@ -25,8 +25,8 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(project(":meteor-viewmodel"))
-                implementation(Libs.Coroutine.core)
+                api(project(":meteor-viewmodel"))
+                api(Libs.Coroutine.core)
             }
         }
         val commonTest by getting {
