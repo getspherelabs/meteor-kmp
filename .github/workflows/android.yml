@@ -28,9 +28,9 @@ jobs:
         with:
           key-prefix: gradle-lint
       - name: Spotless
-        run: ./gradlew :meteor:core:spotlessCheck --scan :meteor:viewmodel:spotlessCheck --scan
+        run: ./gradlew :meteor-core:spotlessCheck --scan :meteor-viewmodel:spotlessCheck --scan
       - name: Ktlint
-        run: ./gradlew :meteor:core:ktlintCheck --scan :meteor:viewmodel:ktlintCheck --scan
+        run: ./gradlew :meteor-core:ktlintCheck --scan :meteor-viewmodel:ktlintCheck --scan
   build:
     name: Build
     runs-on: ubuntu-22.04
@@ -46,7 +46,7 @@ jobs:
         with:
           key-prefix: gradle-build
       - name: Build
-        run: ../gradlew :meteor:core:build :meteor:viewmodel:build
+        run: ../gradlew :meteor-core:build :meteor-viewmodel:build
   test:
     name: Unit tests
     runs-on: ubuntu-22.04
