@@ -28,7 +28,6 @@ public abstract class CommonFlow<out T>(private val flow: Flow<T>) : Flow<T> by 
     }
 }
 
-
 /**
  * Binds the flow to the given coroutine scope and
  * invokes the provided callbacks for non-null values, failures, and completion.

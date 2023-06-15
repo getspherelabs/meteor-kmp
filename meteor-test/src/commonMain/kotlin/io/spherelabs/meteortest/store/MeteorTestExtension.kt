@@ -23,4 +23,3 @@ fun <State : Any, Wish : Any, Effect : Any> CoroutineScope.createTestStore(
         testScope = this
     )
 }
-

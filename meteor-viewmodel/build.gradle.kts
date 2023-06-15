@@ -11,11 +11,11 @@ kotlin {
             }
         }
     }
-    
+
     listOf(
         iosX64(),
         iosArm64(),
-        iosSimulatorArm64()
+        iosSimulatorArm64(),
     ).forEach {
         it.binaries.framework {
             baseName = "meteor-viewmodel"
@@ -57,7 +57,6 @@ kotlin {
             iosSimulatorArm64Main.dependsOn(this)
 
             dependencies {
-
             }
         }
         val iosX64Test by getting

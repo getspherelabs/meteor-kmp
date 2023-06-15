@@ -22,5 +22,4 @@ class FakeViewModel : CommonViewModel<FakeCountState, FakeCountWish, FakeCountEf
 
     val effect: NonNullCommonFlow<FakeCountEffect> = store.effect.asCommonFlow()
     val state: NonNullCommonStateFlow<FakeCountState> = store.state.asCommonStateFlow()
-
 }

@@ -9,4 +9,3 @@ class ConfigDslBuilder<State : Any> internal constructor() {
     var initialState: State? = null
     var name: String? = null
 }
-

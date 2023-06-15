@@ -14,7 +14,6 @@ class MiddlewareDslBuilder<Wish : Any> internal constructor() {
         process = actionBlock
     }
 
-
     fun build(): Middleware<Wish> = object : Middleware<Wish> {
         override suspend fun process(wish: Wish, next: suspend (Wish) -> Unit) {
             this@MiddlewareDslBuilder.process?.invoke(wish, next)
@@ -22,6 +21,4 @@ class MiddlewareDslBuilder<Wish : Any> internal constructor() {
     }
 }
 
-
 typealias MiddlewareContext<Wish> = suspend (Wish, suspend (Wish) -> Unit) -> Unit
-

@@ -7,7 +7,6 @@ import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-
 class NonNullCommonStateFlowTest {
     @Test
     fun `should invoke values callback with non-null value`() = runTest {
@@ -22,6 +21,4 @@ class NonNullCommonStateFlowTest {
             assertEquals(2, awaitItem())
         }
     }
-
-
 }

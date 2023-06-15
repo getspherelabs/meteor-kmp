@@ -12,10 +12,10 @@ import kotlin.native.ObjCName
  */
 
 @OptIn(ExperimentalObjCName::class)
-class NullableCommonStateFlow<T>  constructor(
+class NullableCommonStateFlow<T> constructor(
     @ObjCName("_")
     private val flow: StateFlow<T>
-): NullableCommonFlow<T>(flow), StateFlow<T> by flow{
+) : NullableCommonFlow<T>(flow), StateFlow<T> by flow {
 
     override suspend fun collect(collector: FlowCollector<T>): Nothing = flow.collect(collector)
 }

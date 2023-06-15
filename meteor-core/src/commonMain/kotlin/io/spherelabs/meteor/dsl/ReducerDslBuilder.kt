@@ -19,21 +19,20 @@ class ReducerBuilder<State : Any, Wish : Any, Effect : Any> internal constructor
     }
 
     fun <State : Any> transition(
-        action: () -> State,
+        action: () -> State
     ): Change<State, Effect> {
         return Change(state = action())
     }
 
     fun build(): Reducer<State, Wish, Effect> {
-        return Reducer { state, wish ->
-            reducers[wish::class]?.let {
-                it(state, wish)
-            } ?: throw IllegalArgumentException("No reducer found for wish: $wish")
+        return object : Reducer<State, Wish, Effect> {
+            override fun reduce(state: State, wish: Wish): Change<State, Effect> {
+                return reducers[wish::class]?.let {
+                    it(state, wish)
+                } ?: throw IllegalArgumentException("No reducer found for wish: $wish")
+            }
         }
     }
-
 }
 
-
-typealias ToReducerContext <State, Wish, Effect> = (State, Wish) -> Change<State, Effect>
-
+typealias ToReducerContext<State, Wish, Effect> = (State, Wish) -> Change<State, Effect>

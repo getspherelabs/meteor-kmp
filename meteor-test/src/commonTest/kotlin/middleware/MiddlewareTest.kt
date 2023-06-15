@@ -7,7 +7,5 @@ class MiddlewareTest {
 
     @Test
     fun `check the middleware works correctly`() = runTest {
-
-
     }
 }

@@ -37,7 +37,6 @@ class MeteorDslBuilderTest {
     fun `check meteor dsl builder works correctly`() = runTest(
         timeout = 60.seconds
     ) {
-
         var fakeEffect: FakeEffect? = null
 
         val meteor = meteor<FakeState, FakeWish, FakeEffect> {
@@ -65,7 +64,6 @@ class MeteorDslBuilderTest {
             middleware {
                 on { fakeWish, suspendFunction1 -> }
             }
-
         }
 
         assertNotNull(meteor)
@@ -76,10 +74,8 @@ class MeteorDslBuilderTest {
             meteor.wish(FakeWish.Decrement)
             meteor.wish(FakeWish.Decrement)
 
-
             meteor.effect.onEach {
                 fakeEffect = it
-
             }.launchIn(testScope)
         }
 

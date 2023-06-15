@@ -40,7 +40,7 @@ class ReducerTest {
         FakeReducer.runReducerTestWithState(
             fakeState,
             FakeWish.Increment,
-            testScope,
+            testScope
         ) { state ->
             assertEquals(1, state.count)
         }

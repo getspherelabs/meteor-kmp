@@ -4,7 +4,6 @@ import io.spherelabs.meteor.exception.NotInitializedException
 import io.spherelabs.meteor.reducer.Reducer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.channels.toList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -39,7 +38,6 @@ fun <State : Any, Wish : Any, Effect : Any> Reducer<State, Wish, Effect>.runRedu
 
     action(state.value, checkNotNull(newEffect))
 }
-
 
 fun <State : Any, Wish : Any, Effect : Any> Reducer<State, Wish, Effect>.runReducerTestWithState(
     initialState: State,
@@ -78,12 +76,12 @@ fun <State : Any, Wish : Any, Effect : Any> Reducer<State, Wish, Effect>.runRedu
     val (newEffect, newState) = reduce(initialState, wish)
 
     scope.launch {
-
-        internalEffect.send(checkNotNull(newEffect) {
-            throw NotInitializedException("Effect is not initialized.")
-        })
+        internalEffect.send(
+            checkNotNull(newEffect) {
+                throw NotInitializedException("Effect is not initialized.")
+            }
+        )
     }
-
 
     scope.launch {
         effect.collect {
@@ -91,7 +89,9 @@ fun <State : Any, Wish : Any, Effect : Any> Reducer<State, Wish, Effect>.runRedu
         }
     }
 
-    action(checkNotNull(updatedEffect) {
-        throw NotInitializedException("Effect is not initialized.")
-    })
+    action(
+        checkNotNull(updatedEffect) {
+            throw NotInitializedException("Effect is not initialized.")
+        }
+    )
 }

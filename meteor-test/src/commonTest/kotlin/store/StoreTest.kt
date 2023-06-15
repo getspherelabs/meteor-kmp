@@ -51,7 +51,7 @@ class StoreTest {
 
         var count = 0
 
-        assertEquals(1,store.currentState.count)
+        assertEquals(1, store.currentState.count)
     }
 
     @Test
@@ -73,5 +73,4 @@ class StoreTest {
         Dispatchers.resetMain()
         mainScope.cancel()
     }
-
 }

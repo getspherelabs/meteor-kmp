@@ -34,7 +34,6 @@ class CommonViewModelWithDslTest {
                 FakeCountState(1),
                 awaitItem()
             )
-
         }
     }
 
