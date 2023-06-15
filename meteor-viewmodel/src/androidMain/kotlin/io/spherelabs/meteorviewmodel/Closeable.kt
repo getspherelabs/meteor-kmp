@@ -1,3 +1,3 @@
-package io.spherelabs.meteorviewmodel.core
+package io.spherelabs.meteorviewmodel
 
 actual typealias Closeable = java.io.Closeable

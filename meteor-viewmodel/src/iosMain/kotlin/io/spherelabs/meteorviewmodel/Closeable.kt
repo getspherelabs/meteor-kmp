@@ -1,4 +1,4 @@
-package io.spherelabs.meteorviewmodel.core
+package io.spherelabs.meteorviewmodel
 
 public actual fun interface Closeable {
     public actual fun close()

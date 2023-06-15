@@ -1,4 +1,4 @@
-package io.spherelabs.meteorviewmodel.flow
+package io.spherelabs.meteorviewmodel.commonflow
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -7,28 +7,41 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 
+/**
+ * [CommonFlow] provides common functionality for binding and observing a Flow of values. It implements the [Flow] interface
+ * and delegates the actual flow.
+ */
 public abstract class CommonFlow<out T>(private val flow: Flow<T>) : Flow<T> by flow {
 
-    public open fun watchFlow(
+    /**
+     * Binds the flow to the given coroutine scope and
+     * invokes the provided callbacks for non-null values, failures, and completion.
+     * @return A CommonJob representing the binding of the flow to the given scope.
+     */
+    public open fun bind(
         scope: CoroutineScope,
         values: (T) -> Unit,
         failure: ((failure: Throwable) -> Unit)? = null,
         completion: (() -> Unit)? = null
-    ): Cancelable {
-        return flow.watch(scope, values, failure, completion)
+    ): CommonJob {
+        return flow.bind(scope, values, failure, completion)
     }
 }
 
 
-internal fun <T> Flow<T>.watch(
+/**
+ * Binds the flow to the given coroutine scope and
+ * invokes the provided callbacks for non-null values, failures, and completion.
+ * @return A CommonJob representing the binding of the flow to the given scope.
+ */
+internal fun <T> Flow<T>.bind(
     scope: CoroutineScope,
     values: (T) -> Unit,
     failure: ((failure: Throwable) -> Unit)?,
     completion: (() -> Unit)?
-): Cancelable {
+): CommonJob {
     val currentJob = this.onEach(values)
         .run {
-            println("Values are $values")
             if (completion !== null) {
                 onCompletion { failure ->
                     if (failure === null) completion() else throw failure
@@ -46,5 +59,5 @@ internal fun <T> Flow<T>.watch(
         }
         .launchIn(scope)
 
-    return DefaultCancelable(currentJob)
+    return CoroutineCommonJob(currentJob)
 }

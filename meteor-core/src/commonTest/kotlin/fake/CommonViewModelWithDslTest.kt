@@ -3,9 +3,6 @@ package fake
 import app.cash.turbine.test
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.test.TestDispatcher
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
@@ -14,42 +11,31 @@ import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.time.Duration.Companion.seconds
 
-class CommonViewModelTest {
-
-    private lateinit var viewModel: FakeViewModel
+class CommonViewModelWithDslTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    private val mainDispatcher: TestDispatcher = UnconfinedTestDispatcher()
+    private val dispatcher = UnconfinedTestDispatcher()
+    private lateinit var viewModel: CountDslViewModel
+
     @OptIn(ExperimentalCoroutinesApi::class)
     @BeforeTest
     fun setup() {
-        Dispatchers.setMain(mainDispatcher)
-        viewModel = FakeViewModel()
+        Dispatchers.setMain(dispatcher)
+        viewModel = CountDslViewModel()
     }
 
     @Test
-    fun `test view model works properly`() = runTest(
-        timeout = 60.seconds
-    ) {
-        viewModel.wish(FakeCountWish.Increase)
+    fun `check the count dsl view model works properly`() = runTest {
         viewModel.wish(FakeCountWish.Increase)
 
         viewModel.state.test {
             assertEquals(
-                FakeCountState(2),
+                FakeCountState(1),
                 awaitItem()
             )
+
         }
-    }
-
-    @Test
-    fun `check the increase and decrease actions works properly`() = runTest {
-        viewModel.wish(FakeCountWish.Increase)
-        viewModel.wish(FakeCountWish.Increase)
-
-       assertEquals(2, viewModel.state.value.count)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -58,5 +44,3 @@ class CommonViewModelTest {
         Dispatchers.resetMain()
     }
 }
-
-

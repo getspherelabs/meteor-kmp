@@ -1,11 +1,8 @@
 package io.spherelabs.meteor.viewmodel
 
 import io.spherelabs.meteor.store.Store
-import io.spherelabs.meteorviewmodel.core.Closeable
-import io.spherelabs.meteorviewmodel.core.ViewModel
-import io.spherelabs.meteorviewmodel.flow.NonNullCommonFlow
-import io.spherelabs.meteorviewmodel.flow.NotNullCommonStateFlow
-import io.spherelabs.meteorviewmodel.flow.asCommonFlow
+import io.spherelabs.meteorviewmodel.Closeable
+import io.spherelabs.meteorviewmodel.viewmodel.ViewModel
 
 import kotlinx.coroutines.launch
 
@@ -15,21 +12,17 @@ abstract class CommonViewModel<State : Any, Wish : Any, Effect : Any> : ViewMode
 
     constructor(closeables: List<Closeable>) : super(*closeables.toTypedArray())
 
-    abstract val host: Store<State, Wish, Effect>
-
-    val effect: NonNullCommonFlow<Effect> = host.effect.asCommonFlow()
-
-    val state: NotNullCommonStateFlow<State> = host.state.asCommonFlow()
+    abstract val store: Store<State, Wish, Effect>
 
     fun wish(wish: Wish) {
         viewModelScope.launch {
-            host.wish(wish)
+            store.wish(wish)
         }
     }
 
     override fun onCleared() {
         super.onCleared()
-        host.cancel()
+        store.cancel()
     }
 }
 

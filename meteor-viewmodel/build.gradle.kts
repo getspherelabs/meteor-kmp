@@ -32,6 +32,7 @@ kotlin {
             dependencies {
                 implementation(kotlin("test"))
                 implementation(Libs.Coroutine.test)
+                implementation(Libs.Coroutine.turbine)
             }
         }
         val androidMain by getting {
