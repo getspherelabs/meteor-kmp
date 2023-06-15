@@ -3,13 +3,14 @@ package fake
 import io.spherelabs.meteor.dsl.meteor
 import io.spherelabs.meteor.store.Store
 import io.spherelabs.meteor.viewmodel.CommonViewModel
-import io.spherelabs.meteorviewmodel.flow.NonNullCommonFlow
-import io.spherelabs.meteorviewmodel.flow.NotNullCommonStateFlow
-import io.spherelabs.meteorviewmodel.flow.asCommonFlow
+import io.spherelabs.meteorviewmodel.commonflow.NonNullCommonFlow
+import io.spherelabs.meteorviewmodel.commonflow.NonNullCommonStateFlow
+import io.spherelabs.meteorviewmodel.commonflow.asCommonFlow
+import io.spherelabs.meteorviewmodel.commonflow.asCommonStateFlow
 
 class CountDslViewModel : CommonViewModel<FakeCountState, FakeCountWish, FakeCountEffect>() {
 
-    override val host: Store<FakeCountState, FakeCountWish, FakeCountEffect> = meteor {
+    override val store: Store<FakeCountState, FakeCountWish, FakeCountEffect> = meteor {
         config {
             initialState = FakeCountState()
         }
@@ -32,10 +33,10 @@ class CountDslViewModel : CommonViewModel<FakeCountState, FakeCountWish, FakeCou
         }
 
         middleware {
-            on { fakeWish, suspendFunction1 -> }
+            on { _, _-> }
         }
     }
 
-    val effect: NonNullCommonFlow<FakeCountEffect> = host.effect.asCommonFlow()
-    val state: NotNullCommonStateFlow<FakeCountState> = host.state.asCommonFlow()
+    val effect: NonNullCommonFlow<FakeCountEffect> = store.effect.asCommonFlow()
+    val state: NonNullCommonStateFlow<FakeCountState> = store.state.asCommonStateFlow()
 }
