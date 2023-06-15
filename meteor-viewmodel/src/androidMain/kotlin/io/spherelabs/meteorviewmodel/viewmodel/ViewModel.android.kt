@@ -1,5 +1,6 @@
-package io.spherelabs.meteorviewmodel.core
+package io.spherelabs.meteorviewmodel.viewmodel
 
+import io.spherelabs.meteorviewmodel.Closeable
 import kotlinx.coroutines.CoroutineScope
 import androidx.lifecycle.viewModelScope as vmScope
 
