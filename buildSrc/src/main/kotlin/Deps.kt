@@ -14,6 +14,7 @@ object Libs {
         const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Version.coroutineTest}"
         const val testJvm = "org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm:${Version.coroutineTest}"
         const val turbine = "app.cash.turbine:turbine:0.12.3"
+        const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"
     }
 
     object Android {

@@ -10,7 +10,8 @@ import kotlin.native.ObjCName
  * It extends the [CommonFlow] and provides additional safety by filtering out null values.
  * [ObjCName] instructs the Kotlin compiler to use a custom Objective-C and/or Swift name.
  */
-open class NonNullCommonFlow<out T : Any> @OptIn(ExperimentalObjCName::class) constructor(
+@OptIn(ExperimentalObjCName::class)
+open class NonNullCommonFlow<out T : Any> constructor(
     @ObjCName("_")
     flow: Flow<T>
 ) : CommonFlow<T>(flow) {
@@ -28,7 +29,6 @@ open class NonNullCommonFlow<out T : Any> @OptIn(ExperimentalObjCName::class) co
     ): CommonJob {
         return super.bind(scope, values, failure, completion)
     }
-
 }
 
 /**

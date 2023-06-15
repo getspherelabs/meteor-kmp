@@ -11,11 +11,11 @@ kotlin {
             }
         }
     }
-    
+
     listOf(
         iosX64(),
         iosArm64(),
-        iosSimulatorArm64()
+        iosSimulatorArm64(),
     ).forEach {
         it.binaries.framework {
             baseName = "counter-kmm"
@@ -25,8 +25,8 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(project(":meteor-core"))
-                implementation(Libs.Android.viewModel)
+                api(project(":meteor-core"))
+                api(project(":meteor-viewmodel"))
             }
         }
         val commonTest by getting {
@@ -34,7 +34,12 @@ kotlin {
                 implementation(kotlin("test"))
             }
         }
-        val androidMain by getting
+        val androidMain by getting {
+            dependencies {
+                api(project(":meteor-core"))
+                api(project(":meteor-viewmodel"))
+            }
+        }
         val androidUnitTest by getting
         val iosX64Main by getting
         val iosArm64Main by getting

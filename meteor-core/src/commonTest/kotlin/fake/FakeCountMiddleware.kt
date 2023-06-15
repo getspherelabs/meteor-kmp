@@ -13,7 +13,6 @@ object FakeCountMiddleware : Middleware<FakeCountWish> {
             }
 
             else -> {
-
             }
         }
     }

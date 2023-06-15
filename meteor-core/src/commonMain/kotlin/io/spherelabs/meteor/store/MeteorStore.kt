@@ -1,7 +1,7 @@
 package io.spherelabs.meteor.store
 
-import io.spherelabs.meteor.configs.MeteorConfigs
 import io.spherelabs.meteor.configs.Change
+import io.spherelabs.meteor.configs.MeteorConfigs
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.Channel
@@ -15,8 +15,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
-
-class MeteorStore<State : Any, Wish : Any, Effect : Any>(
+class MeteorStore<State : Any, Wish : Any, Effect : Any> constructor(
     private val configs: MeteorConfigs<State, Wish, Effect>,
     private val mainScope: CoroutineScope
 ) : Store<State, Wish, Effect> {
@@ -34,7 +33,6 @@ class MeteorStore<State : Any, Wish : Any, Effect : Any>(
     override suspend fun wish(wish: Wish) {
         mainScope.launch {
             lock.withLock {
-
                 val oldState = _state.value
 
                 val newState = applyReducer(oldState, wish)
@@ -57,14 +55,13 @@ class MeteorStore<State : Any, Wish : Any, Effect : Any>(
                         wish = wish,
                         next = { newWish ->
                             wish(newWish)
-                        })
-
+                        }
+                    )
                 }
             }
 
             println("Updated state is ${state.value}")
         }
-
     }
 
     private fun applyReducer(state: State, wish: Wish): Change<State, Effect> {
@@ -87,9 +84,9 @@ fun <State : Any, Wish : Any, Effect : Any> createMeteor(
 }
 
 fun <State : Any, Wish : Any, Effect : Any> CoroutineScope.createMeteor(
-    configs: MeteorConfigs<State, Wish, Effect>,
+    configs: MeteorConfigs<State, Wish, Effect>
 ): Store<State, Wish, Effect> {
-    val store =  MeteorStore(
+    val store = MeteorStore(
         configs = configs,
         mainScope = this
     )
@@ -99,7 +96,4 @@ fun <State : Any, Wish : Any, Effect : Any> CoroutineScope.createMeteor(
     }
 
     return store
-
 }
-
-

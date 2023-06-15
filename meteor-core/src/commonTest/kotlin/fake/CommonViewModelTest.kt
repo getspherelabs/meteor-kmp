@@ -3,8 +3,6 @@ package fake
 import app.cash.turbine.test
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.test.TestDispatcher
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
@@ -22,6 +20,7 @@ class CommonViewModelTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private val mainDispatcher: TestDispatcher = UnconfinedTestDispatcher()
+
     @OptIn(ExperimentalCoroutinesApi::class)
     @BeforeTest
     fun setup() {
@@ -49,7 +48,7 @@ class CommonViewModelTest {
         viewModel.wish(FakeCountWish.Increase)
         viewModel.wish(FakeCountWish.Increase)
 
-       assertEquals(2, viewModel.state.value.count)
+        assertEquals(2, viewModel.state.value.count)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -58,5 +57,3 @@ class CommonViewModelTest {
         Dispatchers.resetMain()
     }
 }
-
-

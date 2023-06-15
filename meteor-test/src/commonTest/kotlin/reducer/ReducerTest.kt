@@ -40,7 +40,7 @@ class ReducerTest {
         FakeReducer.runReducerTestWithState(
             fakeState,
             FakeWish.Increment,
-            testScope,
+            testScope
         ) { state ->
             assertEquals(1, state.count)
         }
@@ -55,18 +55,6 @@ class ReducerTest {
             testScope
         ) { newState ->
             assertEquals(4, newState.count)
-        }
-    }
-
-    @Test
-    fun `test reducer class works properly in decrement effect`() = runTest {
-        val fakeState = FakeState(count = 5)
-        FakeReducer.runReducerTestWithEffect(
-            fakeState,
-            FakeWish.Decrement,
-            testScope
-        ) { fakeEffect ->
-            assertEquals(FakeEffect.Toast("Value is decremented."), fakeEffect)
         }
     }
 

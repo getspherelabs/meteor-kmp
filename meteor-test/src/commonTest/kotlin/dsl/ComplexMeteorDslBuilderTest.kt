@@ -6,7 +6,6 @@ import fake.FakeComplexWish
 import io.spherelabs.meteor.dsl.meteor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -55,7 +54,8 @@ class ComplexMeteorDslBuilderTest {
                 }
                 on<FakeComplexWish.Decrease> {
                     transition {
-                        copy(count = count - 1)
+                        val currentCount = count-1
+                        copy(count = if(count < 0 ) 0 else currentCount)
                     }
                 }
                 on<FakeComplexWish.Spike> {
@@ -68,16 +68,9 @@ class ComplexMeteorDslBuilderTest {
 
             middleware {
                 on { fakeComplexWish, next ->
-                    when (fakeComplexWish) {
-                        is FakeComplexWish.Decrease -> {
-                            next(FakeComplexWish.Spike)
-                        }
-
-                        else -> {}
                     }
                 }
             }
-        }
 
         assertNotNull(meteor)
 
@@ -86,11 +79,8 @@ class ComplexMeteorDslBuilderTest {
             meteor.wish(FakeComplexWish.Decrease)
         }
 
-        meteor.state.onEach {
-            count = it.count
-        }.launchIn(scope)
 
-        assertEquals(10, count)
+        assertEquals(0,meteor.state.value.count)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)

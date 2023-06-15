@@ -3,7 +3,6 @@ package io.spherelabs.meteor.viewmodel
 import io.spherelabs.meteor.store.Store
 import io.spherelabs.meteorviewmodel.Closeable
 import io.spherelabs.meteorviewmodel.viewmodel.ViewModel
-
 import kotlinx.coroutines.launch
 
 abstract class CommonViewModel<State : Any, Wish : Any, Effect : Any> : ViewModel {
@@ -25,4 +24,3 @@ abstract class CommonViewModel<State : Any, Wish : Any, Effect : Any> : ViewMode
         store.cancel()
     }
 }
-

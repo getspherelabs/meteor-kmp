@@ -9,7 +9,8 @@ import kotlin.native.ObjCName
  *
  * [ObjCName] instructs the Kotlin compiler to use a custom Objective-C and/or Swift name.
  */
-public open class NullableCommonFlow<out T : Any?> @OptIn(ExperimentalObjCName::class) constructor(
+public open class NullableCommonFlow<out T : Any?> constructor(
+    @OptIn(ExperimentalObjCName::class)
     @ObjCName("_")
     flow: Flow<T>
 ) : CommonFlow<T>(flow)

@@ -10,7 +10,9 @@ import kotlin.native.ObjCName
  * It guarantees non-nul values emitted by the underlying StateFlow.
  * [ObjCName] instructs the Kotlin compiler to use a custom Objective-C and/or Swift name/
  */
-class NonNullCommonStateFlow<out T : Any> @OptIn(ExperimentalObjCName::class) constructor(
+class NonNullCommonStateFlow<out T : Any>
+@OptIn(ExperimentalObjCName::class)
+constructor(
     @ObjCName("_")
     private val flow: StateFlow<T>
 ) : NonNullCommonFlow<T>(flow), StateFlow<T> by flow {

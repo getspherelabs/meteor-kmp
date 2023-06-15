@@ -19,7 +19,7 @@ public actual abstract class ViewModel : Any {
 
     protected actual open fun onCleared(): Unit = Unit
 
-    public actual fun addCloseable(closeables: Closeable): Unit {
+    public actual fun addCloseable(closeables: Closeable) {
         this.closeables += closeables
     }
 }

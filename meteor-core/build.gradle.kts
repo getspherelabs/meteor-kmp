@@ -15,7 +15,7 @@ kotlin {
     listOf(
         iosX64(),
         iosArm64(),
-        iosSimulatorArm64()
+        iosSimulatorArm64(),
     ).forEach {
         it.binaries.framework {
             baseName = "meteor-core"
@@ -25,8 +25,8 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(project(":meteor-viewmodel"))
-                implementation(Libs.Coroutine.core)
+                api(project(":meteor-viewmodel"))
+                api(Libs.Coroutine.core)
             }
         }
         val commonTest by getting {

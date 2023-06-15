@@ -10,10 +10,9 @@ import kotlin.test.assertSame
 
 class ExtensionTest {
 
-
     @Test
     fun testWrapper() = runTest {
-        flowOf(1,2,3).asCommonFlow().let {
+        flowOf(1, 2, 3).asCommonFlow().let {
             assertSame(it, it.asCommonFlow())
         }
         MutableStateFlow(1).asCommonStateFlow().let {
