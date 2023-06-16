@@ -2,6 +2,7 @@ plugins {
     kotlin("multiplatform")
     id("com.android.library")
     id("org.jetbrains.kotlinx.binary-compatibility-validator") version "0.13.2"
+    id("com.vanniktech.maven.publish") version "0.25.2"
 }
 
 kotlin {
@@ -86,4 +87,9 @@ android {
         sourceCompatibility = JavaVersion.toVersion(1.8)
         targetCompatibility = JavaVersion.toVersion(1.8)
     }
+}
+
+mavenPublishing {
+    publishToMavenCentral(com.vanniktech.maven.publish.SonatypeHost.S01, automaticRelease = true)
+    signAllPublications()
 }
