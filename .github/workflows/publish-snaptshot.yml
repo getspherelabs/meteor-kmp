@@ -2,7 +2,7 @@ name: Publish Snapshot builds
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "main" ]
 
 jobs:
   publish:
