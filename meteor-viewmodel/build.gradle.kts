@@ -73,9 +73,17 @@ kotlin {
 }
 
 android {
+    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
+
     namespace = "io.spherelabs.meteorviewmodel"
     compileSdk = 33
     defaultConfig {
         minSdk = 24
+    }
+
+    // still needed for Android projects despite toolchain
+    compileOptions {
+        sourceCompatibility = JavaVersion.toVersion(11)
+        targetCompatibility = JavaVersion.toVersion(11)
     }
 }
