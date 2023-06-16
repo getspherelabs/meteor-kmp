@@ -83,7 +83,7 @@ android {
 
     // still needed for Android projects despite toolchain
     compileOptions {
-        sourceCompatibility = JavaVersion.toVersion(11)
-        targetCompatibility = JavaVersion.toVersion(11)
+        sourceCompatibility = JavaVersion.toVersion(1.8)
+        targetCompatibility = JavaVersion.toVersion(1.8)
     }
 }
