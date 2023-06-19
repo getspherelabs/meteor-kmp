@@ -7,6 +7,7 @@ plugins {
 }
 
 kotlin {
+    explicitApi()
     android {
         compilations.all {
             kotlinOptions {
