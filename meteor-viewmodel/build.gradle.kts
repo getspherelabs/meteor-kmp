@@ -5,7 +5,6 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlinx.binary-compatibility-validator") version "0.13.2"
     id("com.vanniktech.maven.publish") version "0.25.2"
-    id("org.jetbrains.dokka") version Version.dokka
 }
 
 kotlin {
@@ -56,14 +55,34 @@ kotlin {
                 implementation(Libs.Coroutine.test)
             }
         }
-        val iosX64Main by getting
-        val iosArm64Main by getting
-        val iosSimulatorArm64Main by getting
-        val iosMain by creating {}
-        val iosX64Test by getting
-        val iosArm64Test by getting
-        val iosSimulatorArm64Test by getting
-        val iosTest by creating {}
+        val iosX64Main by getting {
+            dependsOn(commonMain)
+        }
+        val iosArm64Main by getting {
+            dependsOn(commonMain)
+        }
+        val iosSimulatorArm64Main by getting {
+            dependsOn(commonMain)
+        }
+        val iosMain by creating {
+            dependsOn(commonMain)
+
+            dependencies {}
+        }
+        val iosX64Test by getting {
+            dependsOn(commonTest)
+        }
+        val iosArm64Test by getting {
+            dependsOn(commonTest)
+        }
+        val iosSimulatorArm64Test by getting {
+            dependsOn(commonTest)
+        }
+        val iosTest by creating {
+            dependsOn(commonTest)
+
+            dependencies {}
+        }
     }
 }
 

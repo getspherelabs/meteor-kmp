@@ -3,7 +3,7 @@ object Version {
     const val viewModel = "2.2.0"
     const val ktlint = "10.3.0"
     const val coroutineTest = "1.7.1"
-    const val dokka = "1.8.10"
+    const val dokka = "1.8.20"
     const val lifecycle = "2.6.0"
     const val stately = "2.0.0"
 }
