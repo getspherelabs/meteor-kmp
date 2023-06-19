@@ -25,6 +25,10 @@ object Libs {
         const val stately = "co.touchlab:stately-concurrency:${Version.stately}"
     }
 
+    object Hilt {
+
+    }
+
 }
 
 object Projects {

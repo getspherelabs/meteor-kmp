@@ -18,6 +18,7 @@ plugins {
     id("org.jetbrains.kotlin.android") version "1.7.0" apply false
     id("com.diffplug.spotless") version "6.17.0"
     id("com.vanniktech.maven.publish") version "0.25.2"
+    id("com.google.dagger.hilt.android") version "2.44" apply false
 }
 
 subprojects {
