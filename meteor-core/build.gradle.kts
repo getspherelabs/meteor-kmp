@@ -16,6 +16,7 @@ kotlin {
                 jvmTarget = "1.8"
             }
         }
+        publishAllLibraryVariants()
     }
 
     listOf(
@@ -43,11 +44,13 @@ kotlin {
             }
         }
         val androidMain by getting {
+            dependsOn(commonMain)
             dependencies {
                 implementation(Libs.Android.viewModel)
             }
         }
         val androidUnitTest by getting {
+            dependsOn(commonTest)
             dependencies {
                 implementation(Libs.Coroutine.testJvm)
             }
@@ -67,9 +70,11 @@ android {
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     namespace = "io.spherelabs.meteor"
     compileSdk = 33
+
     defaultConfig {
         minSdk = 24
     }
+
     // still needed for Android projects despite toolchain
     compileOptions {
         sourceCompatibility = JavaVersion.toVersion(1.8)

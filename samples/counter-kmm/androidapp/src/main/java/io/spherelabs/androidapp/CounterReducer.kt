@@ -1,9 +1,13 @@
-package io.spherelabs.counterkmm
+package io.spherelabs.androidapp
 
+import io.spherelabs.counterkmm.CounterEffect
+import io.spherelabs.counterkmm.CounterState
+import io.spherelabs.counterkmm.CounterWish
 import io.spherelabs.meteor.configs.Change
 import io.spherelabs.meteor.reducer.Reducer
 import io.spherelabs.meteor.reducer.effect
 import io.spherelabs.meteor.reducer.expect
+import io.spherelabs.meteor.reducer.unexpected
 
 object CounterReducer : Reducer<CounterState, CounterWish, CounterEffect> {
 
@@ -24,6 +28,9 @@ object CounterReducer : Reducer<CounterState, CounterWish, CounterEffect> {
                 effect {
                     CounterEffect.Failure("The value is removed.")
                 }
+            }
+            else -> {
+                unexpected()
             }
         }
     }

@@ -16,6 +16,7 @@ kotlin {
                 jvmTarget = "1.8"
             }
         }
+        publishAllLibraryVariants()
     }
 
     listOf(
@@ -42,6 +43,7 @@ kotlin {
             }
         }
         val androidMain by getting {
+            dependsOn(commonMain)
             dependencies {
                 with(Libs.Android) {
                     implementation(viewModel)
@@ -49,6 +51,7 @@ kotlin {
             }
         }
         val androidUnitTest by getting {
+            dependsOn(commonTest)
             dependencies {
                 implementation(Libs.Coroutine.test)
             }

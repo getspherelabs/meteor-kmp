@@ -1,5 +1,6 @@
 package io.spherelabs.counterkmm
 
+import io.spherelabs.androidapp.CounterReducer
 import io.spherelabs.meteor.configs.MeteorConfigs
 import io.spherelabs.meteor.store.Store
 import io.spherelabs.meteor.store.createMeteor

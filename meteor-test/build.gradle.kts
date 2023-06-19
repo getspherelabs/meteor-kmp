@@ -15,6 +15,7 @@ kotlin {
                 jvmTarget = "1.8"
             }
         }
+        publishAllLibraryVariants()
     }
 
     listOf(
@@ -41,8 +42,12 @@ kotlin {
                 implementation(Libs.Coroutine.test)
             }
         }
-        val androidMain by getting
-        val androidUnitTest by getting
+        val androidMain by getting {
+            dependsOn(commonMain)
+        }
+        val androidUnitTest by getting {
+            dependsOn(commonTest)
+        }
         val iosX64Main by getting
         val iosArm64Main by getting
         val iosSimulatorArm64Main by getting
