@@ -1,3 +1,5 @@
+import java.net.URL
+
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
@@ -88,4 +90,18 @@ android {
 mavenPublishing {
     publishToMavenCentral(com.vanniktech.maven.publish.SonatypeHost.S01, automaticRelease = true)
     signAllPublications()
+}
+
+tasks.withType<org.jetbrains.dokka.gradle.DokkaTask>().configureEach {
+    dokkaSourceSets {
+        configureEach {
+            externalDocumentationLink("https://kotlinlang.org/api/kotlinx.coroutines/")
+
+            sourceLink {
+                localDirectory.set(projectDir.resolve("src"))
+                remoteUrl.set(URL("https://github.com/getspherelabs/meteor/tree/main/meteor-core/src"))
+                remoteLineSuffix.set("#L")
+            }
+        }
+    }
 }
