@@ -60,26 +60,4 @@ subprojects {
             exclude { it.file.path.contains("build/") }
         }
     }
-
-    val dokkaOutputDir = "$buildDir/dokka"
-
-    tasks.dokkaHtml {
-        outputDirectory.set(file(dokkaOutputDir))
-    }
-
-    val deleteDokkaOutputDir by tasks.register<Delete>("deleteDokkaOutputDirectory") {
-        delete(dokkaOutputDir)
-    }
-
-    val javadocJar = tasks.register<Jar>("javadocJar") {
-        dependsOn(deleteDokkaOutputDir, tasks.dokkaHtml)
-        archiveClassifier.set("javadoc")
-        from(dokkaOutputDir)
-    }
-
-    tasks.withType<org.jetbrains.dokka.gradle.DokkaTask>().configureEach {
-        dokkaSourceSets {
-            moduleName.set("Meteor")
-        }
-    }
 }
