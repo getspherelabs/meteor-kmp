@@ -24,9 +24,36 @@ jobs:
         with:
           distribution: adopt
           java-version: 11
-      - uses: ./.github/workflows/gradle-caches
+
+      - name: Cache gradle, wrapper and buildSrc
+        uses: actions/cache@v3
         with:
-          key-prefix: gradle-lint
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/buildSrc/**/*.kt') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      - name: Cache konan
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.konan/cache
+            ~/.konan/dependencies
+            ~/.konan/kotlin-native-macos*
+            ~/.konan/kotlin-native-mingw*
+            ~/.konan/kotlin-native-windows*
+            ~/.konan/kotlin-native-linux*
+            ~/.konan/kotlin-native-prebuilt-macos*
+            ~/.konan/kotlin-native-prebuilt-mingw*
+            ~/.konan/kotlin-native-prebuilt-windows*
+            ~/.konan/kotlin-native-prebuilt-linux*
+          key: ${{ runner.os }}-konan-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-konan-
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
       - name: Spotless
         run: ./gradlew :meteor-core:spotlessCheck --scan :meteor-viewmodel:spotlessCheck --scan
       - name: Ktlint
