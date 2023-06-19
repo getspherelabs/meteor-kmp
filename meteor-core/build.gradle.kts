@@ -82,3 +82,8 @@ android {
         targetCompatibility = JavaVersion.toVersion(1.8)
     }
 }
+
+mavenPublishing {
+    publishToMavenCentral(com.vanniktech.maven.publish.SonatypeHost.S01, automaticRelease = true)
+    signAllPublications()
+}

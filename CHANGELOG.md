@@ -1,3 +1,6 @@
-## [0.0.1] - June 16, 2023
+## [0.0.2] - June 19, 2023
 
-- Initial test release.
+# What's Changed
+
+- Add core features to MVI framework
+- Add test extensions 
