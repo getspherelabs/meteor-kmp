@@ -3,6 +3,7 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlinx.binary-compatibility-validator") version "0.13.2"
     id("com.vanniktech.maven.publish") version "0.25.2"
+    id("org.jetbrains.dokka") version Version.dokka
 }
 
 kotlin {

@@ -2,6 +2,7 @@ plugins {
     kotlin("multiplatform")
     id("com.android.library")
     id("com.vanniktech.maven.publish") version "0.25.2"
+    id("org.jetbrains.dokka") version Version.dokka
 }
 
 kotlin {
@@ -61,10 +62,18 @@ kotlin {
 }
 
 android {
+    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     namespace = "io.spherelabs.meteortest"
     compileSdk = 33
     defaultConfig {
         minSdk = 24
+    }
+
+
+    // still needed for Android projects despite toolchain
+    compileOptions {
+        sourceCompatibility = JavaVersion.toVersion(1.8)
+        targetCompatibility = JavaVersion.toVersion(1.8)
     }
 }
 
