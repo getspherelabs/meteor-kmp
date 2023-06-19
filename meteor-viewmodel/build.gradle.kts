@@ -97,18 +97,3 @@ mavenPublishing {
     signAllPublications()
 }
 
-tasks.withType<org.jetbrains.dokka.gradle.DokkaTask>().configureEach {
-    dokkaSourceSets {
-        configureEach {
-            if (name.startsWith("ios")) {
-                displayName.set("ios")
-            }
-
-            sourceLink {
-                localDirectory.set(projectDir.resolve("src"))
-                remoteUrl.set(URL("https://github.com/getspherelabs/meteor/tree/main/meteor-viewmodel/src"))
-                remoteLineSuffix.set("#L")
-            }
-        }
-    }
-}

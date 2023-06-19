@@ -12,7 +12,6 @@ plugins {
     id("com.android.library").version("7.4.2").apply(false)
     kotlin("multiplatform").version("1.8.10").apply(false)
     id("org.jlleitschuh.gradle.ktlint") version Version.ktlint
-    id("org.jetbrains.dokka") version Version.dokka
     id("org.jetbrains.kotlin.jvm") version "1.8.0" apply false
     id("com.android.application") version "7.4.2" apply false
     id("org.jetbrains.kotlin.android") version "1.7.0" apply false
@@ -23,9 +22,8 @@ plugins {
 
 subprojects {
     apply(plugin = "org.jlleitschuh.gradle.ktlint")
-    apply(plugin = "org.jetbrains.dokka")
-
     apply(plugin = "com.diffplug.spotless")
+
     configure<SpotlessExtension> {
         kotlin {
             target("**/*.kt")
