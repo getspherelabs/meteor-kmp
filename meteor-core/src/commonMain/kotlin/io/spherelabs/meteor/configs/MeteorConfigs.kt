@@ -34,18 +34,18 @@ import kotlinx.coroutines.Dispatchers
  * ```
  *
  */
-interface MeteorConfigs<State : Any, Wish : Any, Effect : Any> {
-    val initialState: State
-    val storeName: String
-    val mainDispatcher: CoroutineDispatcher
-    val ioDispatcher: CoroutineDispatcher
-    val reducer: Reducer<State, Wish, Effect>
-    val middleware: Middleware<Wish>
+public interface MeteorConfigs<State : Any, Wish : Any, Effect : Any> {
+    public val initialState: State
+    public val storeName: String
+    public val mainDispatcher: CoroutineDispatcher
+    public val ioDispatcher: CoroutineDispatcher
+    public val reducer: Reducer<State, Wish, Effect>
+    public val middleware: Middleware<Wish>
 
     /**
      * A [Builder] class for constructing instance of [MeteorConfigs].
      */
-    data class Builder<State : Any, Wish : Any, Effect : Any>(
+    public data class Builder<State : Any, Wish : Any, Effect : Any>(
         var initialState: State? = null,
         var storeName: String? = null,
         var mainDispatcher: CoroutineDispatcher = Dispatchers.Default,
@@ -54,12 +54,12 @@ interface MeteorConfigs<State : Any, Wish : Any, Effect : Any> {
         var middleware: Middleware<Wish>? = null
     )
 
-    companion object {
+    public companion object {
         /**
          * A [build] function takes a configuration block to set properties of the builder class and
          * constructs a fully configured MeteorConfigs object using the provided settings.
          */
-        inline fun <State : Any, Wish : Any, Effect : Any> build(
+        public inline fun <State : Any, Wish : Any, Effect : Any> build(
             block: Builder<State, Wish, Effect>.() -> Unit
         ): MeteorConfigs<State, Wish, Effect> {
             val builder = Builder<State, Wish, Effect>().apply(block)

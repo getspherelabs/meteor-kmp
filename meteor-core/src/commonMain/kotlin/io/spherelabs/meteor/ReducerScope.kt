@@ -1,5 +1,5 @@
 package io.spherelabs.meteor
 
-interface ReducerScope<State : Any, Wish : Any> {
-    fun reducer(state: State, wish: Wish): State
+public interface ReducerScope<State : Any, Wish : Any> {
+    public fun reducer(state: State, wish: Wish): State
 }

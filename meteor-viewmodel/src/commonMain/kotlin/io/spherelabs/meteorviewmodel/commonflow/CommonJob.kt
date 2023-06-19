@@ -9,11 +9,11 @@ import kotlinx.coroutines.Job
  * The basic instance of [CommonJob] creates with [CoroutineCommonJob].
  * It also implements [Closeable] interface for managing and closing resources.
  */
-interface CommonJob : Closeable {
+public interface CommonJob : Closeable {
     /**
      * Suspends the invoking coroutine until this job is complete.
      */
-    suspend fun join()
+    public suspend fun join()
 }
 
 /**
@@ -21,7 +21,7 @@ interface CommonJob : Closeable {
  * It represents a common background job in coroutines.
  * It allows tracking and controlling the execution of a coroutine.
  */
-class CoroutineCommonJob(
+public class CoroutineCommonJob(
     private val job: Job
 ) : CommonJob {
     override suspend fun join() {

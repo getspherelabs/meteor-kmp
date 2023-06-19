@@ -12,7 +12,7 @@ import kotlin.native.ObjCName
  */
 
 @OptIn(ExperimentalObjCName::class)
-class NullableCommonStateFlow<T> constructor(
+public class NullableCommonStateFlow<T> constructor(
     @ObjCName("_")
     private val flow: StateFlow<T>
 ) : NullableCommonFlow<T>(flow), StateFlow<T> by flow {

@@ -6,6 +6,6 @@ import kotlinx.coroutines.SupervisorJob
 import kotlin.native.concurrent.ThreadLocal
 
 @ThreadLocal
-var createViewModelScope: () -> CoroutineScope = {
+public var createViewModelScope: () -> CoroutineScope = {
     CoroutineScope(Dispatchers.Main + SupervisorJob())
 }

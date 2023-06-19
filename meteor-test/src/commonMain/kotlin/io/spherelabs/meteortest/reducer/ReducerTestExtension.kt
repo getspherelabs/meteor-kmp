@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
  * Also, the action callback helps us to handle the resulting state and effect.
  *
  */
-fun <State : Any, Wish : Any, Effect : Any> Reducer<State, Wish, Effect>.runReducerTest(
+public fun <State : Any, Wish : Any, Effect : Any> Reducer<State, Wish, Effect>.runReducerTest(
     initialState: State,
     wish: Wish,
     scope: CoroutineScope,
@@ -39,7 +39,7 @@ fun <State : Any, Wish : Any, Effect : Any> Reducer<State, Wish, Effect>.runRedu
     action(state.value, checkNotNull(newEffect))
 }
 
-fun <State : Any, Wish : Any, Effect : Any> Reducer<State, Wish, Effect>.runReducerTestWithState(
+public fun <State : Any, Wish : Any, Effect : Any> Reducer<State, Wish, Effect>.runReducerTestWithState(
     initialState: State,
     wish: Wish,
     scope: CoroutineScope,
@@ -63,7 +63,7 @@ fun <State : Any, Wish : Any, Effect : Any> Reducer<State, Wish, Effect>.runRedu
     action(state.value)
 }
 
-fun <State : Any, Wish : Any, Effect : Any> Reducer<State, Wish, Effect>.runReducerTestWithEffect(
+public fun <State : Any, Wish : Any, Effect : Any> Reducer<State, Wish, Effect>.runReducerTestWithEffect(
     initialState: State,
     wish: Wish,
     scope: CoroutineScope,

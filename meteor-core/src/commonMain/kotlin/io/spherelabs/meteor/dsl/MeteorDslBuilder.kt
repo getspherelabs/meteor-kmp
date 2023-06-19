@@ -10,7 +10,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 
 @MeteorDsl
-class MeteorDslBuilder<State : Any, Wish : Any, Effect : Any> internal constructor() {
+public class MeteorDslBuilder<State : Any, Wish : Any, Effect : Any> internal constructor() {
 
     private var currentState: State? = null
     private var storeName: String? = null
@@ -20,7 +20,7 @@ class MeteorDslBuilder<State : Any, Wish : Any, Effect : Any> internal construct
     private var reducer: Reducer<State, Wish, Effect>? = null
     private var middleware: Middleware<Wish>? = null
 
-    fun config(block: ConfigDslBuilder<State>.() -> Unit) {
+    public fun config(block: ConfigDslBuilder<State>.() -> Unit) {
         ConfigDslBuilder<State>().also {
             block(it)
             this.currentState = it.initialState
@@ -28,14 +28,14 @@ class MeteorDslBuilder<State : Any, Wish : Any, Effect : Any> internal construct
         }
     }
 
-    fun reducer(block: ReducerBuilder<State, Wish, Effect>.() -> Unit) {
+    public fun reducer(block: ReducerBuilder<State, Wish, Effect>.() -> Unit) {
         ReducerBuilder<State, Wish, Effect>().also {
             block(it)
             this.reducer = it.build()
         }
     }
 
-    fun middleware(
+    public fun middleware(
         block: MiddlewareDslBuilder<Wish>.() -> Unit
     ) {
         MiddlewareDslBuilder<Wish>().also {
@@ -44,7 +44,7 @@ class MeteorDslBuilder<State : Any, Wish : Any, Effect : Any> internal construct
         }
     }
 
-    fun build(): Store<State, Wish, Effect> {
+    public fun build(): Store<State, Wish, Effect> {
         return mainScope.createMeteor(
             configs = MeteorConfigs.build {
                 initialState = this@MeteorDslBuilder.currentState
@@ -64,7 +64,7 @@ class MeteorDslBuilder<State : Any, Wish : Any, Effect : Any> internal construct
     }
 }
 
-fun <State : Any, Wish : Any, Effect : Any> meteor(
+public fun <State : Any, Wish : Any, Effect : Any> meteor(
     block: MeteorDslBuilder<State, Wish, Effect>.() -> Unit
 ): Store<State, Wish, Effect> {
     return MeteorDslBuilder<State, Wish, Effect>().also(block).build()

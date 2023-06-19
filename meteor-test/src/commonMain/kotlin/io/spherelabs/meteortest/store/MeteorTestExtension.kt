@@ -5,7 +5,7 @@ import io.spherelabs.meteor.store.Store
 import io.spherelabs.meteor.store.createMeteor
 import kotlinx.coroutines.CoroutineScope
 
-fun <State : Any, Wish : Any, Effect : Any> createTestStore(
+public fun <State : Any, Wish : Any, Effect : Any> createTestStore(
     testConfigs: MeteorConfigs<State, Wish, Effect>,
     testScope: CoroutineScope
 ): Store<State, Wish, Effect> {
@@ -15,7 +15,7 @@ fun <State : Any, Wish : Any, Effect : Any> createTestStore(
     )
 }
 
-fun <State : Any, Wish : Any, Effect : Any> CoroutineScope.createTestStore(
+public fun <State : Any, Wish : Any, Effect : Any> CoroutineScope.createTestStore(
     configs: MeteorConfigs<State, Wish, Effect>
 ): Store<State, Wish, Effect> {
     return createTestStore(

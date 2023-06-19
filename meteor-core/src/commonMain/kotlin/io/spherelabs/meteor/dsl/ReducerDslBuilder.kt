@@ -8,23 +8,23 @@ import kotlin.reflect.KClass
 
 @MeteorInternal
 @MeteorDsl
-class ReducerBuilder<State : Any, Wish : Any, Effect : Any> internal constructor() {
+public class ReducerBuilder<State : Any, Wish : Any, Effect : Any> internal constructor() {
 
-    val reducers: MutableMap<KClass<out Wish>, ToReducerContext<State, Wish, Effect>> = mutableMapOf()
+    public val reducers: MutableMap<KClass<out Wish>, ToReducerContext<State, Wish, Effect>> = mutableMapOf()
 
     private var currentState: State? = null
 
-    inline fun <reified W : Wish> on(noinline action: State.(W) -> Change<State, Effect>) {
+    public inline fun <reified W : Wish> on(noinline action: State.(W) -> Change<State, Effect>) {
         reducers[W::class] = action as State.(Wish) -> Change<State, Effect>
     }
 
-    fun <State : Any> transition(
+    public fun <State : Any> transition(
         action: () -> State
     ): Change<State, Effect> {
         return Change(state = action())
     }
 
-    fun build(): Reducer<State, Wish, Effect> {
+    public fun build(): Reducer<State, Wish, Effect> {
         return object : Reducer<State, Wish, Effect> {
             override fun reduce(state: State, wish: Wish): Change<State, Effect> {
                 return reducers[wish::class]?.let {
@@ -35,4 +35,4 @@ class ReducerBuilder<State : Any, Wish : Any, Effect : Any> internal constructor
     }
 }
 
-typealias ToReducerContext<State, Wish, Effect> = (State, Wish) -> Change<State, Effect>
+public typealias ToReducerContext<State, Wish, Effect> = (State, Wish) -> Change<State, Effect>

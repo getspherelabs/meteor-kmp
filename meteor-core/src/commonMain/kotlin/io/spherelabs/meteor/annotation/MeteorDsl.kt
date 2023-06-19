@@ -1,4 +1,4 @@
 package io.spherelabs.meteor.annotation
 
 @DslMarker
-annotation class MeteorDsl
+public annotation class MeteorDsl

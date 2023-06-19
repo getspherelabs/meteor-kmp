@@ -1,6 +1,6 @@
 package io.spherelabs.meteor.exception
 
-class NotInitializedException : RuntimeException {
-    constructor()
-    constructor(message: String = "State is not initialized.")
+public class NotInitializedException : RuntimeException {
+    public constructor()
+    public constructor(message: String = "State is not initialized.")
 }

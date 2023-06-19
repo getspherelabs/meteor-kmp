@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
-class MeteorStore<State : Any, Wish : Any, Effect : Any> constructor(
+public class MeteorStore<State : Any, Wish : Any, Effect : Any> constructor(
     private val configs: MeteorConfigs<State, Wish, Effect>,
     private val mainScope: CoroutineScope
 ) : Store<State, Wish, Effect> {
@@ -73,7 +73,7 @@ class MeteorStore<State : Any, Wish : Any, Effect : Any> constructor(
     }
 }
 
-fun <State : Any, Wish : Any, Effect : Any> createMeteor(
+public fun <State : Any, Wish : Any, Effect : Any> createMeteor(
     configs: MeteorConfigs<State, Wish, Effect>,
     mainScope: CoroutineScope
 ): Store<State, Wish, Effect> {
@@ -83,7 +83,7 @@ fun <State : Any, Wish : Any, Effect : Any> createMeteor(
     )
 }
 
-fun <State : Any, Wish : Any, Effect : Any> CoroutineScope.createMeteor(
+public fun <State : Any, Wish : Any, Effect : Any> CoroutineScope.createMeteor(
     configs: MeteorConfigs<State, Wish, Effect>
 ): Store<State, Wish, Effect> {
     val store = MeteorStore(
