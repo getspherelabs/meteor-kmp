@@ -1,4 +1,4 @@
-import java.net.URL
+
 
 plugins {
     kotlin("multiplatform")
@@ -96,4 +96,3 @@ mavenPublishing {
     publishToMavenCentral(com.vanniktech.maven.publish.SonatypeHost.S01, automaticRelease = true)
     signAllPublications()
 }
-
