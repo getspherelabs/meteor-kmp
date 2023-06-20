@@ -23,9 +23,9 @@ kotlin {
 
     sourceSets {
         val commonMain by getting {
-            dependencies {
-                implementation("io.github.behzodhalil:meteor-mvi:0.0.3")
-            }
+           dependencies {
+               implementation("io.github.behzodhalil:meteor-mvi:0.0.5")
+           }
         }
         val commonTest by getting {
             dependencies {
