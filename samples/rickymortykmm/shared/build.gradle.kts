@@ -1,6 +1,7 @@
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
+    kotlin("plugin.serialization")
 }
 
 kotlin {
@@ -24,7 +25,15 @@ kotlin {
     sourceSets {
         val commonMain by getting {
            dependencies {
-               implementation("io.github.behzodhalil:meteor-mvi:0.0.5")
+               implementation(Deps.Kotlin.jsonSerialization)
+               implementation(Deps.Ktor.core)
+               implementation(Deps.Ktor.content)
+               implementation(Deps.Ktor.serializationJson)
+               implementation(Deps.Ktor.logging)
+               implementation(Deps.Koin.core)
+               implementation(Deps.Kotlin.serializationCore)
+               implementation(Deps.Kotlin.coroutinesCore)
+               implementation("io.github.behzodhalil:meteor-mvi:0.0.6")
            }
         }
         val commonTest by getting {
