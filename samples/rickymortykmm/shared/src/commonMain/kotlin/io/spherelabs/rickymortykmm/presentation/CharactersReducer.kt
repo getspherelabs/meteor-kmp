@@ -23,7 +23,7 @@ object CharactersReducer : Reducer<CharactersState, CharactersWish, CharactersEf
                 }
             }
             else -> {
-                unexpected()
+                unexpected { state }
             }
         }
     }

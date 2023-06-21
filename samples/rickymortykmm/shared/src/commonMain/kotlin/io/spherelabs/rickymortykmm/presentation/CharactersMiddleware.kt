@@ -6,9 +6,9 @@ import kotlinx.coroutines.flow.collectLatest
 
 class CharactersMiddleware(
     private val getCharactersUseCase: GetCharactersUseCase
-) : Middleware<CharactersWish> {
+) : Middleware<CharactersState, CharactersWish> {
 
-    override suspend fun process(wish: CharactersWish, next: suspend (CharactersWish) -> Unit) {
+    override suspend fun process(state: CharactersState, wish: CharactersWish, next: suspend (CharactersWish) -> Unit) {
         when (wish) {
             CharactersWish.CharacterStarted -> {
                 getCharactersUseCase.execute().collectLatest { result ->

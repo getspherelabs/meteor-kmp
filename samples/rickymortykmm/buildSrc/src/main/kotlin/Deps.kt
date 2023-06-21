@@ -8,7 +8,7 @@ object Version {
     const val json = "1.5.0"
     const val coroutines = "1.6.4"
     const val serializationCore = "1.4.1"
-    const val meteor = "0.0.7"
+    const val meteor = "0.0.8"
 }
 
 object Deps {
