@@ -40,7 +40,7 @@ public interface MeteorConfigs<State : Any, Wish : Any, Effect : Any> {
     public val mainDispatcher: CoroutineDispatcher
     public val ioDispatcher: CoroutineDispatcher
     public val reducer: Reducer<State, Wish, Effect>
-    public val middleware: Middleware<Wish>
+    public val middleware: Middleware<State, Wish>
 
     /**
      * A [Builder] class for constructing instance of [MeteorConfigs].
@@ -51,7 +51,7 @@ public interface MeteorConfigs<State : Any, Wish : Any, Effect : Any> {
         var mainDispatcher: CoroutineDispatcher = Dispatchers.Default,
         var ioDispatcher: CoroutineDispatcher = Dispatchers.Default,
         var reducer: Reducer<State, Wish, Effect>? = null,
-        var middleware: Middleware<Wish>? = null
+        var middleware: Middleware<State, Wish>? = null
     )
 
     public companion object {
@@ -76,7 +76,7 @@ public interface MeteorConfigs<State : Any, Wish : Any, Effect : Any> {
                 override val reducer: Reducer<State, Wish, Effect> = checkNotNull(builder.reducer) {
                     "Reducer is not initialized."
                 }
-                override val middleware: Middleware<Wish> = checkNotNull(builder.middleware) {
+                override val middleware: Middleware<State, Wish> = checkNotNull(builder.middleware) {
                     "Middleware is not initialized."
                 }
             }

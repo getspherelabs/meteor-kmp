@@ -93,9 +93,9 @@ public final class io/spherelabs/meteor/dsl/MeteorDslBuilderKt {
 
 public final class io/spherelabs/meteor/dsl/MiddlewareDslBuilder {
 	public final fun build ()Lio/spherelabs/meteor/middleware/Middleware;
-	public final fun getProcess ()Lkotlin/jvm/functions/Function3;
-	public final fun on (Lkotlin/jvm/functions/Function3;)V
-	public final fun setProcess (Lkotlin/jvm/functions/Function3;)V
+	public final fun getProcess ()Lkotlin/jvm/functions/Function4;
+	public final fun on (Lkotlin/jvm/functions/Function4;)V
+	public final fun setProcess (Lkotlin/jvm/functions/Function4;)V
 }
 
 public final class io/spherelabs/meteor/dsl/ReducerBuilder {
@@ -111,7 +111,7 @@ public final class io/spherelabs/meteor/exception/NotInitializedException : java
 }
 
 public abstract interface class io/spherelabs/meteor/middleware/Middleware {
-	public abstract fun process (Ljava/lang/Object;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun process (Ljava/lang/Object;Ljava/lang/Object;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public abstract interface class io/spherelabs/meteor/reducer/Reducer {

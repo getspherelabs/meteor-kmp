@@ -29,7 +29,7 @@ object FakeReducer : Reducer<FakeState, FakeWish, FakeEffect> {
             }
 
             else -> {
-                unexpected()
+                unexpected { state }
             }
         }
     }

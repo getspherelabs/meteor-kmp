@@ -42,16 +42,15 @@ public class MeteorStore<State : Any, Wish : Any, Effect : Any> constructor(
                     currentState = it
                 }
 
-                println("Debug scope  MS: $mainScope")
-
                 newState.effect?.let { newEffect ->
                     mainScope.launch {
                         _effect.send(newEffect)
                     }
                 }
-                println("Current new state is ${state.value}")
+
                 mainScope.launch {
                     configs.middleware.process(
+                        state = currentState,
                         wish = wish,
                         next = { newWish ->
                             wish(newWish)

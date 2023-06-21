@@ -18,7 +18,7 @@ public class MeteorDslBuilder<State : Any, Wish : Any, Effect : Any> internal co
     private val mainScope: CoroutineScope = CoroutineScope(SupervisorJob())
 
     private var reducer: Reducer<State, Wish, Effect>? = null
-    private var middleware: Middleware<Wish>? = null
+    private var middleware: Middleware<State, Wish>? = null
 
     public fun config(block: ConfigDslBuilder<State>.() -> Unit) {
         ConfigDslBuilder<State>().also {
@@ -36,9 +36,9 @@ public class MeteorDslBuilder<State : Any, Wish : Any, Effect : Any> internal co
     }
 
     public fun middleware(
-        block: MiddlewareDslBuilder<Wish>.() -> Unit
+        block: MiddlewareDslBuilder<State, Wish>.() -> Unit
     ) {
-        MiddlewareDslBuilder<Wish>().also {
+        MiddlewareDslBuilder<State, Wish>().also {
             block(it)
             this.middleware = it.build()
         }

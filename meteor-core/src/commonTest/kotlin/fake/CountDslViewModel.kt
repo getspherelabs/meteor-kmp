@@ -33,7 +33,7 @@ class CountDslViewModel : CommonViewModel<FakeCountState, FakeCountWish, FakeCou
         }
 
         middleware {
-            on { _, _ -> }
+            on { _, _, _ -> }
         }
     }
 

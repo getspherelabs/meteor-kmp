@@ -6,19 +6,19 @@ import io.spherelabs.meteor.middleware.Middleware
 
 @MeteorInternal
 @MeteorDsl
-public class MiddlewareDslBuilder<Wish : Any> internal constructor() {
+public class MiddlewareDslBuilder<State : Any, Wish : Any> internal constructor() {
 
-    public var process: MiddlewareContext<Wish>? = null
+    public var process: MiddlewareContext<State, Wish>? = null
 
-    public fun on(actionBlock: MiddlewareContext<Wish>) {
+    public fun on(actionBlock: MiddlewareContext<State, Wish>) {
         process = actionBlock
     }
 
-    public fun build(): Middleware<Wish> = object : Middleware<Wish> {
-        override suspend fun process(wish: Wish, next: suspend (Wish) -> Unit) {
-            this@MiddlewareDslBuilder.process?.invoke(wish, next)
+    public fun build(): Middleware<State, Wish> = object : Middleware<State, Wish> {
+        override suspend fun process(state: State, wish: Wish, next: suspend (Wish) -> Unit) {
+            this@MiddlewareDslBuilder.process?.invoke(state, wish, next)
         }
     }
 }
 
-public typealias MiddlewareContext<Wish> = suspend (Wish, suspend (Wish) -> Unit) -> Unit
+public typealias MiddlewareContext<State, Wish> = suspend (State, Wish, suspend (Wish) -> Unit) -> Unit
