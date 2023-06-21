@@ -12,6 +12,5 @@ fun CharacterItem(
     Row(
         verticalAlignment = Alignment.CenterVertically
     ) {
-
     }
 }

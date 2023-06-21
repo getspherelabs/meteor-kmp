@@ -22,6 +22,5 @@ class CharactersMiddleware(
             }
             else -> {}
         }
-
     }
 }

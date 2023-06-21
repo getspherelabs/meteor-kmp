@@ -24,5 +24,4 @@ class CharactersViewModel(
 
     val state: NonNullCommonStateFlow<CharactersState> = store.state.asCommonStateFlow()
     val effect: NonNullCommonFlow<CharactersEffect> = store.effect.asCommonFlow()
-
 }
