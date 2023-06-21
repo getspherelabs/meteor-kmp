@@ -122,7 +122,7 @@ public final class io/spherelabs/meteor/reducer/ReducerKt {
 	public static final fun effect (Lio/spherelabs/meteor/reducer/Reducer;Lkotlin/jvm/functions/Function0;)Lio/spherelabs/meteor/configs/Change;
 	public static final fun expect (Lio/spherelabs/meteor/reducer/Reducer;Lkotlin/jvm/functions/Function0;)Lio/spherelabs/meteor/configs/Change;
 	public static final fun route (Lio/spherelabs/meteor/reducer/Reducer;Lkotlin/jvm/functions/Function0;)Lio/spherelabs/meteor/configs/Change;
-	public static final fun unexpected (Lio/spherelabs/meteor/reducer/Reducer;)Lio/spherelabs/meteor/configs/Change;
+	public static final fun unexpected (Lio/spherelabs/meteor/reducer/Reducer;Lkotlin/jvm/functions/Function0;)Lio/spherelabs/meteor/configs/Change;
 }
 
 public final class io/spherelabs/meteor/store/MeteorStore : io/spherelabs/meteor/store/Store {
