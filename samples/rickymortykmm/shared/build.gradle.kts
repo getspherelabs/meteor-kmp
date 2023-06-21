@@ -33,7 +33,8 @@ kotlin {
                implementation(Deps.Koin.core)
                implementation(Deps.Kotlin.serializationCore)
                implementation(Deps.Kotlin.coroutinesCore)
-               implementation("io.github.behzodhalil:meteor-mvi:0.0.6")
+               implementation(Deps.Meteor.core)
+
            }
         }
         val commonTest by getting {

@@ -8,6 +8,7 @@ object Version {
     const val json = "1.5.0"
     const val coroutines = "1.6.4"
     const val serializationCore = "1.4.1"
+    const val meteor = "0.0.7"
 }
 
 object Deps {
@@ -37,5 +38,9 @@ object Deps {
         const val extension = "com.squareup.sqldelight:coroutines-extensions:${Version.sqlDelight}"
         const val native = "com.squareup.sqldelight:native-driver:${Version.sqlDelight}"
         const val android = "com.squareup.sqldelight:android-driver:${Version.sqlDelight}"
+    }
+
+    object Meteor {
+        const val core = "io.github.behzodhalil:meteor-mvi:${Version.meteor}"
     }
 }
