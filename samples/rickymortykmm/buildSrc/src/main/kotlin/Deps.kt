@@ -9,9 +9,15 @@ object Version {
     const val coroutines = "1.6.4"
     const val serializationCore = "1.4.1"
     const val meteor = "0.0.8"
+    const val navigation = "2.5.1"
 }
 
 object Deps {
+    object Compose {
+        const val navigation = "androidx.navigation:navigation-compose:${Version.navigation}"
+        const val coil = "io.coil-kt:coil-compose:${Version.coil}"
+    }
+
     object Kotlin {
         const val serialization = "org.jetbrains.kotlin:kotlin-serialization:${Version.kotlin}"
         const val jsonSerialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:${Version.json}"
@@ -42,5 +48,9 @@ object Deps {
 
     object Meteor {
         const val core = "io.github.behzodhalil:meteor-mvi:${Version.meteor}"
+    }
+
+    object Coil {
+
     }
 }
