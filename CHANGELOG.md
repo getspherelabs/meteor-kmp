@@ -1,3 +1,11 @@
+## [0.0.8] - June 21, 2023
+
+# What's Changed
+
+- Change Middleware approach
+- Fix unexpected function
+
+
 ## [0.0.5] - June 19, 2023
 
 # What's Changed
