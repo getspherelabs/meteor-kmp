@@ -13,8 +13,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import io.spherelabs.rickymortykmm.Greeting
-import io.spherelabs.rickymortykmm.android.ui.CharacterScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,7 +27,6 @@ class MainActivity : ComponentActivity() {
 
                     NavHost(navController = navController, startDestination = "characters") {
                         composable("characters") {
-
                         }
                     }
                 }

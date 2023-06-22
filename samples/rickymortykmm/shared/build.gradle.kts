@@ -12,7 +12,7 @@ kotlin {
             }
         }
     }
-    
+
     listOf(
         iosX64(),
         iosSimulatorArm64()
@@ -24,25 +24,28 @@ kotlin {
 
     sourceSets {
         val commonMain by getting {
-           dependencies {
-               implementation(Deps.Kotlin.jsonSerialization)
-               implementation(Deps.Ktor.core)
-               implementation(Deps.Ktor.content)
-               implementation(Deps.Ktor.serializationJson)
-               implementation(Deps.Ktor.logging)
-               implementation(Deps.Koin.core)
-               implementation(Deps.Kotlin.serializationCore)
-               implementation(Deps.Kotlin.coroutinesCore)
-               implementation(Deps.Meteor.core)
-
-           }
+            dependencies {
+                implementation(Deps.Kotlin.jsonSerialization)
+                implementation(Deps.Ktor.core)
+                implementation(Deps.Ktor.content)
+                implementation(Deps.Ktor.serializationJson)
+                implementation(Deps.Ktor.logging)
+                implementation(Deps.Koin.core)
+                implementation(Deps.Kotlin.serializationCore)
+                implementation(Deps.Kotlin.coroutinesCore)
+                api(Deps.Meteor.core)
+            }
         }
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
+                implementation(Deps.Testing.turbine)
+                implementation(Deps.Testing.koin)
             }
         }
-        val androidMain by getting
+        val androidMain by getting {
+
+        }
         val androidUnitTest by getting
         val iosX64Main by getting
         val iosMain by creating

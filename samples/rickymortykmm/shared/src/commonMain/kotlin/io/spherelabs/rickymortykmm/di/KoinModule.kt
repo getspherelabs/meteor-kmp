@@ -13,6 +13,7 @@ import io.spherelabs.rickymortykmm.domain.DefaultGetCharactersUseCase
 import io.spherelabs.rickymortykmm.domain.GetCharacterByIdUseCase
 import io.spherelabs.rickymortykmm.domain.GetCharactersUseCase
 import io.spherelabs.rickymortykmm.presentation.CharactersMiddleware
+import io.spherelabs.rickymortykmm.presentation.CharactersState
 import io.spherelabs.rickymortykmm.presentation.CharactersWish
 import io.spherelabs.rickymortykmm.remote.DefaultRickyMortyService
 import io.spherelabs.rickymortykmm.remote.RickyMortyService
@@ -55,7 +56,7 @@ val useCaseModule = module {
 }
 
 val middlewareModule = module {
-    single<Middleware<CharactersWish>>(named("characters")) {
+    single<Middleware<CharactersState, CharactersWish>>(named("characters")) {
         CharactersMiddleware(get())
     }
 }

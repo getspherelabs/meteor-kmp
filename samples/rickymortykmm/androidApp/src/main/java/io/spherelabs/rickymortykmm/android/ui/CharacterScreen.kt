@@ -27,14 +27,12 @@ fun CharacterScreen(
 
     LaunchedEffect(key1 = true) {
         effect.collectLatest {
-
         }
     }
 
     Column(modifier = modifier.fillMaxSize()) {
         Characters(characters = uiState.value.characters)
     }
-
 }
 
 @Composable

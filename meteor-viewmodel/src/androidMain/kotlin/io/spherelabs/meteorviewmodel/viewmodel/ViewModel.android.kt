@@ -3,8 +3,9 @@ package io.spherelabs.meteorviewmodel.viewmodel
 import io.spherelabs.meteorviewmodel.Closeable
 import kotlinx.coroutines.CoroutineScope
 import androidx.lifecycle.viewModelScope as vmScope
+import androidx.lifecycle.ViewModel as AndroidVM
 
-public actual abstract class ViewModel : androidx.lifecycle.ViewModel {
+public actual abstract class ViewModel : AndroidVM {
     public actual constructor() : super()
 
     public actual constructor(vararg closeables: Closeable) : super(*closeables)

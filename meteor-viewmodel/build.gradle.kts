@@ -31,7 +31,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(Libs.Coroutine.core)
+                api(Libs.Coroutine.core)
             }
         }
         val commonTest by getting {
@@ -43,14 +43,16 @@ kotlin {
         }
         val androidMain by getting {
             dependsOn(commonMain)
+
             dependencies {
                 with(Libs.Android) {
-                    implementation(viewModel)
+                    api(viewModel)
                 }
             }
         }
         val androidUnitTest by getting {
             dependsOn(commonTest)
+
             dependencies {
                 implementation(Libs.Coroutine.test)
             }

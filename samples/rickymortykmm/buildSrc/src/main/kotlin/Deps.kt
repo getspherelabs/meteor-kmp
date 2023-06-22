@@ -10,6 +10,7 @@ object Version {
     const val serializationCore = "1.4.1"
     const val meteor = "0.0.8"
     const val navigation = "2.5.1"
+    const val turbine = "1.0.0"
 }
 
 object Deps {
@@ -48,9 +49,11 @@ object Deps {
 
     object Meteor {
         const val core = "io.github.behzodhalil:meteor-mvi:${Version.meteor}"
+        const val viewmodel = "io.github.behzodhalil:meteor-viewmodel:${Version.meteor}"
     }
 
-    object Coil {
-
+    object Testing {
+        const val turbine = "app.cash.turbine:turbine:${Version.turbine}"
+        const val koin = "io.insert-koin:koin-test:${Version.koinCore}"
     }
 }
