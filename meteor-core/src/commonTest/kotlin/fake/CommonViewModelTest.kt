@@ -33,11 +33,18 @@ class CommonViewModelTest {
         timeout = 60.seconds
     ) {
         viewModel.wish(FakeCountWish.Increase)
-        viewModel.wish(FakeCountWish.Increase)
+        viewModel.wish(FakeCountWish.Decrease)
 
         viewModel.state.test {
             assertEquals(
-                FakeCountState(2),
+                FakeCountState(0),
+                awaitItem()
+            )
+        }
+
+        viewModel.effect.test {
+            assertEquals(
+                FakeCountEffect.Failure("The value is zero"),
                 awaitItem()
             )
         }

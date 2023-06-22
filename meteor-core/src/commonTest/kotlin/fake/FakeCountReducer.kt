@@ -2,6 +2,7 @@ package fake
 
 import io.spherelabs.meteor.configs.Change
 import io.spherelabs.meteor.reducer.Reducer
+import io.spherelabs.meteor.reducer.effect
 import io.spherelabs.meteor.reducer.expect
 
 object FakeCountReducer : Reducer<FakeCountState, FakeCountWish, FakeCountEffect> {
@@ -16,6 +17,11 @@ object FakeCountReducer : Reducer<FakeCountState, FakeCountWish, FakeCountEffect
             }
             FakeCountWish.Reset -> {
                 expect { state.copy(count = 0) }
+            }
+            FakeCountWish.ZeroValue -> {
+                effect {
+                    FakeCountEffect.Failure("The value is zero")
+                }
             }
         }
     }
