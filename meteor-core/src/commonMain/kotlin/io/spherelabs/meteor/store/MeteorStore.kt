@@ -2,6 +2,8 @@ package io.spherelabs.meteor.store
 
 import io.spherelabs.meteor.configs.Change
 import io.spherelabs.meteor.configs.MeteorConfigs
+import io.spherelabs.meteorlogger.logTest
+import io.spherelabs.meteorlogger.logTestEffect
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.Channel
@@ -34,17 +36,18 @@ public class MeteorStore<State : Any, Wish : Any, Effect : Any> constructor(
         mainScope.launch {
             lock.withLock {
                 val oldState = _state.value
-
                 val newState = applyReducer(oldState, wish)
 
                 newState.state?.let {
                     _state.value = it
                     currentState = it
+                    logTest(previousState = oldState, newState = it, wish = wish)
                 }
 
                 newState.effect?.let { newEffect ->
                     mainScope.launch {
                         _effect.send(newEffect)
+                        logTestEffect(newEffect)
                     }
                 }
 
@@ -53,13 +56,12 @@ public class MeteorStore<State : Any, Wish : Any, Effect : Any> constructor(
                         state = currentState,
                         wish = wish,
                         next = { newWish ->
+                            logTest(wish = newWish)
                             wish(newWish)
                         }
                     )
                 }
             }
-
-            println("Updated state is ${state.value}")
         }
     }
 
@@ -69,6 +71,10 @@ public class MeteorStore<State : Any, Wish : Any, Effect : Any> constructor(
 
     override fun cancel() {
         mainScope.cancel()
+    }
+
+    public companion object {
+        private const val TAG = "MeteorStore"
     }
 }
 
