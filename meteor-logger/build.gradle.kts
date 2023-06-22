@@ -2,7 +2,6 @@ plugins {
     kotlin("multiplatform")
     id("com.android.library")
     id("org.jetbrains.kotlinx.binary-compatibility-validator") version "0.13.2"
-    id("com.vanniktech.maven.publish") version "0.25.2"
 }
 
 kotlin {
@@ -13,48 +12,33 @@ kotlin {
                 jvmTarget = "1.8"
             }
         }
-        publishAllLibraryVariants()
     }
 
     listOf(
         iosX64(),
         iosArm64(),
-        iosSimulatorArm64(),
+        iosSimulatorArm64()
     ).forEach {
         it.binaries.framework {
-            baseName = "meteor-viewmodel"
+            baseName = "meteor-logger"
         }
     }
 
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(Libs.Coroutine.core)
+                api(Libs.Kotlin.datetime)
             }
         }
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
-                implementation(Libs.Coroutine.test)
-                implementation(Libs.Coroutine.turbine)
             }
         }
         val androidMain by getting {
             dependsOn(commonMain)
-
-            dependencies {
-                with(Libs.Android) {
-                    api(viewModel)
-                }
-            }
         }
-        val androidUnitTest by getting {
-            dependsOn(commonTest)
-
-            dependencies {
-                implementation(Libs.Coroutine.test)
-            }
-        }
+        val androidUnitTest by getting
         val iosX64Main by getting
         val iosArm64Main by getting
         val iosSimulatorArm64Main by getting
@@ -77,22 +61,9 @@ kotlin {
 }
 
 android {
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-
-    namespace = "io.spherelabs.meteorviewmodel"
+    namespace = "io.spherelabs.meteorlogger"
     compileSdk = 33
     defaultConfig {
         minSdk = 24
     }
-
-    // still needed for Android projects despite toolchain
-    compileOptions {
-        sourceCompatibility = JavaVersion.toVersion(1.8)
-        targetCompatibility = JavaVersion.toVersion(1.8)
-    }
-}
-
-mavenPublishing {
-    publishToMavenCentral(com.vanniktech.maven.publish.SonatypeHost.S01, automaticRelease = true)
-    signAllPublications()
 }

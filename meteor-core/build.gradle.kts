@@ -32,6 +32,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api(project(":meteor-viewmodel"))
+                api(project(":meteor-logger"))
                 api(Libs.Coroutine.core)
             }
         }
@@ -45,7 +46,7 @@ kotlin {
         val androidMain by getting {
             dependsOn(commonMain)
             dependencies {
-                implementation(Libs.Android.viewModel)
+                api(Libs.Android.viewModel)
             }
         }
         val androidUnitTest by getting {
