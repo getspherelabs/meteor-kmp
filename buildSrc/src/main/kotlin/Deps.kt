@@ -6,6 +6,7 @@ object Version {
     const val dokka = "1.8.20"
     const val lifecycle = "2.6.0"
     const val stately = "2.0.0"
+    const val datetime = "0.4.0"
 }
 
 object Libs {
@@ -27,6 +28,10 @@ object Libs {
 
     object Hilt {
 
+    }
+
+    object Kotlin {
+        const val datetime = "org.jetbrains.kotlinx:kotlinx-datetime:${Version.datetime}"
     }
 
 }
