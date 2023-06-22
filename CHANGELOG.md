@@ -1,3 +1,9 @@
+## [0.1.1] - June 22, 2023
+
+# What's Changed
+
+- Add logger for monitoring states
+
 ## [0.0.8] - June 21, 2023
 
 # What's Changed
