@@ -26,6 +26,7 @@ fun CharacterScreen(
     val uiState = state.collectAsState()
 
     LaunchedEffect(key1 = true) {
+        wish(CharactersWish.CharacterStarted)
         effect.collectLatest {
         }
     }

@@ -13,8 +13,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import io.spherelabs.rickymortykmm.android.ui.CharacterScreen
+import io.spherelabs.rickymortykmm.presentation.CharactersViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
+
+    private val viewModel: CharactersViewModel by viewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -27,6 +32,9 @@ class MainActivity : ComponentActivity() {
 
                     NavHost(navController = navController, startDestination = "characters") {
                         composable("characters") {
+                            CharacterScreen(wish = { newWish ->
+                                viewModel.wish(newWish)
+                            }, state = viewModel.state, effect = viewModel.effect)
                         }
                     }
                 }
