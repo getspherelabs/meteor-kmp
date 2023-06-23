@@ -13,7 +13,6 @@ class CharactersViewModel(
     private val charactersMiddleware: CharactersMiddleware
 ) : CommonViewModel<CharactersState, CharactersWish, CharactersEffect>() {
 
-
     override val store: Store<CharactersState, CharactersWish, CharactersEffect> = createMeteor(
         configs = MeteorConfigs.build {
             initialState = CharactersState()

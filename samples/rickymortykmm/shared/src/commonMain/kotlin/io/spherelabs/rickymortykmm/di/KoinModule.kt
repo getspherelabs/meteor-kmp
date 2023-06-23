@@ -7,14 +7,11 @@ import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.serialization.kotlinx.json.json
-import io.spherelabs.meteor.middleware.Middleware
 import io.spherelabs.rickymortykmm.domain.DefaultGetCharacterByIdUseCase
 import io.spherelabs.rickymortykmm.domain.DefaultGetCharactersUseCase
 import io.spherelabs.rickymortykmm.domain.GetCharacterByIdUseCase
 import io.spherelabs.rickymortykmm.domain.GetCharactersUseCase
 import io.spherelabs.rickymortykmm.presentation.CharactersMiddleware
-import io.spherelabs.rickymortykmm.presentation.CharactersState
-import io.spherelabs.rickymortykmm.presentation.CharactersWish
 import io.spherelabs.rickymortykmm.remote.DefaultRickyMortyService
 import io.spherelabs.rickymortykmm.remote.RickyMortyService
 import io.spherelabs.rickymortykmm.repository.DefaultRickyMortyRepository
@@ -22,7 +19,6 @@ import io.spherelabs.rickymortykmm.repository.RickyMortyRepository
 import kotlinx.serialization.json.Json
 import org.koin.core.context.startKoin
 import org.koin.core.module.dsl.factoryOf
-import org.koin.core.qualifier.named
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
 
