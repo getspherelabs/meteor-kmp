@@ -44,7 +44,10 @@ kotlin {
             }
         }
         val androidMain by getting {
-
+            dependencies {
+                implementation(Deps.Koin.android)
+                implementation(Deps.Ktor.okhttp)
+            }
         }
         val androidUnitTest by getting
         val iosX64Main by getting

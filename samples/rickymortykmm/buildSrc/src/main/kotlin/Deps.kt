@@ -8,7 +8,7 @@ object Version {
     const val json = "1.5.0"
     const val coroutines = "1.6.4"
     const val serializationCore = "1.4.1"
-    const val meteor = "0.0.8"
+    const val meteor = "0.1.2"
     const val navigation = "2.5.1"
     const val turbine = "1.0.0"
 }
@@ -29,6 +29,7 @@ object Deps {
     object Koin {
         const val android = "io.insert-koin:koin-android:${Version.koinAndroid}"
         const val core = "io.insert-koin:koin-core:${Version.koinCore}"
+        const val compose = "io.insert-koin:koin-androidx-compose:3.3.0"
     }
 
     object Ktor {

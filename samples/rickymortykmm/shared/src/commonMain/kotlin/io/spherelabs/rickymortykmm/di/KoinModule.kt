@@ -20,8 +20,22 @@ import io.spherelabs.rickymortykmm.remote.RickyMortyService
 import io.spherelabs.rickymortykmm.repository.DefaultRickyMortyRepository
 import io.spherelabs.rickymortykmm.repository.RickyMortyRepository
 import kotlinx.serialization.json.Json
+import org.koin.core.context.startKoin
+import org.koin.core.module.dsl.factoryOf
 import org.koin.core.qualifier.named
+import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
+
+fun initKoin(declaration: KoinAppDeclaration = {}) =
+    startKoin {
+        declaration()
+        modules(
+            repositoryModule,
+            serviceModule,
+            useCaseModule,
+            middlewareModule
+        )
+    }
 
 val serviceModule = module {
     single<RickyMortyService> { DefaultRickyMortyService(get()) }
@@ -51,12 +65,10 @@ val repositoryModule = module {
 }
 
 val useCaseModule = module {
-    single<GetCharactersUseCase> { DefaultGetCharactersUseCase(get()) }
-    single<GetCharacterByIdUseCase> { DefaultGetCharacterByIdUseCase(get()) }
+    factory<GetCharactersUseCase> { DefaultGetCharactersUseCase(get()) }
+    factory<GetCharacterByIdUseCase> { DefaultGetCharacterByIdUseCase(get()) }
 }
 
 val middlewareModule = module {
-    single<Middleware<CharactersState, CharactersWish>>(named("characters")) {
-        CharactersMiddleware(get())
-    }
+    factoryOf(::CharactersMiddleware)
 }

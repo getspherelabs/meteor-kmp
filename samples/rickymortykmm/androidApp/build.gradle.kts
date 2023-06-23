@@ -48,4 +48,7 @@ dependencies {
     implementation("androidx.activity:activity-compose:1.7.0")
     implementation(Deps.Compose.coil)
     implementation(Deps.Compose.navigation)
+    implementation(Deps.Koin.android)
+    implementation(Deps.Koin.compose)
+
 }
