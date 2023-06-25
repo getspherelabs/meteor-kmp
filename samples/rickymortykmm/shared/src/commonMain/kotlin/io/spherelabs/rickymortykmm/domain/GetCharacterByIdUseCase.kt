@@ -15,9 +15,9 @@ class DefaultGetCharacterByIdUseCase(
     override fun execute(id: Int): Flow<Result<CharacterDto>> {
         return flow {
             try {
-                Result.success(repository.fetchCharacterById(id))
+                emit(Result.success(repository.fetchCharacterById(id)))
             } catch (e: Exception) {
-                Result.failure(e)
+                emit(Result.failure(e))
             }
         }
     }
