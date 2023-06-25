@@ -58,7 +58,6 @@ fun CharacterDetailScreen(
         wish.invoke(CharacterDetailWish.GetCharacterById(id))
 
         detailEffect.collectLatest {
-
         }
     }
     if (uiState.value.isLoading) {

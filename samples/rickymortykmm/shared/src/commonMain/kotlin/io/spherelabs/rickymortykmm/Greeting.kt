@@ -1,2 +1,1 @@
 package io.spherelabs.rickymortykmm
-

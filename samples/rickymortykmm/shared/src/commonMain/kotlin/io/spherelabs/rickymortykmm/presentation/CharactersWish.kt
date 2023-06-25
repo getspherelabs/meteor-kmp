@@ -6,5 +6,5 @@ sealed interface CharactersWish {
     object CharacterStarted : CharactersWish
     data class GetCharacters(val characters: List<CharacterDto>) : CharactersWish
     data class RequestFailed(val message: String) : CharactersWish
-    data class GetDetail(val id: Int): CharactersWish
+    data class GetDetail(val id: Int) : CharactersWish
 }

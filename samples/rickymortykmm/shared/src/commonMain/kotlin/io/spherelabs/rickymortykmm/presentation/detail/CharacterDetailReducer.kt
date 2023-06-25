@@ -25,7 +25,7 @@ object CharacterDetailReducer : Reducer<CharacterDetailState, CharacterDetailWis
                 Change(effect = newEffect, state = newState)
             }
 
-            is  CharacterDetailWish.GettingLoading -> {
+            is CharacterDetailWish.GettingLoading -> {
                 expect {
                     state.copy(isLoading = true)
                 }

@@ -9,7 +9,7 @@ import io.spherelabs.meteorviewmodel.commonflow.NonNullCommonStateFlow
 import io.spherelabs.meteorviewmodel.commonflow.asCommonFlow
 import io.spherelabs.meteorviewmodel.commonflow.asCommonStateFlow
 
-class CharacterDetailViewModel: CommonViewModel<CharacterDetailState, CharacterDetailWish, CharacterDetailEffect>() {
+class CharacterDetailViewModel : CommonViewModel<CharacterDetailState, CharacterDetailWish, CharacterDetailEffect>() {
 
     override val store: Store<CharacterDetailState, CharacterDetailWish, CharacterDetailEffect> = createMeteor(
         configs = MeteorConfigs.build {
