@@ -1,6 +1,7 @@
 package io.spherelabs.rickymortykmm.android.ui
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -17,9 +18,13 @@ import io.spherelabs.rickymortykmm.remote.dto.CharacterDto
 @Composable
 fun CharacterItem(
     modifier: Modifier = Modifier,
-    character: CharacterDto
+    character: CharacterDto,
+    onClick: () -> Unit
 ) {
     Row(
+        modifier = modifier.clickable {
+            onClick()
+        },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
