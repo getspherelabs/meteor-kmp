@@ -9,21 +9,3 @@ import io.spherelabs.meteor.configs.Change
 public interface Reducer<State : Any, Wish : Any, Effect : Any> {
     public fun reduce(state: State, wish: Wish): Change<State, Effect>
 }
-
-public fun <State : Any, Wish : Any, Effect : Any> Reducer<State, Wish, Effect>.expect(
-    action: () -> State
-): Change<State, Effect> {
-    return Change(state = action())
-}
-
-public fun <State : Any, Wish : Any, Effect : Any> Reducer<State, Wish, Effect>.unexpected(action: () -> State): Change<State, Effect> {
-    return Change(null, state = action())
-}
-
-public fun <State : Any, Wish : Any, Effect : Any> Reducer<State, Wish, Effect>.effect(action: () -> Effect): Change<State, Effect> {
-    return Change(effect = action())
-}
-
-public fun <State : Any, Wish : Any, Effect : Any> Reducer<State, Wish, Effect>.route(action: () -> Effect): Change<State, Effect> {
-    return Change(effect = action())
-}

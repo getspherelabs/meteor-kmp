@@ -114,19 +114,20 @@ public final class io/spherelabs/meteor/exception/NotInitializedException : java
 	public synthetic fun <init> (Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 }
 
+public final class io/spherelabs/meteor/extension/ReducerExtensionKt {
+	public static final fun effect (Lio/spherelabs/meteor/reducer/Reducer;Lkotlin/jvm/functions/Function0;)Lio/spherelabs/meteor/configs/Change;
+	public static final fun expect (Lio/spherelabs/meteor/reducer/Reducer;Lkotlin/jvm/functions/Function0;)Lio/spherelabs/meteor/configs/Change;
+	public static final fun expect (Lio/spherelabs/meteor/reducer/Reducer;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;)Lio/spherelabs/meteor/configs/Change;
+	public static final fun route (Lio/spherelabs/meteor/reducer/Reducer;Lkotlin/jvm/functions/Function0;)Lio/spherelabs/meteor/configs/Change;
+	public static final fun unexpected (Lio/spherelabs/meteor/reducer/Reducer;Lkotlin/jvm/functions/Function0;)Lio/spherelabs/meteor/configs/Change;
+}
+
 public abstract interface class io/spherelabs/meteor/middleware/Middleware {
 	public abstract fun process (Ljava/lang/Object;Ljava/lang/Object;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public abstract interface class io/spherelabs/meteor/reducer/Reducer {
 	public abstract fun reduce (Ljava/lang/Object;Ljava/lang/Object;)Lio/spherelabs/meteor/configs/Change;
-}
-
-public final class io/spherelabs/meteor/reducer/ReducerKt {
-	public static final fun effect (Lio/spherelabs/meteor/reducer/Reducer;Lkotlin/jvm/functions/Function0;)Lio/spherelabs/meteor/configs/Change;
-	public static final fun expect (Lio/spherelabs/meteor/reducer/Reducer;Lkotlin/jvm/functions/Function0;)Lio/spherelabs/meteor/configs/Change;
-	public static final fun route (Lio/spherelabs/meteor/reducer/Reducer;Lkotlin/jvm/functions/Function0;)Lio/spherelabs/meteor/configs/Change;
-	public static final fun unexpected (Lio/spherelabs/meteor/reducer/Reducer;Lkotlin/jvm/functions/Function0;)Lio/spherelabs/meteor/configs/Change;
 }
 
 public final class io/spherelabs/meteor/store/MeteorStore : io/spherelabs/meteor/store/Store {
