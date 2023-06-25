@@ -50,5 +50,4 @@ dependencies {
     implementation(Deps.Compose.navigation)
     implementation(Deps.Koin.android)
     implementation(Deps.Koin.compose)
-
 }
