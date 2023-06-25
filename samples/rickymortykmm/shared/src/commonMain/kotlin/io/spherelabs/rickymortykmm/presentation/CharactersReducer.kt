@@ -4,6 +4,7 @@ import io.spherelabs.meteor.configs.Change
 import io.spherelabs.meteor.reducer.Reducer
 import io.spherelabs.meteor.reducer.effect
 import io.spherelabs.meteor.reducer.expect
+import io.spherelabs.meteor.reducer.route
 import io.spherelabs.meteor.reducer.unexpected
 
 object CharactersReducer : Reducer<CharactersState, CharactersWish, CharactersEffect> {
@@ -17,11 +18,19 @@ object CharactersReducer : Reducer<CharactersState, CharactersWish, CharactersEf
                     )
                 }
             }
+
             is CharactersWish.RequestFailed -> {
                 effect {
                     CharactersEffect.Failure(wish.message)
                 }
             }
+
+            is CharactersWish.GetDetail -> {
+                route {
+                    CharactersEffect.GetDetail(wish.id)
+                }
+            }
+
             else -> {
                 unexpected { state }
             }
