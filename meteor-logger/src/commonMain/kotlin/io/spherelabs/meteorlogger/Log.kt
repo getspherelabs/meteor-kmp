@@ -21,9 +21,9 @@ public expect fun failure(message: String, throwable: Throwable? = null, tag: St
 public expect fun log(previousState: Any, newState: Any, wish: Any)
 
 /**
- * Logs the only specific wish without any state information.
+ * Logs the current text.
  */
-public expect fun log(wish: Any)
+public expect fun log(text: Any)
 
 /**
  * Logs the previous state, new state and wish for the test.

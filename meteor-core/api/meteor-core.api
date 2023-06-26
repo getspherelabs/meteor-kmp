@@ -5,6 +5,10 @@ public final class io/spherelabs/meteor/BuildConfig {
 	public fun <init> ()V
 }
 
+public abstract interface class io/spherelabs/meteor/Interceptor {
+	public abstract fun handle (Lkotlinx/coroutines/flow/Flow;)V
+}
+
 public abstract interface class io/spherelabs/meteor/ReducerScope {
 	public abstract fun reducer (Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 }

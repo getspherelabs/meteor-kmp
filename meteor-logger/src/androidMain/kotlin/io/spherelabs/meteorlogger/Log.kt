@@ -20,8 +20,8 @@ public actual fun log(previousState: Any, newState: Any, wish: Any) {
     println("New state: $newState")
 }
 
-public actual fun log(wish: Any) {
-    println("Processing a new wish from middleware: ${wish.format()}")
+public actual fun log(text: Any) {
+    println("Processing a new wish from middleware: ${text.format()}")
 }
 
 public actual fun logTest(previousState: Any, newState: Any, wish: Any) {

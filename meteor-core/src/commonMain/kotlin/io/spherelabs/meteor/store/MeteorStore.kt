@@ -2,6 +2,7 @@ package io.spherelabs.meteor.store
 
 import io.spherelabs.meteor.configs.Change
 import io.spherelabs.meteor.configs.MeteorConfigs
+import io.spherelabs.meteorlogger.log
 import io.spherelabs.meteorlogger.logTest
 import io.spherelabs.meteorlogger.logTestEffect
 import kotlinx.coroutines.CoroutineScope
@@ -31,6 +32,10 @@ public class MeteorStore<State : Any, Wish : Any, Effect : Any> constructor(
     override val effect: Flow<Effect> = _effect.receiveAsFlow()
 
     private val lock = Mutex()
+
+    init {
+        log("Initialized the store ${configs.storeName}")
+    }
 
     override suspend fun wish(wish: Wish) {
         mainScope.launch {
