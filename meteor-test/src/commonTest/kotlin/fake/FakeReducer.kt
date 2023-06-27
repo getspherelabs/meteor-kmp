@@ -6,7 +6,6 @@ import io.spherelabs.meteor.extension.route
 import io.spherelabs.meteor.extension.unexpected
 import io.spherelabs.meteor.reducer.Reducer
 
-
 object FakeReducer : Reducer<FakeState, FakeWish, FakeEffect> {
 
     override fun reduce(state: FakeState, wish: FakeWish): Change<FakeState, FakeEffect> {
