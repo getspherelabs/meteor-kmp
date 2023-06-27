@@ -1,0 +1,19 @@
+public final class io/spherelabs/meteorusecase/BuildConfig {
+	public static final field BUILD_TYPE Ljava/lang/String;
+	public static final field DEBUG Z
+	public static final field LIBRARY_PACKAGE_NAME Ljava/lang/String;
+	public fun <init> ()V
+}
+
+public abstract class io/spherelabs/meteorusecase/CommonUseCase {
+	public fun <init> (Lkotlinx/coroutines/CoroutineDispatcher;)V
+	public abstract fun execute (Ljava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
+	public final fun invoke (Ljava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
+}
+
+public abstract class io/spherelabs/meteorusecase/SuspendableUseCase {
+	public fun <init> (Lkotlinx/coroutines/CoroutineDispatcher;)V
+	public abstract fun execute-gIAlu-s (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun invoke-gIAlu-s (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
