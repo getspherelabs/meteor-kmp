@@ -1,3 +1,7 @@
+public final class io/spherelabs/meteorlogger/AnyExtensionKt {
+	public static final fun format (Ljava/lang/Object;)Ljava/lang/String;
+}
+
 public final class io/spherelabs/meteorlogger/BuildConfig {
 	public static final field BUILD_TYPE Ljava/lang/String;
 	public static final field DEBUG Z

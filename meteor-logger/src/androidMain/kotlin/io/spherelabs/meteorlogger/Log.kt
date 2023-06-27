@@ -21,7 +21,7 @@ public actual fun log(previousState: Any, newState: Any, wish: Any) {
 }
 
 public actual fun log(text: Any) {
-    println("Processing a new wish from middleware: ${text.format()}")
+    println(text)
 }
 
 public actual fun logTest(previousState: Any, newState: Any, wish: Any) {

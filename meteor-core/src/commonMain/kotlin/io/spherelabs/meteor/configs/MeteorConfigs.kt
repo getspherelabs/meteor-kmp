@@ -1,5 +1,7 @@
 package io.spherelabs.meteor.configs
 
+import io.spherelabs.meteor.interceptor.Interceptor
+import io.spherelabs.meteor.interceptor.LoggingInterceptor
 import io.spherelabs.meteor.middleware.Middleware
 import io.spherelabs.meteor.reducer.Reducer
 import kotlinx.coroutines.CoroutineDispatcher
@@ -41,6 +43,7 @@ public interface MeteorConfigs<State : Any, Wish : Any, Effect : Any> {
     public val ioDispatcher: CoroutineDispatcher
     public val reducer: Reducer<State, Wish, Effect>
     public val middleware: Middleware<State, Wish>
+    public val interceptor: Interceptor<State, Wish, Effect>
 
     /**
      * A [Builder] class for constructing instance of [MeteorConfigs].
@@ -51,7 +54,8 @@ public interface MeteorConfigs<State : Any, Wish : Any, Effect : Any> {
         var mainDispatcher: CoroutineDispatcher = Dispatchers.Default,
         var ioDispatcher: CoroutineDispatcher = Dispatchers.Default,
         var reducer: Reducer<State, Wish, Effect>? = null,
-        var middleware: Middleware<State, Wish>? = null
+        var middleware: Middleware<State, Wish>? = null,
+        val interceptor: Interceptor<State, Wish, Effect> = LoggingInterceptor<State, Wish, Effect>()
     )
 
     public companion object {
@@ -79,6 +83,8 @@ public interface MeteorConfigs<State : Any, Wish : Any, Effect : Any> {
                 override val middleware: Middleware<State, Wish> = checkNotNull(builder.middleware) {
                     "Middleware is not initialized."
                 }
+
+                override val interceptor: Interceptor<State, Wish, Effect> = builder.interceptor
             }
         }
     }
