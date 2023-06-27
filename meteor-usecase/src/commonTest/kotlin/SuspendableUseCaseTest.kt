@@ -1,6 +1,4 @@
-package fake
-
-import app.cash.turbine.test
+import fake.FakeSuspendableUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -12,29 +10,31 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class CommonViewModelWithDslTest {
+class SuspendableUseCaseTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private val dispatcher = UnconfinedTestDispatcher()
-    private lateinit var viewModel: CountDslViewModel
+
+    private lateinit var useCase: FakeSuspendableUseCase
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @BeforeTest
-    fun setup() {
+    fun before() {
         Dispatchers.setMain(dispatcher)
-        viewModel = CountDslViewModel()
+        useCase = FakeSuspendableUseCase(dispatcher)
     }
 
     @Test
-    fun `check the count dsl view model works properly`() = runTest {
-        viewModel.wish(FakeCountWish.Increase)
+    fun shouldUseCaseWorksProperly() = runTest {
+        var expected = ""
 
-        viewModel.state.test {
-            assertEquals(
-                FakeCountState(1),
-                awaitItem()
-            )
+        val result = useCase(Unit)
+
+        result.onSuccess {
+            expected = it
         }
+
+        assertEquals(expected, "10")
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)

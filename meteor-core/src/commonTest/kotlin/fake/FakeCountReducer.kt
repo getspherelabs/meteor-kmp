@@ -1,9 +1,9 @@
 package fake
 
 import io.spherelabs.meteor.configs.Change
+import io.spherelabs.meteor.extension.effect
+import io.spherelabs.meteor.extension.expect
 import io.spherelabs.meteor.reducer.Reducer
-import io.spherelabs.meteor.reducer.effect
-import io.spherelabs.meteor.reducer.expect
 
 object FakeCountReducer : Reducer<FakeCountState, FakeCountWish, FakeCountEffect> {
 

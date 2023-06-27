@@ -1,10 +1,11 @@
 package fake
 
 import io.spherelabs.meteor.configs.Change
+import io.spherelabs.meteor.extension.expect
+import io.spherelabs.meteor.extension.route
+import io.spherelabs.meteor.extension.unexpected
 import io.spherelabs.meteor.reducer.Reducer
-import io.spherelabs.meteor.reducer.expect
-import io.spherelabs.meteor.reducer.route
-import io.spherelabs.meteor.reducer.unexpected
+
 
 object FakeReducer : Reducer<FakeState, FakeWish, FakeEffect> {
 
