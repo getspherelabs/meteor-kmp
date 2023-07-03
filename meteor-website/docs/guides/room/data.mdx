@@ -1,0 +1,198 @@
+---
+title: Working with data
+---
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+With LiveKit maintaining room state, you can use it to pass around custom application data. We have a flexible system that enables you to pass messages from both the backend, and between participants.
+
+## Participant metadata
+
+LiveKit participants have a `metadata` field that you could use to store application-specific data. For example, this could be the seat number around a table, or other participant-specific state.
+
+Metadata is encoded in the [access token](/guides/access-tokens) that participants use to connect to the room.
+
+With our server SDKs, you can update the metadata from your backend. LiveKit will broadcast metadata changes to all participants in the room. You can receive these updates by listening to the MetadataUpdated callback/event.
+
+### Example: Updating metadata from server API
+
+<Tabs
+  defaultValue="node"
+  groupId="server-sdk"
+  values={[
+    {label: 'Node', value: 'node'},
+    {label: 'Golang', value: 'go'},
+  ]}>
+  <TabItem value="node">
+
+```typescript title="TypeScript"
+import { RoomServiceClient } from 'livekit-server-sdk';
+
+const client = new RoomServiceClient("myhost", "api-key", "my secret")
+
+const data = JSON.stringify({
+  some: "values",
+})
+client.updateParticipant("myroom", "participant-identity", data)
+```
+
+  </TabItem>
+
+  <TabItem value="go">
+
+```go title="Go"
+import (
+  lksdk "github.com/livekit/server-sdk-go"
+)
+
+func updateMetadata(values interface{}) {
+  roomClient := lksdk.NewRoomServiceClient(host, apiKey, apiSecret)
+
+  data, err := json.Marshal(values)
+
+  _, err = roomClient.UpdateParticipant(context.Background(), &livekit.UpdateParticipantRequest{
+    Room: "myroom",
+    Identity: "participant-identity",
+    Metadata: string(data),
+  })
+}
+```
+
+  </TabItem>
+
+</Tabs>
+
+## Data messages
+
+From both server and clients, LiveKit lets you publish arbitrary data messages to any participants in the room via the `LocalParticipant.publishData` API. Room data is published to the SFU via WebRTC data channels; and LiveKit server would forward that data to one or more participants in the room.
+
+From the server side, this API is exposed on `RoomService` as `SendData`
+
+Since the data is sent via UDP, you have a flexibility in regard to the reliability of delivery. We support both reliable and lossy. In reliable mode, your packets will be retransmitted until they are received. For use-cases such as in-room chat, this is preferable.
+
+When using lossy delivery, we suggest keeping data packets small (under network MTU of 1.4k). If a message is packetized into multiple packets, and a single packet doesn't arrive, your client will not receive the message at all.
+
+<Tabs
+  defaultValue="typescript"
+  groupId="client-sdk"
+  values={[
+    {label: 'Browser', value: 'typescript'},
+    {label: 'iOS/macOS', value: 'ios'},
+    {label: 'Android', value: 'android'},
+    {label: 'Flutter', value: 'flutter'},
+    {label: 'Golang', value: 'go'},
+  ]}>
+  <TabItem value="typescript">
+
+```typescript title="TypeScript"
+const strData = JSON.stringify({some: "data"})
+const encoder = new TextEncoder()
+const decoder = new TextDecoder()
+
+// publishData takes in a Uint8Array, so we need to convert it
+const data = encoder.encode(strData);
+
+// publish to everyone in the room
+room.localParticipant.publishData(data, DataPacket_Kind.RELIABLE)
+
+// publish to specific participants
+room.localParticipant.publishData(data, DataPacket_Kind.LOSSY, ['participant_sid'])
+
+// receive data from other participants
+room.on(RoomEvent.DataReceived, (payload: Uint8Array, participant: Participant, kind: DataPacket_Kind) => {
+  const strData = decoder.decode(payload)
+  ...
+})
+```
+
+  </TabItem>
+  <TabItem value="ios">
+
+```swift title="Swift"
+import LiveKit
+
+public class DataExample {
+  func publishData(localParticipant: LocalParticipant)  {
+    val someVal = "your value"
+
+    // publish lossy packet to everyone in the room
+    localParticipant.publish(data: someVal.data(using: .utf8), reliability: .lossy)
+
+    // publish reliable packet to specific participants
+    localParticipant.publish(data: someVal.data(using: .utf8), reliability: .reliable, ["sid1", "sid2"])
+  }
+}
+
+extension DataExample: RoomDelegate {
+  func room(_ room: Room, participant: RemoteParticipant, didReceive data: Data) {
+
+  }
+}
+
+```
+
+  </TabItem>
+  <TabItem value="android">
+
+```kt title="Kotlin"
+
+class DataExample : RoomListener {
+    fun publishData(localParticipant: LocalParticipant, data: ByteArray) {
+      // publish lossy data to the entire room
+      localParticipant.publishData(data, DataPublishReliability.LOSSY)
+
+      // publish reliable data to a set of participants
+      localParticipant.publishData(data, DataPublishReliability.RELIABLE, listOf("sid1", "sid2"))
+    }
+
+    override fun onDataReceived(data: ByteArray, participant: RemoteParticipant, room: Room) {} {
+        // process received data
+    }
+}
+```
+  </TabItem>
+  <TabItem value="flutter">
+
+```dart title="Dart"
+class DataExample {
+  Room room;
+  late final _listener = room.createListener();
+
+  DataExample() {
+    _listener.on<DataReceivedEvent>((e) {
+      // process received data: e.data
+    })
+  }
+
+  void publishData() {
+    // publish lossy data to the entire room
+    room.localParticipant.publishData(data, DataPacket_Kind.LOSSY);
+
+    // publish reliable data to a set of participants
+    room.localParticipant.publishData(data, DataPacket_Kind.RELIABLE, ["sid1", "sid2"]);
+  }
+
+  void dispose() {
+    _listener.dispose();
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="go">
+
+```go title="Go"
+// publish lossy data to everyone
+room.LocalParticipant.PublishData(data, DataPacket_Kind.LOSSY, nil)
+
+// publish reliable data to a set of participants
+room.LocalParticipant.PublishData(data, DataPacket_Kind.LOSSY, []string{"sid1", "sid2"})
+
+room.Callback.OnDataReceived = func(data []byte, rp *lksdk.RemoteParticipant) {
+  // process received data
+}
+```
+
+  </TabItem>
+
+</Tabs>

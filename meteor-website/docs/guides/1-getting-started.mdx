@@ -1,0 +1,260 @@
+---
+title: Getting Started
+---
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import xcodeSwiftPackageImageUrl from '@site/static/img/getting-started/swift-package-xcode.png'
+
+This guide will get you running with a LiveKit installation in two minutes!
+
+## Overview
+
+At its core, LiveKit is a WebRTC SFU. This means it acts as a WebRTC peer and maintains connections with each participant in a room. Unlike vanilla WebRTC, each client participant connects to the LiveKit server, not to one another.
+
+LiveKit uses [JWT-based](https://en.wikipedia.org/wiki/JSON_Web_Token) access tokens for authentication. Using LiveKit's server SDK, access tokens are generated with an API key and secret pair. This exchange takes place on the server side to avoid embedding the secret in client code. Here's the general flow:
+
+* your backend server generates an access token using LiveKit's [server SDK](/references/server-sdks)
+* your client obtains this token from your backend
+* your client passes the token to LiveKit's client SDK
+* the LiveKit client connects to a LiveKit server instance with the provided token
+* LiveKit server validates the token and accepts your incoming connection
+
+## Setting up the server
+
+### Generate config file and keys
+
+```shell
+docker run --rm -v$PWD:/output livekit/generate --local
+```
+
+The above command generates a `livekit.yaml` you can use to start LiveKit. It'll contain an API key/secret pair
+you can use with your LiveKit install.
+
+### Starting with docker
+
+```shell
+docker run --rm -p 7880:7880 \
+    -p 7881:7881 \
+    -p 7882:7882/udp \
+    -v $PWD/livekit.yaml:/livekit.yaml \
+    livekit/livekit-server \
+    --config /livekit.yaml \
+    --node-ip <machine-ip>
+```
+
+When running with docker, `--node-ip` needs to be set to your machine's IP address. If the service will be exposed to
+the public Internet, this should the machine's public IP.
+
+### Test with example app
+
+You are now ready to connect to your server with a client. Head over to the [example app](https://example.livekit.io) and enter the generated token to connect to your LiveKit
+server. This app is built with our [React SDK](https://github.com/livekit/livekit-react).
+
+Once connected, your video and audio are now published to your new LiveKit instance!
+
+![browser client screenshot](/img/getting-started/browser-client.png)
+
+### Generating access tokens (JWT)
+
+To add more users to a room, you'll have to create a token for each
+participant. [Learn more about access tokens](/guides/access-tokens/).
+
+`livekit-server` provides a convenient sub-command to create a development token. This token has an expiration of a
+month, which is useful for development and testing, but not appropriate for production use.
+
+```shell
+docker run --rm -e LIVEKIT_KEYS="<api-key>: <api-secret>" \
+    livekit/livekit-server create-join-token \
+    --room "<room-name>" \
+    --identity "<participant-identity>"
+```
+
+## Integrating Client SDKs
+
+<Tabs
+  defaultValue="typescript"
+  groupId="client-sdk"
+  values={[
+    {label: 'JavaScript', value: 'typescript'},
+    {label: 'React', value: 'react'},
+    {label: 'iOS/macOS', value: 'ios'},
+    {label: 'Android', value: 'android'},
+    {label: 'Flutter', value: 'flutter'},
+  ]}>
+
+  <TabItem value="typescript">
+
+The JS client SDK is [published to npm](https://www.npmjs.com/package/livekit-client).
+Here's an [example app](https://github.com/livekit/client-sdk-js/blob/main/example/sample.ts) using the JS SDK.
+
+**yarn**
+
+```shell
+yarn add livekit-client
+```
+
+**npm**
+
+```shell
+npm install --save livekit-client
+```
+
+  </TabItem>
+
+  <TabItem value="react">
+
+The React client SDK is [published to npm](https://www.npmjs.com/package/livekit-react).
+Here's an [example app](https://github.com/livekit/livekit-react/tree/master/example) using the React SDK.
+
+**yarn**
+
+```shell
+yarn add livekit-react livekit-client
+```
+
+**npm**
+
+```shell
+npm install --save livekit-react livekit-client
+```
+
+  </TabItem>
+
+  <TabItem value="ios">
+
+  The Swift SDK(iOS &amp; macOS) is available as a Swift package.
+  Here's an [example app](https://github.com/livekit/client-example-swift) using the Swift SDK.
+
+  **Package.swift**
+
+  Add the dependency and also to your target
+
+  ```swift title="Package.swift"
+  let package = Package(
+    ...
+    dependencies: [
+      .package(name: "LiveKit", url: "https://github.com/livekit/client-sdk-swift.git", .upToNextMajor("version")),
+    ],
+    targets: [
+      .target(
+        name: "MyApp",
+        dependencies: ["LiveKit"]
+      )
+    ]
+  }
+  ```
+
+  **XCode**
+
+  Go to Project Settings -> Swift Packages.
+
+  Add a new package and enter: `https://github.com/livekit/client-sdk-swift`
+
+  <img src={xcodeSwiftPackageImageUrl} height={400} width={678}/>
+
+  </TabItem>
+
+  <TabItem value="android">
+
+Android client SDK is [published to Maven](https://search.maven.org/artifact/io.livekit/livekit-android).
+Here's an [example app](https://github.com/livekit/client-sdk-android/tree/master/sample-app) using the Android SDK.
+
+```groovy title="build.gradle"
+...
+dependencies {
+  implementation "io.livekit:livekit-android:<version>"
+}
+```
+
+You'll also need Jitpack.io as one of the repositories
+
+```groovy
+subprojects {
+  repositories {
+      google()
+      mavenCentral()
+      // ...
+      maven { url 'https://jitpack.io' }
+  }
+}
+```
+
+  </TabItem>
+
+  <TabItem value="flutter">
+
+The Flutter client SDK is [published to pub.dev](https://pub.dev/packages/livekit_client).
+Here's an [example app](https://github.com/livekit/client-sdk-flutter/tree/main/example) built with Flutter SDK.
+
+Include this package to your `pubspec.yaml`
+
+```yaml
+...
+dependencies:
+  livekit_client: <version>
+```
+
+  </TabItem>
+
+</Tabs>
+
+
+## Integrating Server SDKs
+
+The following server SDKs are designed to be used by your backend code. For access control to a room, the server SDKs generate and sign a one-time token for each client that connects to the room.
+
+<Tabs
+  defaultValue="node"
+  groupId="server-sdk"
+  values={[
+    {label: 'Golang', value: 'go'},
+    {label: 'Node', value: 'node'},
+    {label: 'Ruby', value: 'ruby'},
+  ]}>
+  <TabItem value="go">
+
+  ```shell
+  go get github.com/livekit/server-sdk-go
+  go get github.com/livekit/protocol
+  ```
+
+  </TabItem>
+  <TabItem value="node">
+
+  Server SDK is [published to npm](https://www.npmjs.com/package/livekit-server-sdk)
+
+  **yarn**
+
+  ```shell
+  yarn add livekit-server-sdk
+  ```
+
+  **npm**
+
+  ```shell
+  npm install --save livekit-server-sdk
+  ```
+
+  </TabItem>
+  <TabItem value="ruby">
+
+  Server SDK is [published to RubyGems](https://rubygems.org/gems/livekit-server-sdk)
+
+  ***Gemfile***
+
+  Add this line to your application's Gemfile:
+
+  ```ruby
+  gem 'livekit-server-sdk'
+  ```
+
+  and then `bundle install`.
+
+  ***Install system-wide***
+
+  ```shell
+  gem install livekit-server-sdk
+  ```
+
+  </TabItem>
+</Tabs>

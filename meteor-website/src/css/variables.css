@@ -1,0 +1,66 @@
+:root {
+    /* lk colors */
+    --lk-dark-blue: #00153C;
+    --lk-white: #fff;
+    --lk-white-darker: rgba(255,255,255,0.5);
+    --lk-black: #000;
+    --lk-border-color: rgba(255,255,255,0.1);
+    --lk-blue: #5A8BFF;
+    --lk-green: #6EE2E2;
+    --lk-gradient-horizontal: linear-gradient(262.65deg, var(--lk-green) 0%, var(--lk-blue) 100%);
+    --lk-secondary-text: rgba(255, 255, 255, 0.7);
+
+    /* lk font weights */
+    --lk-regular-weight: 400;
+    --lk-black-weight: 900;
+
+    /* infima overrides */
+    --ifm-font-family-base: 'Avenir', sans-serif;
+    --ifm-heading-font-weight: var(--lk-black-weight);
+
+    --ifm-background-color: var(--lk-black);
+    --ifm-background-surface-color: var(--lk-dark-blue);
+    --ifm-font-color-base:var(--lk-white);
+    --ifm-toc-border-color: var(--lk-border-color);
+    --ifm-color-emphasis-300: var(--lk-border-color);
+
+    --ifm-pagination-nav-border-radius: 0.5rem;
+
+    --ifm-navbar-padding-vertical: 1.25rem;
+    --ifm-navbar-padding-horizontal: 2rem;
+    --ifm-navbar-height: auto;
+    --ifm-navbar-background-color: #000;
+    --ifm-navbar-shadow: 0 1px 0 0 var(--lk-border-color);
+
+    --ifm-menu-color-background-active: var(--lk-dark-blue);
+    --ifm-menu-color-active: var(--lk-white);
+    --ifm-menu-color: var(--lk-white);
+    --ifm-menu-link-padding-vertical: 0.75rem;
+    --ifm-menu-link-padding-horizontal: 1rem;
+    --ifm-menu-link-sublist-icon: url(/img/chevron.svg);
+
+    --ifm-footer-color: var(--lk-white-darker);
+    --ifm-footer-background-color: var(--lk-black);
+
+    --ifm-color-gray-900: var(--lk-white);
+    --ifm-color-secondary: var(--lk-border-color);
+
+    --ifm-link-color: var(--lk-blue);
+    --ifm-color-primary: var(--lk-green);
+    --ifm-color-secondary-dark: var(--lk-blue);
+
+    --ifm-code-background: var(--lk-border-color);
+    --ifm-table-stripe-background: transparent;
+    --ifm-table-border-color: var(--lk-white-darker);
+
+    --ifm-toc-link-color: var(--lk-secondary-text);
+
+    /* infima defaults */
+    --ifm-color-primary-dark: rgb(33, 175, 144);
+    --ifm-color-primary-darker: rgb(31, 165, 136);
+    --ifm-color-primary-darkest: rgb(26, 136, 112);
+    --ifm-color-primary-light: rgb(70, 203, 174);
+    --ifm-color-primary-lighter: rgb(102, 212, 189);
+    --ifm-color-primary-lightest: rgb(146, 224, 208);
+    --ifm-code-font-size: 95%;
+}
