@@ -25,7 +25,7 @@ module.exports = {
       },
       items: [
         {
-          href: 'https://livekit.io',
+          href: 'https://getpspherelabs.github.io/meteor/',
           label: 'Home',
           position: 'right',
         },
