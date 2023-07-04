@@ -1,0 +1,349 @@
+---
+title: Connection and callbacks
+---
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+A room is the main construct in LiveKit. Upon successful connection, you're provided a room object to interact with. The two key properties on a room object are the **LocalParticipant** object, representing the current user, and **RemoteParticipants**, an array of other users in the room.
+
+You can also listen for room events. Your callbacks will be invoked whenever various states of the room change.
+
+For events happening to a specific participant, they will also be fired on the appropriate `RemoteParticipant` or `LocalParticipant` object.
+
+## Connecting to a room
+
+Connecting to a room requires two parameters: a `url` and a `token`. The `url` points to your LiveKit server instance, which, if you followed [this guide](/guides/getting-started/#setting-up-the-server), is likely `ws://localhost:7880`.
+
+The `token` is an access token representing the particular local participant. You can use the aformentioned guide to generate a token via CLI, or you can use our [server SDK](/references/server-sdks) to create one.
+
+You may also customize room options during connect.
+
+<Tabs
+  defaultValue="typescript"
+  groupId="client-sdk"
+  values={[
+    {label: 'Browser', value: 'typescript'},
+    {label: 'React', value: 'react'},
+    {label: 'iOS/macOS', value: 'ios'},
+    {label: 'Android', value: 'android'},
+    {label: 'Flutter', value: 'flutter'},
+    {label: 'Golang', value: 'go'},
+  ]}>
+  <TabItem value="typescript">
+
+```typescript title="TypeScript"
+import {
+  connect,
+  ParticipantEvent,
+  RoomEvent,
+} from 'livekit-client'
+
+const url = 'wss://your_host'
+const token = 'jwt_token'
+
+const room = await connect(url, token, {
+  // to publish camera and microphone immediately after joining
+  audio: true,
+  video: true,
+  // automatically manage video quality
+  autoManageVideo: true,
+  // default publish settings
+  publishDefaults: {
+    simulcast: true,
+  },
+  // default capture settings
+  captureDefaults: {
+    videoResolution: VideoPresets.hd.resolution,
+  },
+})
+
+// after connection, you could set up listeners
+room
+  // when a media track is subscribed to, ready for playback
+  .on(RoomEvent.TrackSubscribed, (track, publication, participant) => {})
+  // when a media track has been unsubscribed
+  .on(RoomEvent.TrackUnsubscribed, (track, publication, participant) => {})
+  // when a new participant has joined
+  .on(RoomEvent.ParticipantConnected, (participant) => {
+    // set up any per-participant callbacks
+    participant.on(ParticipantEvent.TrackMuted, (publication) => {})
+  })
+  // when a participant has left
+  .on(RoomEvent.ParticipantDisconnected, (participant) => {})
+  // teardown room
+  .on(RoomEvent.Disconnected, () => {})
+
+```
+
+See listing of [Room events](https://docs.livekit.io/client-sdk-js/enums/roomevent.html) and [Participant events](https://docs.livekit.io/client-sdk-js/enums/participantevent.html)
+
+  </TabItem>
+  <TabItem value="react">
+
+```typescript title="TypeScript"
+import { useRoom } from 'livekit-react'
+
+export const MyComponent = () => {
+  const { connect, isConnecting, room, error, participants } = useRoom();
+
+  useEffect(() => {
+    const options: ConnectOptions = {
+      // automatically manage video quality
+      autoManageVideo: true,
+      // default publish settings
+      publishDefaults: {
+        simulcast: true,
+      },
+      // default capture settings
+      captureDefaults: {
+        videoResolution: VideoPresets.hd.resolution,
+      },
+    }
+    connect(url, token, options).then(room => {
+      // publish tracks
+    })
+    // teardown
+    return () => {
+      room.disconnect()
+    }
+  }, [])
+  ...
+}
+```
+The React SDK depends on the JS SDK. For publishing and other interactions, refer to the JS SDK.
+
+  </TabItem>
+  <TabItem value="ios">
+
+```swift title="Swift"
+import LiveKit
+import UIKit
+
+class RoomViewController: UIViewController {
+    var room: Room?
+    var remoteVideo: VideoView?
+    var localVideo: VideoView?
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .white
+
+        let url: String = "ws://your_host"
+        let token: String = "your_jwt_token"
+        let options: ConnectOptions = ConnectOptions(
+          autoSubscribe: true,
+          defaultVideoPublishOptions: LocalVideoTrackPublishOptions(simulcast: true),
+        )
+
+        room = LiveKit.connect(url, token, options: options, delegate: self)
+    }
+}
+
+extension RoomViewController: RoomDelegate {
+    func room(_ room: Room, didConnect isReconnect: Bool) {
+    }
+
+    func room(_ room: Room, didDisconnect error: Error?) {
+    }
+
+    func room(_ room: Room, participantDidJoin participant: RemoteParticipant) {
+      // participant.delegate = <ParticipantDelegate>
+    }
+
+    func room(_ room: Room, participantDidLeave participant: RemoteParticipant) {
+    }
+
+    func room(_ room: Room, participant: RemoteParticipant, didSubscribe trackPublication: RemoteTrackPublication, track: Track) {
+    }
+
+    func room(_ room: Room, participant: RemoteParticipant, didUnsubscribe trackPublication: RemoteTrackPublication) {
+    }
+}
+```
+
+See listing of [Room events](https://docs.livekit.io/client-sdk-swift/RoomDelegate/) and [Participant events](https://docs.livekit.io/client-sdk-swift/ParticipantDelegate/)
+
+:::note
+
+On **iOS**, when connecting to unsecured hosts via ws://, you may get an error message like:
+
+```
+The resource could not be loaded because the App Transport Security policy requires the use of a secure connection
+```
+
+This is due to the TLS requirement in iOS apps. To suppress this error, you'll need to add a security exception to your Xcode configuration:
+
+1. Click on the `.xcodeproj` file in Xcode
+2. Select a target from the Targets list
+2. Click the "Info" tab
+2. Add a custom iOS property
+3. Enter "App Transport Security Settings" or "NSAppTransportSecurity" as a `Dictionary`
+4. Under that dictionary, add a key "NSAllowsArbitraryLoads" and set it to `YES`
+
+:::
+
+  </TabItem>
+  <TabItem value="android">
+
+```kt title="Kotlin"
+
+class MainActivity : AppCompatActivity(), RoomListener {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        ...
+        val url = "wss://your_host";
+        val token = "your_token"
+        val options = ConnectOptions(
+            autoSubscribe: false,
+            autoManageVideo: true,
+            videoTrackPublishDefaults: VideoTrackPublishDefaults(
+              simulcast: true,
+            ),
+            videoTrackCaptureDefaults: LocalVideoTrackOptions(
+              captureParams: VideoPreset169.HD.capture,
+            ),
+        )
+
+        launch {
+            val room = LiveKit.connect(
+                applicationContext,
+                url,
+                token,
+                options,
+                this
+            )
+        }
+    }
+
+    override fun onTrackSubscribed(
+        track: Track,
+        publication: RemoteTrackPublication,
+        participant: RemoteParticipant,
+        room: Room
+    ) {
+    }
+
+    override fun onTrackPublished(
+        publication: RemoteTrackPublication,
+        participant: RemoteParticipant,
+        room: Room
+    ) {
+    }
+
+    override fun onDisconnect(room: Room, error: Exception?) {
+    }
+
+    override fun onParticipantConnected(
+        room: Room,
+        participant: RemoteParticipant
+    ) {
+        updateParticipants(room)
+    }
+
+    override fun onParticipantDisconnected(
+        room: Room,
+        participant: RemoteParticipant
+    ) {
+        updateParticipants(room)
+    }
+}
+```
+
+</TabItem>
+<TabItem value="flutter">
+
+For details regarding handling changes in Flutter's declarative UI, see [handling changes](https://github.com/livekit/client-sdk-flutter#handling-changes)
+
+```dart
+import 'package:livekit_client/livekit_client.dart';
+
+var url = 'your-host';
+var token = 'your-token';
+var options = ConnectOptions(
+  autoSubscribe: false,
+  optimizeVideo: true,
+  defaultVideoPublishOptions: VideoPublishOptions(
+    simulcast: true,
+  ),
+)
+var room = await LiveKitClient.connect(
+  url,
+  token,
+  // optional
+  options: options,
+);
+
+var listener = room.createListener();
+
+listener
+  ..on<RoomDisconnectedEvent>((_) {
+    // handle disconnection
+  })
+  ..on<TrackPublishedEvent>((e) {
+    // handle track publication
+    print("track published: ${e.publication.sid}")
+  })
+
+// when you no longer need the listener, dispose it
+listener.dispose();
+```
+
+</TabItem>
+<TabItem value="go">
+
+```go
+import (
+  lksdk "github.com/livekit/server-sdk-go"
+)
+
+// Go SDK is a more advanced SDK that gives you programmatic access as a client
+// enabling you to publish and record audio/video/data to the room.
+func main() {
+  host := "<host>"
+  apiKey := "api-key"
+  apiSecret := "api-secret"
+  roomName := "myroom"
+  identity := "botuser"
+	room, err := lksdk.ConnectToRoom(host, lksdk.ConnectInfo{
+		APIKey:              apiKey,
+		APISecret:           apiSecret,
+		RoomName:            roomName,
+		ParticipantIdentity: identity,
+	})
+	if err != nil {
+		panic(err)
+	}
+
+  // override any of the callbacks on room.Callback
+  room.Callback.OnTrackSubscribed = trackSubscribed
+}
+
+func trackSubscribed(track *webrtc.TrackRemote, publication lksdk.TrackPublication, rp *lksdk.RemoteParticipant) {
+}
+```
+
+</TabItem>
+</Tabs>
+
+## Leaving a room
+
+When your client is leaving a room, you should notify LiveKit of leave events by calling `Room.disconnect()`. If the application is closed without notifying the LiveKit, it will continue to display the participant as being in the room for more than 20 seconds.
+
+## Connectivity
+
+LiveKit configures WebRTC to enable connectivity from a wide variety of network conditions. It'll try the following in order of preference.
+
+1. ICE over UDP: ideal connection type, used in majority of conditions
+2. TURN with UDP (443): used when firewall blocks all other UDP port other than 443
+3. ICE over TCP: used when network disallows UDP (i.e. over VPN or corporate firewalls)
+4. TURN with TLS: used when firewall only allows outbound TLS connections
+
+ICE over UDP and TCP works automatically, while TURN requires additional configurations and your own SSL certificate.
+
+## Network changes and reconnection
+
+With WiFi and cellular networks, users may sometimes run into network changes that cause the connection to the server to be interrupted. This could include switching from WiFi to cellular or going through spots with poor connection.
+
+When this happens, LiveKit will attempt to re-establish the connection behind the scenes. It'll fire off an `Reconnecting` event so your client could display additional UI to inform the user. If the reconnection is successful, you will receive a `Reconnected` callback to let you know that things are back to normal. Otherwise, it'll disconnect you from the room.
+
+During the reconnection, the video/audio tracks may stop sending/receiving data for a few seconds. When the connection is re-established, the tracks will then "unfreeze".

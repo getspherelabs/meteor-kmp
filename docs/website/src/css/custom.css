@@ -1,30 +1,104 @@
+/* stylelint-disable docusaurus/copyright-header */
 /**
  * Any CSS included here will be global. The classic template
  * bundles Infima by default. Infima is a CSS framework designed to
  * work well for content-centric websites.
  */
 
-/* You can override the default Infima variables here. */
-:root {
-  --ifm-color-primary: #2e8555;
-  --ifm-color-primary-dark: #29784c;
-  --ifm-color-primary-darker: #277148;
-  --ifm-color-primary-darkest: #205d3b;
-  --ifm-color-primary-light: #33925d;
-  --ifm-color-primary-lighter: #359962;
-  --ifm-color-primary-lightest: #3cad6e;
-  --ifm-code-font-size: 95%;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+ @import "variables";
+ @import "fonts";
+
+body {
+  font-family: var(--ifm-font-family-base);
 }
 
-/* For readability concerns, you should choose a lighter palette in dark mode. */
-[data-theme='dark'] {
-  --ifm-color-primary: #25c2a0;
-  --ifm-color-primary-dark: #21af90;
-  --ifm-color-primary-darker: #1fa588;
-  --ifm-color-primary-darkest: #1a8870;
-  --ifm-color-primary-light: #29d5b0;
-  --ifm-color-primary-lighter: #32d8b4;
-  --ifm-color-primary-lightest: #4fddbf;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+.docusaurus-highlight-code-line {
+  background-color: rgb(72, 77, 91);
+  display: block;
+  margin: 0 calc(-1 * var(--ifm-pre-padding));
+  padding: 0 var(--ifm-pre-padding);
+}
+
+body .anchor {
+  /* compensate for header nav */
+  scroll-margin-top: 5rem;
+}
+
+/* Infima overrides */
+.menu {
+  font-weight: normal;
+}
+.navbar__brand {
+  align-items: flex-end;
+}
+.navbar__title {
+  font-weight: normal;
+  color: var(--lk-secondary-text);
+  line-height: 1.1rem;
+}
+
+.navbar-sidebar {
+  background-color: var(--lk-dark-blue);
+}
+
+.navbar__items--right .navbar__item {
+
+}
+
+/* .navbar__items--right .github {
+  background-image: url(/img/github-icon.svg);
+  background-size: 1.25rem;
+  background-repeat: no-repeat;
+  background-position-x: 0.5rem;
+  background-position-y: 50%;
+  padding: 0;
+  padding-left: 2rem;
+} */
+
+.navbar__items--right .navbar__link span svg {
+  display: none;
+}
+
+.navbar__toggle {
+  display: none;
+}
+
+.menu__link--sublist:after {
+  background: no-repeat center var(--ifm-menu-link-sublist-icon);
+  transform: none;
+  width: 15px;
+}
+.menu__list-item--collapsed .menu__link--sublist:after {
+  transform: rotateZ(-90deg);
+}
+
+.table-of-contents {
+  font-size: 0.875rem;
+}
+
+table td {
+  color: var(--lk-secondary-text);
+}
+
+table td, table th {
+  border-left: 0;
+  border-right: 0;
+}
+
+/* .table-of-contents__link {
+  color: rgba(255, 255, 255, 0.7)
+} */
+
+.footer {
+  border-top: 1px solid var(--lk-border-color);
+}
+
+code {
+  border: 0.1rem solid var(--lk-border-color);
+}
+
+@media (min-width: 997px) {
+  .menu_node_modules-\@docusaurus-theme-classic-lib-next-theme-DocSidebar- {
+      padding: 1.25rem 1rem !important;
+  }
 }

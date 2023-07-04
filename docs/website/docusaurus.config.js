@@ -1,139 +1,112 @@
-// @ts-check
-// Note: type annotations allow type checking and IDEs autocompletion
+const repoUrl = 'https://github.com/livekit/livekit-server'
 
-const lightCodeTheme = require('prism-react-renderer/themes/github');
-const darkCodeTheme = require('prism-react-renderer/themes/dracula');
-
-/** @type {import('@docusaurus/types').Config} */
-const config = {
-  title: 'My Site',
-  tagline: 'Dinosaurs are cool',
-  favicon: 'img/favicon.ico',
-
+module.exports = {
+  title: 'Meteor',
+  tagline: 'Meteor Documentation',
   // Set the production url of your site here
-  url: 'https://github.com',
-  // Set the /<baseUrl>/ pathname under which your site is served
-  // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/meteor/',
+   url: 'https://github.com',
+   // Set the /<baseUrl>/ pathname under which your site is served
+   // For GitHub pages deployment, it is often '/<projectName>/'
+   baseUrl: '/meteor/',
 
-  // GitHub pages deployment config.
-  // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'getspherelabs', // Usually your GitHub org/user name.
-  projectName: 'meteor', // Usually your repo name.
-  deploymentBranch: 'gh-pages'
-  onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
-
-  // Even if you don't use internalization, you can use this field to set useful
-  // metadata like html lang. For example, if your site is Chinese, you may want
-  // to replace "en" with "zh-Hans".
-  i18n: {
-    defaultLocale: 'en',
-    locales: ['en'],
+   // GitHub pages deployment config.
+   // If you aren't using GitHub pages, you don't need these.
+   organizationName: 'getspherelabs', // Usually your GitHub org/user name.
+   projectName: 'meteor', // Usually your repo name.
+   deploymentBranch: 'gh-pages',
+   onBrokenLinks: 'throw',
+   onBrokenMarkdownLinks: 'warn',
+  themeConfig: {
+    navbar: {
+      title: 'docs',
+      logo: {
+        alt: 'LiveKit Logo',
+        src: 'img/logo.svg',
+      },
+      items: [
+        {
+          href: 'https://livekit.io',
+          label: 'Home',
+          position: 'right',
+        },
+        {
+          href: repoUrl,
+          label: 'GitHub',
+          position: 'right',
+          className: 'github',
+        },
+        {
+          href: 'https://livekit.io/playground',
+          label: 'Playground',
+          position: 'right',
+        },
+      ],
+    },
+    footer: {
+      style: 'light',
+      links: [
+      ],
+      copyright: `Copyright © ${new Date().getFullYear()} LiveKit`,
+    },
+    colorMode: {
+      respectPrefersColorScheme: false,
+      defaultMode: 'light',
+      disableSwitch: true,
+    },
+    prism: {
+      theme: require('./themes/meteor'),
+      additionalLanguages: ["swift", "kotlin", "go", "groovy", "ini", "dart", "ruby"],
+    },
   },
-
   presets: [
     [
-      'classic',
-      /** @type {import('@docusaurus/preset-classic').Options} */
-      ({
+      '@docusaurus/preset-classic',
+      {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
-        },
-        blog: {
-          showReadingTime: true,
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+          routeBasePath: '/',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
         },
-      }),
+        sitemap: {
+          changefreq: 'weekly',
+          priority: 0.5,
+        },
+      },
     ],
   ],
-
-  themeConfig:
-    /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
-    ({
-      // Replace with your project's social card
-      image: 'img/docusaurus-social-card.jpg',
-      navbar: {
-        title: 'My Site',
-        logo: {
-          alt: 'My Site Logo',
-          src: 'img/logo.svg',
-        },
-        items: [
+  plugins: [
+    [
+      '@docusaurus/plugin-client-redirects',
+      {
+        redirects: [
           {
-            type: 'docSidebar',
-            sidebarId: 'tutorialSidebar',
-            position: 'left',
-            label: 'Tutorial',
+            to: '/deploy',
+            from: ['/guides/deploy/prepare', '/guides/deploy'],
           },
-          {to: '/blog', label: 'Blog', position: 'left'},
           {
-            href: 'https://github.com/facebook/docusaurus',
-            label: 'GitHub',
-            position: 'right',
+            to: '/deploy/vm',
+            from: ['/guides/deploy/instance'],
           },
+          {
+            to: '/deploy/kubernetes',
+            from: ['/guides/deploy/kubernetes'],
+          },
+          {
+            to: '/deploy/test-monitor',
+            from: ['/guides/deploy/tuning'],
+          },
+          {
+            to: '/deploy/benchmark',
+            from: ['/guides/deploy/benchmark'],
+          },
+          // {
+          //   to: '/deploy/recorder',
+          //   from: ['/guides/deploy/recorder'],
+          // },
         ],
-      },
-      footer: {
-        style: 'dark',
-        links: [
-          {
-            title: 'Docs',
-            items: [
-              {
-                label: 'Tutorial',
-                to: '/docs/intro',
-              },
-            ],
-          },
-          {
-            title: 'Community',
-            items: [
-              {
-                label: 'Stack Overflow',
-                href: 'https://stackoverflow.com/questions/tagged/docusaurus',
-              },
-              {
-                label: 'Discord',
-                href: 'https://discordapp.com/invite/docusaurus',
-              },
-              {
-                label: 'Twitter',
-                href: 'https://twitter.com/docusaurus',
-              },
-            ],
-          },
-          {
-            title: 'More',
-            items: [
-              {
-                label: 'Blog',
-                to: '/blog',
-              },
-              {
-                label: 'GitHub',
-                href: 'https://github.com/facebook/docusaurus',
-              },
-            ],
-          },
-        ],
-        copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
-      },
-      prism: {
-        theme: lightCodeTheme,
-        darkTheme: darkCodeTheme,
-      },
-    }),
+      }
+    ],
+  ]
 };
-
-module.exports = config;

@@ -1,0 +1,308 @@
+---
+title: Publishing media
+---
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+## Camera and microphone
+
+It's simple to publish the local participant's camera and/or microphone streams to the room.
+We provide a consistent way to do this across platforms:
+
+```typescript
+// Turns camera track on
+room.localParticipant.setCameraEnabled(true)
+
+// Turns microphone track on
+room.localParticipant.setMicrophoneEnabled(true)
+```
+
+and to mute them, you can perform:
+
+```typescript
+room.localParticipant.setCameraEnabled(false)
+room.localParticipant.setMicrophoneEnabled(false)
+```
+
+Disabling camera or microphone will turn off their respective recording indicators. Other participants will receive a `TrackMuted` event.
+
+## Screen sharing
+
+LiveKit also supports screen share natively on supported platforms.
+
+<Tabs
+  defaultValue="typescript"
+  groupId="client-sdk"
+  values={[
+    {label: 'Browser', value: 'typescript'},
+    {label: 'Android', value: 'android'},
+    {label: 'Flutter', value: 'flutter'},
+  ]}>
+
+  <TabItem value="typescript">
+
+```typescript title="TypeScript"
+// this will trigger browser prompt to share screen
+await currentRoom.localParticipant.setScreenShareEnabled(true);
+```
+
+  </TabItem>
+  <TabItem value="android">
+
+On Android, screen capture is performed using `MediaProjectionManager`:
+
+```kotlin title="Kotlin"
+// create an intent launcher for screen capture
+// this *must* be registered prior to onCreate(), ideally as an instance val
+val screenCaptureIntentLauncher = registerForActivityResult(
+    ActivityResultContracts.StartActivityForResult()
+) { result ->
+    val resultCode = result.resultCode
+    val data = result.data
+    if (resultCode != Activity.RESULT_OK || data == null) {
+        return@registerForActivityResult
+    }
+    lifecycleScope.launch {
+        room.localParticipant.setScreenShareEnabled(true, data)
+    }
+}
+
+// when it's time to enable the screen share, perform the following
+val mediaProjectionManager =
+    getSystemService(MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
+screenCaptureIntentLauncher.launch(mediaProjectionManager.createScreenCaptureIntent())
+```
+
+  </TabItem>
+  <TabItem value="flutter">
+
+With Flutter, screen sharing is currently supported on Android and Web.
+
+```dart title="Dart"
+room.localParticipant.setScreenShareEnabled(true);
+```
+
+On Android, you would have to define a foreground service in your AndroidManifest.xml:
+
+```xml title="AndroidManifest.xml"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+  <application>
+    ...
+    <service
+        android:name="de.julianassmann.flutter_background.IsolateHolderService"
+        android:enabled="true"
+        android:exported="false"
+        android:foregroundServiceType="mediaProjection" />
+  </application>
+</manifest>
+```
+
+  </TabItem>
+</Tabs>
+
+## Advanced track management
+
+`setCameraEnabled`, `setMicrophoneEnabled`, and `setScreenShareEnabled` are convenience wrappers around our Track APIs, you could create tracks manually and publish or unpublish them at any time.
+
+<Tabs
+  defaultValue="typescript"
+  groupId="client-sdk"
+  values={[
+    {label: 'Browser', value: 'typescript'},
+    {label: 'iOS/macOS', value: 'ios'},
+    {label: 'Android', value: 'android'},
+    {label: 'Flutter', value: 'flutter'},
+    {label: 'Golang', value: 'go'},
+  ]}>
+
+  <TabItem value="typescript">
+
+  ```typescript title="TypeScript"
+  async function publishTracks() {
+    const videoTrack = await createLocalVideoTrack({
+      facingMode: { ideal: "user" },
+      // preset resolutions
+      resolution: VideoPresets.hd
+    })
+    const audioTrack = await createLocalAudioTrack({
+      echoCancellation: true,
+      noiseSuppression: {
+        ideal: true,
+      }
+    })
+
+    const videoPublication = await room.localParticipant.publishTrack(videoTrack)
+    const audioPublication = await room.localParticipant.publishTrack(audioTrack)
+  }
+  ```
+
+  Tracks need to be published one at a time. It's important to `await` the first publishTrack call before attempting to publish again.
+
+  </TabItem>
+
+  <TabItem value="ios">
+
+  ```swift title="Swift"
+  var videoOpts = LocalVideoTrackOptions()
+  videoOpts.captureParameter = VideoPreset.hd.capture
+  let videoTrack = try LocalVideoTrack.createCameraTrack(options: videoOpts)
+  let audioTrack = LocalAudioTrack.createTrack(name: "localAudio")
+  let videoPublication = localParticipant.publishVideoTrack(track: videoTrack)
+  let audioPublication = localParticipant.publishAudioTrack(track: audioTrack)
+  ```
+
+  For convenience, LiveKit provides a few [preset resolutions](https://docs.livekit.io/client-sdk-swift/VideoPreset/) when creating a video track. You also have control over the encoding bitrate with [publishing options](https://docs.livekit.io/client-sdk-swift/LocalVideoTrackPublishOptions/).
+
+  When creating audio tracks, you have control over the [capture settings](https://docs.livekit.io/client-sdk-swift/LocalAudioTrackOptions/).
+
+  </TabItem>
+  <TabItem value="android">
+
+  ```kotlin title="Kotlin"
+  val localParticipant = room.localParticipant
+  val audioTrack = localParticipant.createAudioTrack("audio")
+  localParticipant.publishAudioTrack(audioTrack)
+
+  val videoTrack = localParticipant.createVideoTrack("video", LocalVideoTrackOptions(
+    CameraPosition.FRONT,
+    VideoPreset.QHD.capture
+  ))
+  localParticipant.publishVideoTrack(videoTrack)
+  ```
+
+  For convenience, LiveKit provides a few [preset resolutions](https://docs.livekit.io/client-sdk-android/livekit-android-sdk/io.livekit.android.room.track/-video-preset/index.html) when creating a video track.
+
+  When creating audio tracks, you have control over the [capture settings](https://docs.livekit.io/client-sdk-android/livekit-android-sdk/io.livekit.android.room.track/-local-audio-track-options/index.html).
+
+  </TabItem>
+  <TabItem value="flutter">
+
+```dart title="Dart"
+try {
+  // video will fail when running in ios simulator
+  var localVideo = await LocalVideoTrack.createCameraTrack(LocalVideoTrackOptions(
+    position: CameraPosition.FRONT,
+    params: VideoPresets.hd,
+  ));
+  await room.localParticipant.publishVideoTrack(localVideo);
+} catch (e) {
+  print('could not publish video: $e');
+}
+
+var localAudio = await LocalAudioTrack.createTrack();
+await room.localParticipant.publishAudioTrack(localAudio);
+```
+
+  </TabItem>
+  <TabItem value="go">
+
+The Go SDK makes it simple to publish static files or media from other sources to a room.
+
+To publish files, they must first be [encoded](https://github.com/livekit/server-sdk-go/tree/main#publishing-tracks-to-room) into the right format.
+
+```go title="Go"
+// publishing from file
+file := "video.ivf"
+track, err := lksdk.NewLocalFileTrack(file,
+	// control FPS to ensure synchronization
+	lksdk.FileTrackWithFrameDuration(33 * time.Millisecond),
+	lksdk.FileTrackWithOnWriteComplete(func() { fmt.Println("track finished") }),
+)
+if err != nil {
+    return err
+}
+if _, err = room.LocalParticipant.PublishTrack(track, file); err != nil {
+    return err
+}
+```
+
+  </TabItem>
+</Tabs>
+
+
+## Audio on mobile
+
+When using audio with native iOS or Android SDKs, it's important to consider the device's audio stack, in order to behave well with other apps.
+
+With the Flutter SDK, audio session is managed automatically.
+
+<Tabs
+  defaultValue="ios"
+  groupId="client-sdk"
+  values={[
+    {label: 'iOS/macOS', value: 'ios'},
+    {label: 'Android', value: 'android'},
+  ]}>
+
+  <TabItem value="ios">
+
+On iOS, LiveKit provides automatic management of `AVAudioSession`. We ensure the minimal set of audio permissions are acquired (for example, microphone is turned off when it's not publishing).
+
+It may be desirable to override the default settings by setting `LiveKit.onShouldConfigureAudioSession`:
+
+```swift
+LiveKit.onShouldConfigureAudioSession = { (_ newState: AudioTrack.TracksState,
+                                           _ oldState: AudioTrack.TracksState) -> Void in
+    let config = RTCAudioSessionConfiguration.webRTC()
+    config.category = AVAudioSession.Category.playAndRecord.rawValue
+    config.mode = AVAudioSession.Mode.videoChat.rawValue
+    config.categoryOptions = AVAudioSession.CategoryOptions.duckOthers
+    LiveKit.configureAudioSession(config, setActive: newState != .none)
+}
+```
+
+:::note
+
+Some combinations of `Category`, `Mode`, `RouteSharingPolicy`, and `CategoryOptions` are incompatible. `AVFoundation` documentation isn't very good, making it tricky to set the right combination of values for these properties.
+
+:::
+
+  </TabItem>
+
+  <TabItem value="android">
+
+On Android, you'll want request audio focus from AudioManager.
+
+```kotlin
+val audioManager = getSystemService(AUDIO_SERVICE) as AudioManager
+with(audioManager) {
+    isSpeakerphoneOn = true
+    isMicrophoneMute = false
+    mode = AudioManager.MODE_IN_COMMUNICATION
+}
+val result = audioManager.requestAudioFocus(
+    focusChangeListener,
+    AudioManager.STREAM_VOICE_CALL,
+    AudioManager.AUDIOFOCUS_GAIN,
+)
+```
+
+and after you are done, reset
+
+```kotlin
+with(audioManager) {
+    isSpeakerphoneOn = false
+    isMicrophoneMute = true
+    abandonAudioFocus(focusChangeListener)
+    mode = AudioManager.MODE_NORMAL
+}
+```
+
+  </TabItem>
+</Tabs>
+
+## Mute and unmute
+
+You can mute any track to stop it from sending data to the server. When a track is muted, LiveKit will trigger a `TrackMuted` event on all participants in the room. You can use this event to update your app's UI and reflect the correct state to all users in the room.
+
+Mute/unmute a track using its corresponding `LocalTrackPublication` object.
+
+## Video simulcasting
+
+With simulcasting, a client publishes multiple versions of the same video track with varying bitrate profiles. This allows LiveKit to dynamically forward the stream that's most appropriate given each receiving participant's available bandwidth and desired resolution.
+
+Adaptive layer selection takes place automatically in the SFU when the server detects a participant is bandwidth constrainted. When the participant's bandwidth improves, the server will then upgrade subscribed streams to higher resolutions.
+
+For more information about Simulcast, see [an introduction to WebRTC simulcast](https://blog.livekit.io/an-introduction-to-webrtc-simulcast-6c5f1f6402eb).
+
+Simulcast is supported in all of LiveKit's client SDKs. You can enable it in the default publish settings or when publishing video tracks.

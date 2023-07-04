@@ -1,0 +1,62 @@
+---
+title: Ports and Firewall
+---
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+## Ports
+
+LiveKit uses several ports to communicate with clients. Exposed ports below need to be open on the firewall.
+
+| Port           | Default     | Config                                       | Exposed           | Description                                                                                                                                                                                  |
+| :------------- | :---------- | :------------------------------------------- | :---------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| API, WebSocket | 7880        | `port`                                       | no                | This port should be placed behind a load balancer that can terminate SSL. LiveKit APIs are homogenous: any client could connect to any backend instance, regardless of the room they are in. |
+| ICE/UDP        | 50000-60000 | `rtc.port_range_start`, `rtc.port_range_end` | yes               | LiveKit advertises these ports as WebRTC host candidates (each participant in the room will use two ports)                                                                                   |
+| ICE/TCP        | 7881        | `rtc.tcp_port`                               | yes               | Used when the client could not connect via UDP (e.g. VPN, corporate firewalls)                                                                                                               |
+| ICE/UDP Mux    | 7882        | `rtc.udp_port`                               | yes               | (optional) It's possible to handle all UDP traffic on a single port. When this is set, rtc.port_range_start/end are not used |
+| TURN/TLS       | 5349        | `turn.tls_port`                              | when not using LB | (optional) For a distributed setup, use a network load balancer in front of the port. If not using LB, this port needs to be set to 443.                                                     |
+| TURN/UDP       | 443         | `turn.udp_port`                              | yes               | (optional)                                                                                                                                                                                   |
+
+## Firewall
+
+When hosting in cloud environments, the ports configured above will have to be opened in the firewall.
+
+<Tabs
+  defaultValue="aws"
+  groupId="cloud"
+  values={[
+    {label: 'AWS', value: 'aws'},
+    {label: 'Google Cloud', value: 'gcloud'},
+    {label: 'Digital Ocean', value: 'do'},
+  ]}>
+  <TabItem value="aws">
+
+Navigate to the VPC dashboard, choose `Security Groups`, and select the security group that LiveKit is deployed to.
+Open the `Inbound rules` tab and select `Edit Inbound Rules`
+
+![AWS inbound rules](/img/deploy/aws-inbound-rules.png)
+
+Then add the following rules (assuming use of default ports):
+
+![AWS add rules](/img/deploy/aws-inbound-rules-2.png)
+
+  </TabItem>
+  <TabItem value="gcloud">
+
+Navigate to VPC network, then select `Firewall` on the left. Then select `Create Firewall Rule` in the top menu.
+
+The firewall rule should look something like this:
+
+![Google Cloud firewall rules](/img/deploy/gcloud-firewall-rules.png)
+
+  </TabItem>
+  <TabItem value="do">
+
+By default, Droplets are not placed behind a firewall, as long as they have a public IP address.
+
+If using a firewall, ensure the inbound rules are edited to match the required ports
+
+![Digital Ocean firewall](/img/deploy/do-firewall-rules.png)
+
+  </TabItem>
+</Tabs>

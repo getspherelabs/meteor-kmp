@@ -1,0 +1,97 @@
+---
+title: Meteor
+sidebar_label: Home
+slug: /
+---
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Meteor is a simple framework that helps you to create application using the MVI architecture. It provides a robust structure for organizing your code and separating concerns. Additionally, Meteor integrates with Kotlin Coroutine that helps you to write asynchronous and concurrent code.
+## Features
+
+- Horizontally-scalable WebRTC Selective Forwarding Unit (SFU)
+- Modern, full-featured [client SDKs](/references/client-sdks) for JavaScript, React, Swift, Kotlin, and Flutter (React Native and Unity/C# in development)
+- Built for production - JWT authentication and [server APIs](/guides/server-api)
+- Robust networking & connectivity over UDP, TCP, and built-in [TURN](/deploy#improving-connectivity-with-turn)
+- Easy to deploy: pure Go and single binary
+- Advanced features like speaker detection, simulcast, selective subscription, and moderation APIs
+<!-- - Effortless, customizable recording - use our built-in templates or record your own web UI -->
+
+
+## Why Meteor?
+
+WebRTC is a powerful protocol that now has ubiquitous support across all major browsers and mobile platforms. However, building apps with it isn't simple; it requires an understanding of core protocol concepts and developers are responsible for complexities like signaling and coordinating connections between peers. As a peer-to-peer protocol, scaling WebRTC to large numbers of peers also becomes challenging.
+
+While hosted solutions like Twilio and Agora exist, they can be costly, have limited flexibility and as proprietary products, create vendor lock-in. Other open source solutions also exist, but they have a steep learning curve and are daunting to customize and deploy.
+
+We set out to build a free and open source implementation of WebRTC rooms that's easily embeddable within any app. LiveKit provides an opinionated, end-to-end real time communications solution with first-party SDKs for all the major software platforms.
+
+## Architecture
+
+Meteor is written in Kotlin. It's made possible by [Pion WebRTC](https://github.com/pion/webrtc), [ion-sfu](https://github.com/pion/ion-sfu), and the amazing community behind them.
+
+![LiveKit Architecture](/img/architecture.svg)
+
+## Client Examples
+
+<Tabs
+  defaultValue="typescript"
+  groupId="client-sdk"
+  values={[
+    {label: 'iOS/macOS', value: 'ios'},
+    {label: 'Kotlin', value: 'kotlin'},
+  ]}>
+
+  <TabItem value="kotlin">
+
+
+```kt title="Kotlin"
+
+class MainActivity : AppCompatActivity(), RoomListener {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        ...
+        val url = "wss://your_host";
+        val token = "your_token"
+
+        launch {
+            val room = LiveKit.connect(
+                applicationContext,
+                url,
+                token,
+                ConnectOptions(),
+                this
+            )
+            val localParticipant = room.localParticipant
+            val audioTrack = localParticipant.createAudioTrack()
+            localParticipant.publishAudioTrack(audioTrack)
+            val videoTrack = localParticipant.createVideoTrack()
+            localParticipant.publishVideoTrack(videoTrack)
+            videoTrack.startCapture()
+
+            attachVideo(videoTrack, localParticipant)
+        }
+    }
+
+    override fun onTrackSubscribed(
+        track: Track,
+        publication: RemoteTrackPublication,
+        participant: RemoteParticipant,
+        room: Room
+    ) {
+        if (track is VideoTrack) {
+            attachVideo(track, participant)
+        }
+    }
+
+    private fun attachVideo(videoTrack: VideoTrack, participant: Participant) {
+        // viewBinding.renderer is a `org.webrtc.SurfaceViewRenderer` in your
+        // layout
+        videoTrack.addRenderer(viewBinding.renderer)
+    }
+}
+
+```
+
+  </TabItem>
+</Tabs>
