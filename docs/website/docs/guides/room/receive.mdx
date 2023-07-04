@@ -1,0 +1,687 @@
+---
+title: Receiving media
+---
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+While connected to a room, the server may send down one or more audio/video/data tracks at any time. By default, a client automatically subscribes to a received track, and lets your app know by invoking callbacks on the room object and associated participant who published the track.
+
+## Track subscription
+
+Receiving tracks from the server starts with a subscription.
+
+As mentioned in our guide on [publishing media](/guides/room/publish), LiveKit models tracks with two constructs: `TrackPublication` and `Track`. Think of a `TrackPublication` as metadata for a track registered with the server and `Track` as the raw media stream.
+
+Track subscription callbacks provide your app with both the `Track` and `TrackPublication` objects.
+
+Subscribed callback will be fired on both `Room` and `RemoteParticipant` objects.
+
+<Tabs
+  defaultValue="typescript"
+  groupId="client-sdk"
+  values={[
+    {label: 'Browser', value: 'typescript'},
+    {label: 'React', value: 'react'},
+    {label: 'iOS/macOS', value: 'ios'},
+    {label: 'Android', value: 'android'},
+    {label: 'Flutter', value: 'flutter'},
+  ]}>
+
+  <TabItem value="typescript">
+
+  ```typescript title="TypeScript"
+  import {
+    connect,
+    RoomEvent,
+  } from 'livekit-client';
+
+  connect('ws://your_host', token, {
+    audio: true,
+    video: true,
+  }).then((room) => {
+    room
+      .on(RoomEvent.TrackSubscribed, handleTrackSubscribed)
+  });
+
+  function handleTrackSubscribed(
+    track: RemoteTrack,
+    publication: RemoteTrackPublication,
+    participant: RemoteParticipant
+  ) {
+    /* do things with track, publication or participant */
+  }
+  ```
+
+  </TabItem>
+  <TabItem value="react">
+
+```typescript title="TypeScript"
+import { useParticipant } from 'livekit-react';
+
+export const MyComponent = ({ participant }) => {
+  const { subscribedTracks } = useParticipant(participant);
+  ...
+}
+```
+
+  </TabItem>
+  <TabItem value="ios">
+
+  ```swift title="Swift"
+  let room = LiveKit.connect(options: ConnectOptions(url: url, token: token), delegate: self)
+  ...
+  func room(_ room: Room,
+            participant: RemoteParticipant, 
+            didSubscribe publication: RemoteTrackPublication, 
+            track: Track) {
+
+    /* do things with track, publication or participant */
+  }
+  ```
+
+  </TabItem>
+  <TabItem value="android">
+
+  ```kotlin title="Kotlin"
+  remoteParticipant.listener = object : ParticipantListener {
+    override fun onTrackSubscribed(
+      track: Track,
+      publication: RemoteTrackPublication,
+      participant: RemoteParticipant
+    )
+    {
+      /* do things with track, publication or participant */
+    }
+  }
+  ```
+
+  </TabItem>
+  <TabItem value="flutter">
+
+```dart title="Dart"
+class ParticipantWidget extends StatefulWidget {
+  final Participant participant;
+
+  ParticipantWidget(this.participant);
+
+  @override
+  State<StatefulWidget> createState() {
+    return _ParticipantState();
+  }
+}
+
+class _ParticipantState extends State<ParticipantWidget> {
+  TrackPublication? videoPub;
+
+  @override
+  void initState() {
+    super.initState();
+    // When track subscriptions change, Participant notifies listeners
+    // Uses the built-in ChangeNotifier API
+    widget.participant.addListener(_onChange);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    widget.participant.removeListener(_onChange);
+  }
+
+  void _onChange() {
+    TrackPublication? pub;
+    var visibleVideos = widget.participant.videoTracks.values.where((pub) {
+      return pub.kind == TrackType.VIDEO && pub.subscribed && !pub.muted;
+    });
+    if (visibleVideos.isNotEmpty) {
+      pub = visibleVideos.first;
+    }
+    // setState will trigger a build
+    setState(() {
+      // your updates here
+      videoPub = pub;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // your build function
+  }
+}
+```
+
+  </TabItem>
+</Tabs>
+
+## Media playback
+
+Once subscribed to an audio or video track, a client usually wants to start playback of the live stream:
+
+:::note
+
+On mobile (iOS, Android, and Flutter), once subscribed to an audio track, live playback begins automatically.
+
+:::
+
+<Tabs
+  defaultValue="typescript"
+  groupId="client-sdk"
+  values={[
+    {label: 'Browser', value: 'typescript'},
+    {label: 'React', value: 'react'},
+    {label: 'iOS/macOS', value: 'ios'},
+    {label: 'Android', value: 'android'},
+    {label: 'Flutter', value: 'flutter'},
+  ]}>
+
+  <TabItem value="typescript">
+
+  ```typescript title="TypeScript"
+  function handleTrackSubscribed(
+    track: RemoteTrack,
+    publication: RemoteTrackPublication,
+    participant: RemoteParticipant
+  ) {
+    // attach track to a new HTMLVideoElement or HTMLAudioElement
+    const element = track.attach();
+    parentElement.appendChild(element);
+    // or attach to existing element
+    // track.attach(element)
+  }
+  ```
+
+  </TabItem>
+  <TabItem value="react">
+
+```tsx title="TypeScript"
+export const MyComponent = ({audioTrack, videoTrack}) => {
+  return (
+    <div>
+      <VideoRenderer track={videoTrack} isLocal={false} />
+      <AudioRenderer track={audioTrack} isLocal={false} />
+    </div>
+  )
+}
+```
+
+  </TabItem>
+  <TabItem value="ios">
+
+  ```swift title="Swift"
+  func room(_ room: Room,
+            participant: RemoteParticipant,
+            didSubscribe publication: RemoteTrackPublication,
+            track: Track) {
+
+    if let videoTrack = track as? VideoTrack {
+      DispatchQueue.main.async {
+        let videoView = VideoView(frame: .zero)
+        videoView.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(videoView)
+
+        /* Add any app-specific layout constraints */
+
+        videoView.track = videoTrack
+      }
+    }
+  }
+  ```
+
+  </TabItem>
+  <TabItem value="android">
+
+  ```kotlin title="Kotlin"
+  remoteParticipant.listener = object : ParticipantListener {
+    override fun onTrackSubscribed(
+      track: Track,
+      publication: RemoteTrackPublication,
+      participant: RemoteParticipant
+    ) {
+      if (track is VideoTrack) {
+        videoTrack.addRenderer(viewBinding.renderer)
+      }
+    }
+  }
+  ```
+
+  </TabItem>
+  <TabItem value="flutter">
+
+```dart title="Dart"
+class _ParticipantState extends State<ParticipantWidget> {
+  TrackPublication? videoPub;
+  ...
+  @override
+  Widget build(BuildContext context) {
+    var videoPub = this.videoPub;
+    if (videoPub != null) {
+      return VideoTrackRenderer(videoPub.track as VideoTrack);
+    } else {
+      return Container(
+        color: Colors.grey,
+      );
+    }
+  }
+}
+```
+
+  </TabItem>
+</Tabs>
+
+## Speaker detection
+
+When audio tracks are published, LiveKit will detect participants whome are speaking. Speaker updates are sent for both local and remote participants. They will fire on both, Room and Participant objects.
+
+<Tabs
+  defaultValue="typescript"
+  groupId="client-sdk"
+  values={[
+    {label: 'Browser', value: 'typescript'},
+    {label: 'React', value: 'react'},
+    {label: 'iOS/macOS', value: 'ios'},
+    {label: 'Android', value: 'android'},
+    {label: 'Flutter', value: 'flutter'},
+  ]}>
+
+  <TabItem value="typescript">
+
+```typescript title="TypeScript"
+room.on(RoomEvent.ActiveSpeakersChanged, (speakers: Participant[]) => {
+  // do something with the active speakers
+})
+
+participant.on(ParticipantEvent.IsSpeakingChanged, (speaking: boolean) => {
+  console.log(`${participant.identity} is ${speaking ? "now" : "no longer"} speaking. audio level: ${participant.audioLevel}`)
+})
+```
+
+  </TabItem>
+  <TabItem value="react">
+
+```tsx title="TypeScript"
+export const MyComponent = ({participant}) => {
+  const { isSpeaking } = useParticipant(participant)
+
+  return (
+    <div>
+      {isSpeaking ? "speaking" : "not speaking"}
+    </div>
+  )
+}
+```
+
+  </TabItem>
+  <TabItem value="ios">
+
+```swift title="Swift"
+
+extension MyRoomHandler : RoomDelegate {
+  func activeSpeakersDidChange(speakers: [Participant], room _: Room) {
+    // do something with the active speakers
+  }
+}
+
+extension ParticipantHandler : ParticipantDelegate {
+  /// The isSpeaking status of the participant has changed
+  func isSpeakingDidChange(participant: Participant) {
+    print("\(participant.identity) is now speaking: \(participant.isSpeaking), audioLevel: \(participant.audioLevel)")
+  }
+}
+
+```
+
+  </TabItem>
+  <TabItem value="android">
+
+```kotlin title="Kotlin"
+class MyRoomHandler : RoomListener {
+  override fun onActiveSpeakersChanged(speakers: List<Participant>, room: Room) {
+    Timber.i { "active speakers changed ${speakers.count()}" }
+  }
+}
+
+remoteParticipant.listener = object : ParticipantListener {
+  override fun onSpeakingChanged(participant: Participant) {
+    Timber.i { "${participant.identity} is now speaking: ${participant.isSpeaking}, audioLevel: ${participant.audioLevel}" }
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="flutter">
+
+```dart title="Dart"
+class _ParticipantState extends State<ParticipantWidget> {
+  late final _listener = widget.participant.createListener()
+
+  @override
+  void initState() {
+    super.initState();
+    _listener.on<SpeakingChangedEvent>((e) {
+      // handle isSpeaking change
+    })
+  }
+}
+```
+
+  </TabItem>
+</Tabs>
+
+## Subscriber controls
+
+While the default behavior for LiveKit clients is to subscribe to all newly published tracks, LiveKit supports selective subscription.
+Both client and server APIs are available to setup a connection for selective subscription and once configured, only explicitly subscribed tracks are sent down to the client.
+
+### Client-side selective subscription
+
+<Tabs
+  defaultValue="typescript"
+  groupId="client-sdk"
+  values={[
+    {label: 'Browser', value: 'typescript'},
+    {label: 'iOS/macOS', value: 'ios'},
+    {label: 'Android', value: 'android'},
+    {label: 'Flutter', value: 'flutter'},
+  ]}>
+
+  <TabItem value="typescript">
+
+  ```typescript title="TypeScript"
+  let room = await room.connect(url, token, {
+    autoSubscribe: false,
+  })
+
+  room.on(RoomEvent.TrackPublished, (track, publication, participant) => {
+    publication.setSubscribed(true)
+  })
+  ```
+
+  </TabItem>
+
+  <TabItem value="ios">
+
+  ```swift title="Swift"
+  let connectOptions = ConnectOptions(
+    url: "ws://<your_host>",
+    token: "<your_token>",
+    autoSubscribe: false
+  )
+  let room = LiveKit.connect(options: connectOptions, delegate: self)
+
+  func didPublishRemoteTrack(publication: RemoteTrackPublication, participant: RemoteParticipant) {
+      publication.setSubscribed(true)
+  }
+  ```
+
+  </TabItem>
+  <TabItem value="android">
+
+  ```kotlin title="Kotlin"
+  class ViewModel(...) : RoomListener {
+    init {
+      val room = LiveKit.connect(
+        application,
+        url,
+        token,
+        ConnectOptions(autoSubscribe = false),
+        this@ViewModel)
+    }
+
+    override fun onTrackUnpublished(publication: TrackPublication, participant: RemoteParticipant, room: Room) {
+      publication.setSubscribed(true)
+    }
+  }
+  ```
+
+  </TabItem>
+  <TabItem value="flutter">
+
+```dart title="Dart"
+var room = await LiveKitClient.connect(url, token, JoinOptions(autoSubscribe = false));
+room.delegate = RoomHandler();
+
+class RoomHandler {
+  Room room;
+  late EventsListener<RoomEvent> _listener;
+
+  RoomHandler(this.room) {
+    _listener = room.createListener();
+    _listener.on<TrackPublishedEvent>((e) {
+      e.publication.subscribed = true;
+    });
+  }
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Server-side selective subscription
+
+These controls are also available with the server APIs.
+
+<Tabs
+  defaultValue="node"
+  groupId="server-sdk"
+  values={[
+    {label: 'Node', value: 'node'},
+    {label: 'Golang', value: 'go'},
+  ]}>
+  <TabItem value="node">
+
+```typescript title="TypeScript"
+import { RoomServiceClient } from 'livekit-server-sdk';
+
+const client = new RoomServiceClient("myhost", "api-key", "my secret")
+
+// subscribe to new track
+client.updateSubscriptions("myroom", "receiving-participant-identity", ["TR_TRACKID"], true)
+
+// unsubscribe from existing track
+client.updateSubscriptions("myroom", "receiving-participant-identity", ["TR_TRACKID"], false)
+```
+
+  </TabItem>
+
+  <TabItem value="go">
+
+```go title="Go"
+import (
+  lksdk "github.com/livekit/server-sdk-go"
+)
+
+roomClient := lksdk.NewRoomServiceClient(host, apiKey, apiSecret)
+_, err := roomClient.UpdateSubscriptions(context.Background(), &livekit.UpdateSubscriptionsRequest{
+  Room: "myroom",
+  Identity: "receiving-participant-identity",
+  TrackSids: []string{"TR_TRACKID"},
+  Subscribe: true
+})
+```
+
+  </TabItem>
+
+</Tabs>
+
+
+## Enabling/disabling tracks
+
+Client implementations seeking fine-grain control over bandwidth consumption can enable or disable tracks at their discretion. A track is enabled by default. When a track is disabled, the client will not receive any new data for that track. If a disabled track is subsequently enabled, new data will be received by the client.
+
+The `disable` action is useful when optimzing for a client's bandwidth consumption. For example, if a particular user's video track is offscreen, disabling this track will reduce bytes from being sent by the LiveKit server until the track's data is needed again.
+
+<Tabs
+  defaultValue="typescript"
+  groupId="client-sdk"
+  values={[
+    {label: 'Browser', value: 'typescript'},
+    {label: 'iOS/macOS', value: 'ios'},
+    {label: 'Android', value: 'android'},
+    {label: 'Flutter', value: 'flutter'},
+  ]}>
+
+  <TabItem value="typescript">
+
+  ```typescript title="TypeScript"
+  import {
+    connect,
+    RoomEvent,
+  } from 'livekit-client';
+
+  const room = await connect('ws://your_host', token);
+  room.on(RoomEvent.TrackSubscribed, handleTrackSubscribed)
+
+  function handleTrackSubscribed(
+    track: RemoteTrack,
+    publication: RemoteTrackPublication,
+    participant: RemoteParticipant
+  ) {
+    publication.setEnabled(false)
+  }
+  ```
+
+  </TabItem>
+
+  <TabItem value="ios">
+
+  ```swift title="Swift"
+  let room = LiveKit.connect(options: ConnectOptions(url: url, token: token), delegate: self)
+  ...
+  func room(_ room: Room,
+            participant: RemoteParticipant,
+            didSubscribe publication: RemoteTrackPublication,
+            track: Track) {
+
+   publication.setEnabled(false)
+  }
+  ```
+
+  </TabItem>
+  <TabItem value="android">
+
+  ```kotlin title="Kotlin"
+  remoteParticipant.listener = object : ParticipantListener {
+    override fun onTrackSubscribed(
+      track: Track,
+      publication: RemoteTrackPublication,
+      participant: RemoteParticipant
+    )
+    {
+      publication.setEnabled(false)
+    }
+  }
+  ```
+
+  </TabItem>
+  <TabItem value="flutter">
+
+```dart title="Dart"
+
+void disableTrack(RemoteTrackPublication publication) {
+  publication.enabled = false;
+}
+
+```
+
+  </TabItem>
+</Tabs>
+
+:::note
+
+You may be wondering how `subscribe` and `unsubscribe` differs from `enable` and `disable`. A track must be subscribed to and enabled for data to be received by the client. If a track has not been subscribed to (or was unsubscribed) or disabled, the client performing these actions will not receive that track's data.
+
+The difference between these two actions is *negotiation*. Subscribing requires a negotiation handshake with the LiveKit server, while enable/disable does not. Depending on one's use case, this can make enable/disable more efficient, especially when a track may be turned on or off frequently.
+
+:::
+
+## Simulcast controls
+
+If a video track has simulcast enabled, a receiving client may want to manually specify the maximum receivable quality. This would result a quality and bandwidth reduction for the target track. This might come in handy, for instance, when an application's user interface is displaying a small thumbnail for a particular user's video track.
+
+You can see how this is used in our [React component](https://github.com/livekit/livekit-react/blob/master/src/components/ParticipantView.tsx).
+
+<Tabs
+  defaultValue="typescript"
+  groupId="client-sdk"
+  values={[
+    {label: 'Browser', value: 'typescript'},
+    {label: 'iOS/macOS', value: 'ios'},
+    {label: 'Android', value: 'android'},
+    {label: 'Flutter', value: 'flutter'},
+  ]}>
+
+  <TabItem value="typescript">
+
+  ```typescript title="TypeScript"
+  import {
+    connect,
+    RoomEvent,
+  } from 'livekit-client';
+
+  connect('ws://your_host', token, {
+    audio: true,
+    video: true,
+  }).then((room) => {
+    room
+      .on(RoomEvent.TrackSubscribed, handleTrackSubscribed)
+  });
+
+  function handleTrackSubscribed(
+    track: RemoteTrack,
+    publication: RemoteTrackPublication,
+    participant: RemoteParticipant
+  ) {
+    if (track.kind === Track.Kind.Video) {
+      publication.setVideoQuality(VideoQuality.LOW)
+    }
+  }
+  ```
+
+  </TabItem>
+
+  <TabItem value="ios">
+
+  ```swift title="Swift"
+  let room = LiveKit.connect(url, token, delegate: self)
+  ...
+  func room(_ room: Room, 
+            participant: RemoteParticipant, 
+            didSubscribe publication: RemoteTrackPublication, 
+            track: Track) {
+
+   if let _ = track as? VideoTrack {
+     publication.setVideoQuality(.low)
+   }
+  }
+  ```
+
+  </TabItem>
+  <TabItem value="android">
+
+  ```kotlin title="Kotlin"
+  remoteParticipant.listener = object : ParticipantListener {
+    override fun onTrackSubscribed(
+      track: Track,
+      publication: RemoteTrackPublication,
+      participant: RemoteParticipant
+    )
+    {
+      publication.setVideoQuality(LivekitRtc.VideoQuality.LOW)
+    }
+  }
+  ```
+
+  </TabItem>
+  <TabItem value="flutter">
+
+```dart title="Dart"
+
+var listener = room.createListener();
+listener.on<TrackSubscribedEvent>((e) {
+  if (e.publication.kind == TrackType.VIDEO) {
+    e.publication.videoQuality = VideoQuality.LOW;
+  }
+})
+```
+
+  </TabItem>
+</Tabs>

@@ -1,0 +1,140 @@
+---
+title: Webhooks
+---
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+LiveKit can be configured to notify your server when room events take place. This can be helpful for your backend to know when a room has finished, or when a participant leaves.
+
+Webhooks can be enabled by setting the `webhook` section in config.
+
+```yaml
+webhook:
+  api_key: 'api-key-to-sign-with'
+  urls:
+    - 'https://yourhost'
+```
+
+## Receiving webhooks
+
+Webhook requests are HTTP POST requests sent to URLs that you specify in the config. A `WebhookEvent` is sent as the body of the request, encoded in JSON.
+
+In order to ensure the requests are coming from LiveKit, the requests carry a `Authentication` header, containing a signed JWT token. The token includes a sha256 hash of the payload.
+
+LiveKit server SDKs provide webhook receiver libraries that will help with validation and decoding of the payload.
+
+<Tabs
+    defaultValue="node"
+    groupId="server-sdk"
+    values={[
+        {label: 'Node', value: 'node'},
+        {label: 'Golang', value: 'go'},
+    ]}>
+  <TabItem value="node">
+
+```typescript title="TypeScript"
+import { WebhookReceiver } from 'livekit-server-sdk';
+
+const receiver = new WebhookReceiver("apikey", "apisecret");
+
+// In order to use the validator, WebhookReceiver must have access to the raw POSTed string (instead of a parsed JSON object)
+// if you are using express middleware, ensure that `express.raw` is used for the webhook endpoint
+// router.use('/webhook/path', express.raw());
+
+app.post('/webhook-endpoint', (req, res) => {
+  // event is a WebhookEvent object
+  const event = receiver.receive(req.body, req.get('Authorization'))
+})
+```
+
+  </TabItem>
+
+  <TabItem value="go">
+
+```go title="Go"
+import (
+	"github.com/livekit/protocol/auth"
+	"github.com/livekit/protocol/livekit"
+	"github.com/livekit/protocol/webhook"
+)
+
+func ServeHTTP(w http.ResponseWriter, r *http.Request) {
+  authProvider := auth.NewSimpleKeyProvider(
+		apiKey, apiSecret,
+	)
+  // event is a livekit.WebhookEvent{} object
+	event, err := webhook.ReceiveWebhookEvent(r, authProvider)
+	if err != nil {
+		// could not validate, handle error
+		return
+	}
+
+	// consume WebhookEvent
+}
+```
+
+  </TabItem>
+
+</Tabs>
+
+## Events
+
+### Room Started
+
+```typescript
+interface WebhookEvent {
+  event: 'room_started'
+  room: Room
+}
+```
+
+### Room Finished
+
+```typescript
+interface WebhookEvent {
+  event: 'room_finished'
+  room: Room
+}
+```
+
+### Participant Joined
+
+```typescript
+interface WebhookEvent {
+  event: 'participant_joined'
+  room: Room
+  participant: Participant
+}
+```
+
+### Participant Left
+
+```typescript
+interface WebhookEvent {
+  event: 'participant_left'
+  room: Room
+  participant: Participant
+}
+```
+
+### Track Published
+
+```typescript
+interface WebhookEvent {
+  event: 'track_published'
+  room: Room
+  participant: Participant
+  track: TrackInfo
+}
+```
+
+### Track Unpublished
+
+```typescript
+interface WebhookEvent {
+  event: 'track_unpublished'
+  room: Room
+  participant: Participant
+  track: TrackInfo
+}
+```
