@@ -43,7 +43,7 @@ module.exports = {
     },
     colorMode: {
       respectPrefersColorScheme: false,
-      defaultMode: 'night',
+      defaultMode: 'dark',
       disableSwitch: true,
     },
     prism: {
