@@ -1,5 +1,3 @@
-const repoUrl = 'https://github.com/livekit/livekit-server'
-
 module.exports = {
   title: 'Meteor',
   tagline: 'Meteor Documentation',
@@ -30,15 +28,10 @@ module.exports = {
           position: 'right',
         },
         {
-          href: repoUrl,
+          href: '/',
           label: 'GitHub',
           position: 'right',
           className: 'github',
-        },
-        {
-          href: 'https://livekit.io/playground',
-          label: 'Playground',
-          position: 'right',
         },
       ],
     },
@@ -46,16 +39,16 @@ module.exports = {
       style: 'light',
       links: [
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} LiveKit`,
+      copyright: `Copyright © ${new Date().getFullYear()} Meteor`,
     },
     colorMode: {
       respectPrefersColorScheme: false,
-      defaultMode: 'light',
+      defaultMode: 'night',
       disableSwitch: true,
     },
     prism: {
       theme: require('./themes/meteor'),
-      additionalLanguages: ["swift", "kotlin", "go", "groovy", "ini", "dart", "ruby"],
+      additionalLanguages: ["swift", "kotlin"],
     },
   },
   presets: [
