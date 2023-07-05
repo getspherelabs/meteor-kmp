@@ -138,3 +138,9 @@ viewModel.effect.onEach { effect ->
 ```
 
 
+## License
+
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE.md)
+
+This project is licensed under the Apache License, Version 2.0 - see the
+[license](LICENSE.md) file for details
