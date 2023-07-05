@@ -7,6 +7,7 @@ object Version {
     const val lifecycle = "2.6.0"
     const val stately = "2.0.0"
     const val datetime = "0.4.0"
+    const val js = "1.6.21"
 }
 
 object Libs {
@@ -32,6 +33,7 @@ object Libs {
 
     object Kotlin {
         const val datetime = "org.jetbrains.kotlinx:kotlinx-datetime:${Version.datetime}"
+        const val js = "org.jetbrains.kotlin:kotlin-stdlib-js:${Version.js}"
     }
 
 }
