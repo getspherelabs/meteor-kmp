@@ -16,6 +16,12 @@ kotlin {
         publishAllLibraryVariants()
     }
 
+    js {
+        browser {
+        }
+        binaries.executable()
+    }
+
     listOf(
         iosX64(),
         iosArm64(),
