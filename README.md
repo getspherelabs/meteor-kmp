@@ -60,7 +60,7 @@ sealed interface CountEffect {
 }
 ```
 
-`State` represents the current state of your application. Effects are a way to handle side effects in Meteor. Side effects can include operations such as making network requests, updating a database, displaying UI messages, or triggering external actions.  A "wish" in Meteor represents an action or an intention to change the state of the application.
+`State` represents the current state of your application. `Effects` are a way to handle side effects in Meteor. Side effects can include operations such as making network requests, updating a database, displaying UI messages, or triggering external actions.  A `Wish` in Meteor represents an action or an intention to change the state of the application.
 
 ### Create the ViewModel
 
