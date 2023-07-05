@@ -9,7 +9,7 @@
  @import "fonts";
 
 body {
-  font-family: var(--ifm-font-family-base);
+  font-family: var(--ifm-font-family-mono);
 }
 
 .docusaurus-highlight-code-line {
@@ -33,8 +33,9 @@ body .anchor {
 }
 .navbar__title {
   font-weight: normal;
-  color: var(--lk-secondary-text);
-  line-height: 1.1rem;
+  font-size: 24px;
+  color: var(--lk-white);
+  font-family: var(--ifm-font-family-mono);
 }
 
 .navbar-sidebar {

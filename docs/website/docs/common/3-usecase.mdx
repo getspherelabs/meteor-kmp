@@ -1,0 +1,22 @@
+---
+title: Common UseCase
+---
+
+The `CommonUseCase` class represents a common implementation of a use case in a multiplatform environment. It provides a foundation for executing a use case and returning the result as a Flow of `Result<ReturnType>`. It also allows invoking the use case as a function for more concise usage.
+
+```kt
+public abstract class CommonUseCase<Param, ReturnType>(
+    private val dispatcher: CoroutineDispatcher
+) {
+    public abstract fun execute(param: Param): Flow<Result<ReturnType>>
+
+    public operator fun invoke(param: Param): Flow<Result<ReturnType>> {
+        return execute(param).catch { e ->
+            emit(Result.failure(e))
+        }.flowOn(dispatcher)
+    }
+}
+```
+
+Subclasses should override the execute function to define the actual business logic of the use case.
+

@@ -1,0 +1,30 @@
+---
+title: Common ViewModel
+---
+
+The `CommonViewModel` class serves as a base class for implementing view models in a multiplatform environment.  It provides access to the store, exposes the state and effect as common flows, and allows dispatching wishes/actions to trigger state updates and side effects.
+
+Also, `CommonViewModel` provides additional functionality and lifecycle management specifically designed for common view models in a multiplatform environment.
+
+```kt
+public abstract class CommonViewModel<State : Any, Wish : Any, Effect : Any> : ViewModel {
+
+    public constructor() : super()
+
+    public constructor(closeables: List<Closeable>) : super(*closeables.toTypedArray())
+
+    public abstract val store: Store<State, Wish, Effect>
+
+    public fun wish(wish: Wish) {
+        viewModelScope.launch {
+            store.wish(wish)
+        }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        store.cancel()
+    }
+}
+
+```

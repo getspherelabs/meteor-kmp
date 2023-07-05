@@ -16,6 +16,7 @@
 
     /* infima overrides */
     --ifm-font-family-base: 'Avenir', sans-serif;
+    --ifm-font-family-mono: 'JetbrainsMono', mono;
     --ifm-heading-font-weight: var(--lk-black-weight);
 
     --ifm-background-color: var(--lk-black);

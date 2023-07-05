@@ -11,51 +11,23 @@ module.exports = {
       items: [
         'guides/getting-started',
         'guides/concepts',
-        {
-          type: 'category',
-          label: 'Working with Rooms',
-          collapsed: true,
-          items: [
-            'guides/room/connect',
-            'guides/room/publish',
-            'guides/room/receive',
-            'guides/room/data',
-          ],
-        },
-        'guides/access-tokens',
-        'guides/server-api',
-        'guides/webhooks',
-        // 'guides/recording',
       ],
     },
     {
       type: 'category',
-      label: 'Deployment',
+      label: 'Common Components',
       collapsed: true,
       items: [
-        'deploy',
-        'deploy/vm',
-        'deploy/kubernetes',
-        'deploy/ports-firewall',
-        'deploy/distributed',
-        'deploy/test-monitor',
-        'deploy/benchmark',
+        'common/vm',
+        'common/flow',
+        'common/usecase',
       ]
     },
     {
       type: 'category',
-      label: 'API Reference',
-      collapsed: false,
+      label: 'Tests',
       items: [
-       'references/client-sdks',
-       'references/server-sdks',
-      ]
-    },
-    {
-      type: 'category',
-      label: 'Internals',
-      items: [
-        'internals/client-protocol',
+        'test/tests',
       ]
     }
   ],

@@ -1,29 +1,20 @@
 module.exports = {
   title: 'Meteor',
   tagline: 'Meteor Documentation',
-  // Set the production url of your site here
    url: 'https://github.com',
-   // Set the /<baseUrl>/ pathname under which your site is served
-   // For GitHub pages deployment, it is often '/<projectName>/'
    baseUrl: '/meteor/',
 
-   // GitHub pages deployment config.
-   // If you aren't using GitHub pages, you don't need these.
    organizationName: 'getspherelabs', // Usually your GitHub org/user name.
    projectName: 'meteor', // Usually your repo name.
    deploymentBranch: 'gh-pages',
    onBrokenLinks: 'throw',
    onBrokenMarkdownLinks: 'warn',
-  themeConfig: {
+   themeConfig: {
     navbar: {
-      title: 'docs',
-      logo: {
-        alt: 'LiveKit Logo',
-        src: 'img/logo.svg',
-      },
+      title: 'Meteor Multiplatform',
       items: [
         {
-          href: 'https://getpspherelabs.github.io/meteor/',
+          href: 'https://getspherelabs.github.io/meteor/',
           label: 'Home',
           position: 'right',
         },
@@ -39,16 +30,16 @@ module.exports = {
       style: 'light',
       links: [
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} Meteor`,
+      copyright: `Copyright © ${new Date().getFullYear()} Meteor Multiplatform`,
     },
     colorMode: {
       respectPrefersColorScheme: false,
-      defaultMode: 'dark',
+      defaultMode: 'light',
       disableSwitch: true,
     },
     prism: {
       theme: require('./themes/meteor'),
-      additionalLanguages: ["swift", "kotlin"],
+      additionalLanguages: ["swift", "kotlin","groovy"],
     },
   },
   presets: [
@@ -74,29 +65,7 @@ module.exports = {
       '@docusaurus/plugin-client-redirects',
       {
         redirects: [
-          {
-            to: '/deploy',
-            from: ['/guides/deploy/prepare', '/guides/deploy'],
-          },
-          {
-            to: '/deploy/vm',
-            from: ['/guides/deploy/instance'],
-          },
-          {
-            to: '/deploy/kubernetes',
-            from: ['/guides/deploy/kubernetes'],
-          },
-          {
-            to: '/deploy/test-monitor',
-            from: ['/guides/deploy/tuning'],
-          },
-          {
-            to: '/deploy/benchmark',
-            from: ['/guides/deploy/benchmark'],
-          },
           // {
-          //   to: '/deploy/recorder',
-          //   from: ['/guides/deploy/recorder'],
           // },
         ],
       }

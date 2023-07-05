@@ -1,0 +1,55 @@
+---
+title: Common Flow
+---
+
+
+The `CommonFlow` class provides common functionality for binding and observing a `Flow` of values. It implements the `Flow` interface and delegates the actual flow operations.
+
+```kt
+public abstract class CommonFlow<out T>(private val flow: Flow<T>) : Flow<T> by flow {
+
+    public open fun bind(
+        scope: CoroutineScope,
+        values: (T) -> Unit,
+        failure: ((failure: Throwable) -> Unit)? = null,
+        completion: (() -> Unit)? = null
+    ): CommonJob {
+        return flow.bind(scope, values, failure, completion)
+    }
+}
+```
+
+ It provides the `bind` function, which allows you to bind the flow to a coroutine scope and specify callback functions for handling non-null values, failures, and completion.
+
+
+```kt
+internal fun <T> Flow<T>.bind(
+    scope: CoroutineScope,
+    values: (T) -> Unit,
+    failure: ((failure: Throwable) -> Unit)?,
+    completion: (() -> Unit)?
+): CommonJob {
+    val currentJob = this.onEach(values)
+        .run {
+            if (completion !== null) {
+                onCompletion { failure ->
+                    if (failure === null) completion() else throw failure
+                }
+            } else {
+                this
+            }
+        }
+        .run {
+            if (failure !== null) {
+                catch { message -> failure(message) }
+            } else {
+                this
+            }
+        }
+        .launchIn(scope)
+
+    return CoroutineCommonJob(currentJob)
+}
+```
+
+Internally, the bind function delegates to an extension function on the actual Flow instance. This extension function handles the composition of operators such as onEach, catch, and onCompletion to provide the desired behavior. The resulting Flow is then launched within the specified coroutine scope.

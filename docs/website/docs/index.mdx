@@ -7,90 +7,82 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Meteor is a simple framework that helps you to create application using the MVI architecture. It provides a robust structure for organizing your code and separating concerns. Additionally, Meteor integrates with Kotlin Coroutine that helps you to write asynchronous and concurrent code.
+
 ## Features
 
-- Horizontally-scalable WebRTC Selective Forwarding Unit (SFU)
-- Modern, full-featured [client SDKs](/references/client-sdks) for JavaScript, React, Swift, Kotlin, and Flutter (React Native and Unity/C# in development)
-- Built for production - JWT authentication and [server APIs](/guides/server-api)
-- Robust networking & connectivity over UDP, TCP, and built-in [TURN](/deploy#improving-connectivity-with-turn)
-- Easy to deploy: pure Go and single binary
-- Advanced features like speaker detection, simulcast, selective subscription, and moderation APIs
+- Meteor follows the Model-View-Intent (MVI) architecture pattern.
+- It provides a unidirectional data flow (UDF), allowing you to handle state changes and propagate them to the UI efficiently.
+- Supports Kotlin Coroutines: asynchronous and concurrent code in a more concise and structured way.
+- Meteor supports Kotlin Multiplatform, allowing you to share code across multiple platforms.
+- Easy to test (integration and unit  tests).
+- Additional features like common use cases, state flow, view model and logger.
 <!-- - Effortless, customizable recording - use our built-in templates or record your own web UI -->
 
 
 ## Why Meteor?
 
-WebRTC is a powerful protocol that now has ubiquitous support across all major browsers and mobile platforms. However, building apps with it isn't simple; it requires an understanding of core protocol concepts and developers are responsible for complexities like signaling and coordinating connections between peers. As a peer-to-peer protocol, scaling WebRTC to large numbers of peers also becomes challenging.
+Meteor simplifies application development by providing a clear structure and separation of concerns through the MVI architecture, making your codebase more maintainable and organized.
 
-While hosted solutions like Twilio and Agora exist, they can be costly, have limited flexibility and as proprietary products, create vendor lock-in. Other open source solutions also exist, but they have a steep learning curve and are daunting to customize and deploy.
+With Kotlin Multiplatform support, Meteor enables code sharing across different platforms, reducing duplication and maximizing code reuse, ultimately saving development time and effort.
 
-We set out to build a free and open source implementation of WebRTC rooms that's easily embeddable within any app. LiveKit provides an opinionated, end-to-end real time communications solution with first-party SDKs for all the major software platforms.
+Meteor's reactive state management mechanism simplifies the handling of application state. It enables you to manage state changes efficiently and ensures that your UI remains synchronized with the underlying data.
 
 ## Architecture
 
-Meteor is written in Kotlin. It's made possible by [Pion WebRTC](https://github.com/pion/webrtc), [ion-sfu](https://github.com/pion/ion-sfu), and the amazing community behind them.
+Model-View-Intent is an architectural pattern used in software development, particularly in user interface (UI) design. It is commonly applied in the context of reactive and functional programming paradigms.
 
-![LiveKit Architecture](/img/architecture.svg)
+The `MVI` pattern aims to provide a clear separation of concerns and a unidirectional data flow within an application.
 
-## Client Examples
+## Examples
 
 <Tabs
   defaultValue="kotlin"
   groupId="client-sdk"
   values={[
-    {label: 'iOS/macOS', value: 'ios'},
-    {label: 'Kotlin', value: 'kotlin'},
+    {label: 'Kotlin', value: 'kotlin'}
   ]}>
 
   <TabItem value="kotlin">
 
 
-```kt title="Kotlin"
+```kt
 
-class MainActivity : AppCompatActivity(), RoomListener {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        ...
-        val url = "wss://your_host";
-        val token = "your_token"
+class MainViewModel : CommonViewModel<CountState, CountWish, CountEffect>() {
 
-        launch {
-            val room = LiveKit.connect(
-                applicationContext,
-                url,
-                token,
-                ConnectOptions(),
-                this
-            )
-            val localParticipant = room.localParticipant
-            val audioTrack = localParticipant.createAudioTrack()
-            localParticipant.publishAudioTrack(audioTrack)
-            val videoTrack = localParticipant.createVideoTrack()
-            localParticipant.publishVideoTrack(videoTrack)
-            videoTrack.startCapture()
-
-            attachVideo(videoTrack, localParticipant)
+    override val store: Store<CountState, CountWish, CountEffect> = createMeteor(
+        configs = MeteorConfigs.build {
+            initialState = CountState.Empty
+            storeName = "MainViewModel"
+            reducer = CountReducer
+            middleware = CountMiddleware
         }
-    }
+    )
 
-    override fun onTrackSubscribed(
-        track: Track,
-        publication: RemoteTrackPublication,
-        participant: RemoteParticipant,
-        room: Room
-    ) {
-        if (track is VideoTrack) {
-            attachVideo(track, participant)
-        }
-    }
-
-    private fun attachVideo(videoTrack: VideoTrack, participant: Participant) {
-        // viewBinding.renderer is a `org.webrtc.SurfaceViewRenderer` in your
-        // layout
-        videoTrack.addRenderer(viewBinding.renderer)
-    }
+    val effect: NonNullCommonFlow<CountEffect> = store.effect.asCommonFlow()
+    val state: NonNullCommonStateFlow<CountState> = store.state.asCommonStateFlow()
 }
 
+object CountReducer : Reducer<CountState, CountWish, CountEffect> {
+
+    override fun reduce(state: CountState, wish: CountWish): Change<CountState, CountEffect> {
+        return when (wish) {
+            CountWish.Decrease -> {
+                expect { state.copy(count = state.count - 1) }
+            }
+            CountWish.Increase -> {
+                expect { state.copy(count = state.count + 1) }
+            }
+            CountWish.Reset -> {
+                expect { state.copy(count = 0) }
+            }
+            CountWish.ZeroValue -> {
+                effect {
+                    CountEffect.Failure("The value is zero")
+                }
+            }
+        }
+    }
+}
 ```
 
   </TabItem>
