@@ -107,6 +107,7 @@ Create an object / class , such as `CountReducer`, that implements the `Reducer`
 viewModel.state.onEach { state ->
     // Handle the state
 }.launchIn(lifecycleScope)
+
 viewModel.effect.onEach { effect ->
     // Handle the effect, such as displaying a toast message or triggering an action
 }.launchIn(lifecycleScope)

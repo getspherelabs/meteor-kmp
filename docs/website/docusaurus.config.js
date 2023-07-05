@@ -19,7 +19,7 @@ module.exports = {
           position: 'right',
         },
         {
-          href: '/',
+          href: 'https://github.com/getspherelabs/meteor',
           label: 'GitHub',
           position: 'right',
           className: 'github',
