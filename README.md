@@ -33,7 +33,7 @@ Add the dependency below into your module's `build.gradle.kts` file:
 ```kt
 
 // It includes viewmodel, stateflow and core components.
-implementation("io.github.behzodhalil:meteor-core:<latest-version>")
+implementation("io.github.behzodhalil:meteor-mvi:<latest-version>")
 // If only need common use case
 implementation("io.github.behzodhalil:meteor-usecase:<latest-version>")
 // For testing
