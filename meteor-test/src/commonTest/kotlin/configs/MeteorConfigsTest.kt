@@ -1,10 +1,10 @@
 package configs
 
 import fake.FakeEffect
-import fake.FakeMiddleware
 import fake.FakeReducer
 import fake.FakeState
 import fake.FakeWish
+import fake.fakeMiddleware
 import io.spherelabs.meteor.configs.MeteorConfigs
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -22,7 +22,7 @@ class MeteorConfigsTest {
         configs = MeteorConfigs.build {
             initialState = FakeState()
             storeName = "MeteorConfigs Test Store Name"
-            middleware = FakeMiddleware
+            middlewares = listOf(fakeMiddleware())
             reducer = FakeReducer
             mainDispatcher = Dispatchers.Main
             ioDispatcher = Dispatchers.IO

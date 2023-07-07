@@ -2,8 +2,7 @@ package fake
 
 import io.spherelabs.meteor.middleware.Middleware
 
-object FakeMiddleware : Middleware<FakeState, FakeWish> {
-
+fun fakeMiddleware() = object : Middleware<FakeState, FakeWish> {
     override suspend fun process(
         state: FakeState,
         wish: FakeWish,
