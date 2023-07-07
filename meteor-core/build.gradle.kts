@@ -45,6 +45,7 @@ kotlin {
         val androidMain by getting {
             dependsOn(commonMain)
             dependencies {
+                implementation(Libs.Android.viewModel)
             }
         }
         val androidUnitTest by getting {
