@@ -16,7 +16,7 @@ class FakeViewModel : CommonViewModel<FakeCountState, FakeCountWish, FakeCountEf
             initialState = FakeCountState()
             storeName = "fake.FakeViewModel"
             reducer = FakeCountReducer
-            middleware = FakeCountMiddleware
+            middlewares = listOf(countMiddleware(), loggingMiddleware())
         }
     )
 
