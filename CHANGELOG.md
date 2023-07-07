@@ -1,3 +1,9 @@
+## [0.3.0] - July 7, 2023
+
+- Change the type of middleware
+- Add logger interceptor as default
+- Fix test cases
+
 ## [0.1.1] - June 22, 2023
 
 # What's Changed
