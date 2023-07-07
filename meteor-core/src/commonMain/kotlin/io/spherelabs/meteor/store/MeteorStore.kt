@@ -80,14 +80,16 @@ internal class MeteorStore<State : Any, Wish : Any, Effect : Any> constructor(
 
     private fun handleMiddleware(wish: Wish) {
         mainScope.launch {
-            configs.middleware.process(
-                state = currentState,
-                wish = wish,
-                next = { newWish ->
-                    _message.send(Message.NewWish(storeName, newWish))
-                    wish(newWish)
-                }
-            )
+            configs.middlewares.forEach { newMiddleware ->
+                newMiddleware.process(
+                    state = currentState,
+                    wish = wish,
+                    next = { newWish ->
+                        _message.send(Message.NewWish(storeName, newWish))
+                        wish(newWish)
+                    }
+                )
+            }
         }
     }
 

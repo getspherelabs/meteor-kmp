@@ -1,10 +1,10 @@
 package store
 
 import fake.FakeEffect
-import fake.FakeMiddleware
 import fake.FakeReducer
 import fake.FakeState
 import fake.FakeWish
+import fake.fakeMiddleware
 import io.spherelabs.meteor.configs.MeteorConfigs
 import io.spherelabs.meteor.store.Store
 import io.spherelabs.meteortest.store.createTestStore
@@ -40,7 +40,7 @@ class StoreTest {
                 initialState = FakeState()
                 storeName = "Test Meteor Store"
                 reducer = FakeReducer
-                middleware = FakeMiddleware
+                middlewares = listOf(fakeMiddleware())
             }
         )
     }

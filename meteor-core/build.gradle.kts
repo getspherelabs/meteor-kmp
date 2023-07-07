@@ -1,5 +1,3 @@
-
-
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
@@ -33,6 +31,7 @@ kotlin {
             dependencies {
                 api(project(":meteor-viewmodel"))
                 api(project(":meteor-logger"))
+
                 api(Libs.Coroutine.core)
             }
         }
@@ -46,7 +45,7 @@ kotlin {
         val androidMain by getting {
             dependsOn(commonMain)
             dependencies {
-                api(Libs.Android.viewModel)
+                implementation(Libs.Android.viewModel)
             }
         }
         val androidUnitTest by getting {

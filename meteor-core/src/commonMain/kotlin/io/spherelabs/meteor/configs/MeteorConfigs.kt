@@ -42,7 +42,7 @@ public interface MeteorConfigs<State : Any, Wish : Any, Effect : Any> {
     public val mainDispatcher: CoroutineDispatcher
     public val ioDispatcher: CoroutineDispatcher
     public val reducer: Reducer<State, Wish, Effect>
-    public val middleware: Middleware<State, Wish>
+    public val middlewares: List<Middleware<State, Wish>>
     public val interceptor: Interceptor<State, Wish, Effect>
 
     /**
@@ -54,8 +54,8 @@ public interface MeteorConfigs<State : Any, Wish : Any, Effect : Any> {
         var mainDispatcher: CoroutineDispatcher = Dispatchers.Default,
         var ioDispatcher: CoroutineDispatcher = Dispatchers.Default,
         var reducer: Reducer<State, Wish, Effect>? = null,
-        var middleware: Middleware<State, Wish>? = null,
-        val interceptor: Interceptor<State, Wish, Effect> = LoggingInterceptor<State, Wish, Effect>()
+        var middlewares: List<Middleware<State, Wish>> = emptyList(),
+        val interceptor: Interceptor<State, Wish, Effect> = LoggingInterceptor()
     )
 
     public companion object {
@@ -80,9 +80,7 @@ public interface MeteorConfigs<State : Any, Wish : Any, Effect : Any> {
                 override val reducer: Reducer<State, Wish, Effect> = checkNotNull(builder.reducer) {
                     "Reducer is not initialized."
                 }
-                override val middleware: Middleware<State, Wish> = checkNotNull(builder.middleware) {
-                    "Middleware is not initialized."
-                }
+                override val middlewares: List<Middleware<State, Wish>> = builder.middlewares
 
                 override val interceptor: Interceptor<State, Wish, Effect> = builder.interceptor
             }
