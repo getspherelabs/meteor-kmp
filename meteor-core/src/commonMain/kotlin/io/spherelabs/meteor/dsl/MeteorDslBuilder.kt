@@ -18,7 +18,7 @@ public class MeteorDslBuilder<State : Any, Wish : Any, Effect : Any> internal co
     private val mainScope: CoroutineScope = CoroutineScope(SupervisorJob())
 
     private var reducer: Reducer<State, Wish, Effect>? = null
-    private var middleware: Middleware<State, Wish>? = null
+    private var middlewares: List<Middleware<State, Wish>> = emptyList()
 
     public fun config(block: ConfigDslBuilder<State>.() -> Unit) {
         ConfigDslBuilder<State>().also {
@@ -40,7 +40,7 @@ public class MeteorDslBuilder<State : Any, Wish : Any, Effect : Any> internal co
     ) {
         MiddlewareDslBuilder<State, Wish>().also {
             block(it)
-            this.middleware = it.build()
+            this.middlewares = listOf(it.build())
         }
     }
 
@@ -56,9 +56,7 @@ public class MeteorDslBuilder<State : Any, Wish : Any, Effect : Any> internal co
                 reducer = checkNotNull(this@MeteorDslBuilder.reducer) {
                     "Reducer is not initialized. Please, check the reducer instance!"
                 }
-                middleware = checkNotNull(this@MeteorDslBuilder.middleware) {
-                    "Middleware is not initialized. Please, check the middleware instance!"
-                }
+                middlewares = this@MeteorDslBuilder.middlewares
             }
         )
     }

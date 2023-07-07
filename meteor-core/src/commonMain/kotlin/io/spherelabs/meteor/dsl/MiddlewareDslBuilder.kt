@@ -8,15 +8,17 @@ import io.spherelabs.meteor.middleware.Middleware
 @MeteorDsl
 public class MiddlewareDslBuilder<State : Any, Wish : Any> internal constructor() {
 
-    public var process: MiddlewareContext<State, Wish>? = null
+    public var process: List<MiddlewareContext<State, Wish>> = emptyList()
 
     public fun on(actionBlock: MiddlewareContext<State, Wish>) {
-        process = actionBlock
+        process = process + actionBlock
     }
 
     public fun build(): Middleware<State, Wish> = object : Middleware<State, Wish> {
         override suspend fun process(state: State, wish: Wish, next: suspend (Wish) -> Unit) {
-            this@MiddlewareDslBuilder.process?.invoke(state, wish, next)
+            this@MiddlewareDslBuilder.process.forEach { newContext ->
+                newContext.invoke(state, wish, next)
+            }
         }
     }
 }
