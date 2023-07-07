@@ -44,7 +44,7 @@ kotlin {
 
             dependencies {
                 with(Libs.Android) {
-                    api(viewModel)
+                    implementation(viewModel)
                 }
             }
         }
