@@ -25,20 +25,20 @@ class CountViewModel @Inject constructor() : CommonViewModel<CountState, CountWi
 }
 
 fun countReducer() = object : Reducer<CountState, CountWish, CountEffect> {
-    override fun reduce(state: CountState, wish: CountWish): Change<CountState, CountEffect> {
-        return when (wish) {
+    override fun reduce(currentState: CountState, currentWish: CountWish): Change<CountState, CountEffect> {
+        return when (currentWish) {
             CountWish.Decrease -> {
-                expect { state.copy(count = state.count - 1) }
+                expect { currentState.copy(count = currentState.count - 1) }
             }
             CountWish.Increase -> {
-                expect { state.copy(count = state.count + 1) }
+                expect { currentState.copy(count = currentState.count + 1) }
             }
             CountWish.Reset -> expect {
-                state.copy(count = 0)
+                currentState.copy(count = 0)
             }
             is CountWish.Toast -> {
                 effect {
-                    CountEffect.Failure(wish.message)
+                    CountEffect.Failure(currentWish.message)
                 }
             }
         }
