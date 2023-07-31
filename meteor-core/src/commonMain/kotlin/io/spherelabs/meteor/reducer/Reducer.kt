@@ -7,5 +7,5 @@ import io.spherelabs.meteor.configs.Change
  * and producing new state and new effect based on the given inputs.
  */
 public interface Reducer<State : Any, Wish : Any, Effect : Any> {
-    public fun reduce(state: State, wish: Wish): Change<State, Effect>
+    public fun reduce(currentState: State, currentWish: Wish): Change<State, Effect>
 }
