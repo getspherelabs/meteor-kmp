@@ -61,6 +61,18 @@ public final class io/spherelabs/meteorviewmodel/commonflow/NullableCommonStateF
 	public static final fun asCommonStateFlow (Lkotlinx/coroutines/flow/StateFlow;)Lio/spherelabs/meteorviewmodel/commonflow/NullableCommonStateFlow;
 }
 
+public final class io/spherelabs/meteorviewmodel/concurrency/LockKt {
+	public static final fun withLock (Ljava/util/concurrent/locks/ReentrantLock;Lkotlin/jvm/functions/Function0;)Ljava/lang/Object;
+}
+
+public final class io/spherelabs/meteorviewmodel/concurrency/Lock_androidKt {
+	public static final fun close (Ljava/util/concurrent/locks/ReentrantLock;)V
+}
+
+public final class io/spherelabs/meteorviewmodel/core/AtomicExtensionKt {
+	public static final fun getToInt (Z)I
+}
+
 public abstract class io/spherelabs/meteorviewmodel/viewmodel/ViewModel : androidx/lifecycle/ViewModel {
 	public fun <init> ()V
 	public fun <init> ([Ljava/io/Closeable;)V

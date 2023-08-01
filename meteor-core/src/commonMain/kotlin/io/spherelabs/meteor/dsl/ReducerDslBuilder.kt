@@ -26,10 +26,10 @@ public class ReducerBuilder<State : Any, Wish : Any, Effect : Any> internal cons
 
     public fun build(): Reducer<State, Wish, Effect> {
         return object : Reducer<State, Wish, Effect> {
-            override fun reduce(state: State, wish: Wish): Change<State, Effect> {
-                return reducers[wish::class]?.let {
-                    it(state, wish)
-                } ?: throw IllegalArgumentException("No reducer found for wish: $wish")
+            override fun reduce(currentState: State, currentWish: Wish): Change<State, Effect> {
+                return reducers[currentWish::class]?.let {
+                    it(currentState, currentWish)
+                } ?: throw IllegalArgumentException("No reducer found for wish: $currentWish")
             }
         }
     }

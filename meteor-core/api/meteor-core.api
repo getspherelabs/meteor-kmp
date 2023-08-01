@@ -117,7 +117,15 @@ public final class io/spherelabs/meteor/exception/NotInitializedException : java
 	public synthetic fun <init> (Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 }
 
+public final class io/spherelabs/meteor/extension/ChangeDslBuilder {
+	public fun <init> ()V
+	public final fun build ()Lio/spherelabs/meteor/configs/Change;
+	public final fun effect (Lkotlin/jvm/functions/Function0;)V
+	public final fun state (Lkotlin/jvm/functions/Function0;)V
+}
+
 public final class io/spherelabs/meteor/extension/ReducerExtensionKt {
+	public static final fun change (Lio/spherelabs/meteor/reducer/Reducer;Lkotlin/jvm/functions/Function1;)Lio/spherelabs/meteor/configs/Change;
 	public static final fun effect (Lio/spherelabs/meteor/reducer/Reducer;Lkotlin/jvm/functions/Function0;)Lio/spherelabs/meteor/configs/Change;
 	public static final fun expect (Lio/spherelabs/meteor/reducer/Reducer;Lkotlin/jvm/functions/Function0;)Lio/spherelabs/meteor/configs/Change;
 	public static final fun expect (Lio/spherelabs/meteor/reducer/Reducer;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;)Lio/spherelabs/meteor/configs/Change;
@@ -177,8 +185,21 @@ public final class io/spherelabs/meteor/interceptor/StateTransition : java/lang/
 	public static fun values ()[Lio/spherelabs/meteor/interceptor/StateTransition;
 }
 
+public abstract interface class io/spherelabs/meteor/middleware/CoroutineMiddleware : io/spherelabs/meteor/middleware/Middleware {
+	public abstract fun handle (Lkotlinx/coroutines/CoroutineScope;Ljava/lang/Object;Ljava/lang/Object;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun process (Ljava/lang/Object;Ljava/lang/Object;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class io/spherelabs/meteor/middleware/CoroutineMiddleware$DefaultImpls {
+	public static fun process (Lio/spherelabs/meteor/middleware/CoroutineMiddleware;Ljava/lang/Object;Ljava/lang/Object;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
 public abstract interface class io/spherelabs/meteor/middleware/Middleware {
 	public abstract fun process (Ljava/lang/Object;Ljava/lang/Object;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class io/spherelabs/meteor/reducer/EmptyReducerKt {
+	public static final fun emptyReducer ()Lio/spherelabs/meteor/reducer/Reducer;
 }
 
 public abstract interface class io/spherelabs/meteor/reducer/Reducer {
@@ -201,6 +222,8 @@ public abstract interface class io/spherelabs/meteor/store/Store {
 public abstract class io/spherelabs/meteor/viewmodel/CommonViewModel : io/spherelabs/meteorviewmodel/viewmodel/ViewModel {
 	public fun <init> ()V
 	public fun <init> (Ljava/util/List;)V
+	public final fun getEffect ()Lio/spherelabs/meteorviewmodel/commonflow/NonNullCommonFlow;
+	public final fun getState ()Lio/spherelabs/meteorviewmodel/commonflow/NonNullCommonStateFlow;
 	public abstract fun getStore ()Lio/spherelabs/meteor/store/Store;
 	protected fun onCleared ()V
 	public final fun wish (Ljava/lang/Object;)V

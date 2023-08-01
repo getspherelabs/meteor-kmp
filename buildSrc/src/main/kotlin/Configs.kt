@@ -3,5 +3,5 @@ object Configs {
     const val targetSdk = 33
     const val compileSdk = 33
     const val versionCode = 1
-    const val jvmTarget = "17"
+    const val jvmTarget = "11"
 }
