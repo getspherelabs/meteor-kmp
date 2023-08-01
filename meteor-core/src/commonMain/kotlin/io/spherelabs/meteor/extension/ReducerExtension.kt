@@ -6,7 +6,7 @@ import io.spherelabs.meteor.reducer.Reducer
 @Deprecated(
     "This method is deprecated. Use expect(dslBuilder: ChangeBuilder<State, Effect>.() -> Unit) instead.",
     ReplaceWith(
-        "expect(dslBuilder)",
+        "change {}",
         "io.spherelabs.meteor.extension"
     )
 )
@@ -19,7 +19,7 @@ public fun <State : Any, Wish : Any, Effect : Any> Reducer<State, Wish, Effect>.
 @Deprecated(
     "This method is deprecated. Use expect(dslBuilder: ChangeBuilder<State, Effect>.() -> Unit) instead.",
     ReplaceWith(
-        "expect(dslBuilder)",
+        "change {}",
         "io.spherelabs.meteor.extension"
     )
 )
@@ -30,13 +30,6 @@ public fun <State : Any, Wish : Any, Effect : Any> Reducer<State, Wish, Effect>.
     return Change(effect = effectAction(), state = stateAction())
 }
 
-@Deprecated(
-    "This method is deprecated. Use expect(dslBuilder: ChangeBuilder<State, Effect>.() -> Unit) instead.",
-    ReplaceWith(
-        "expect(dslBuilder)",
-        "io.spherelabs.meteor.extension"
-    )
-)
 public fun <State : Any, Wish : Any, Effect : Any> Reducer<State, Wish, Effect>.effect(action: () -> Effect): Change<State, Effect> {
     return Change(effect = action())
 }
