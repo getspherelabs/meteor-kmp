@@ -1,3 +1,12 @@
+## [0.4.1] - August 1, 2023
+
+# What's Changed
+
+- Add coroutine-supported middleware
+- Add a new `change` DSL function to handle `effect` and `state`
+- CommonViewModel is now fully compatible with iOS
+- Supports an empty reducer in configurations to avoid IllegalStateException.
+
 ## [0.4.0] - August 1, 2023
 
 # What's Changed
