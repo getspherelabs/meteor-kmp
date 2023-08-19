@@ -2,7 +2,7 @@ module.exports = {
   title: 'Meteor',
   tagline: 'Meteor Documentation',
    url: 'https://github.com',
-   baseUrl: '/meteor/',
+   baseUrl: '/meteor-kmp/',
 
    organizationName: 'getspherelabs', // Usually your GitHub org/user name.
    projectName: 'meteor', // Usually your repo name.
@@ -14,12 +14,12 @@ module.exports = {
       title: 'Meteor Multiplatform',
       items: [
         {
-          href: 'https://getspherelabs.github.io/meteor/',
+          href: 'https://getspherelabs.github.io/meteor-kmp/',
           label: 'Home',
           position: 'right',
         },
         {
-          href: 'https://github.com/getspherelabs/meteor',
+          href: 'https://github.com/getspherelabs/meteor-kmp',
           label: 'GitHub',
           position: 'right',
           className: 'github',

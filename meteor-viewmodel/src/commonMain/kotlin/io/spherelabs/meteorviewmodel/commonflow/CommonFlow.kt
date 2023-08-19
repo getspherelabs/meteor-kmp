@@ -26,6 +26,29 @@ public abstract class CommonFlow<out T>(private val flow: Flow<T>) : Flow<T> by 
     ): CommonJob {
         return flow.bind(scope, values, failure, completion)
     }
+
+    public open fun bind(
+        scope: CoroutineScope,
+        values: (T) -> Unit,
+    ): CommonJob {
+        return flow.bind(scope, values, null, null)
+    }
+
+    public open fun bind(
+        scope: CoroutineScope,
+        values: (T) -> Unit,
+        failure: ((failure: Throwable) -> Unit),
+    ): CommonJob {
+        return flow.bind(scope, values, failure, null)
+    }
+
+    public open fun bind(
+        scope: CoroutineScope,
+        values: (T) -> Unit,
+        completion: (() -> Unit)
+    ): CommonJob {
+        return flow.bind(scope, values, null, completion)
+    }
 }
 
 /**

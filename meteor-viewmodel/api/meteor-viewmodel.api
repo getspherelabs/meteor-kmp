@@ -7,6 +7,9 @@ public final class io/spherelabs/meteorviewmodel/BuildConfig {
 
 public abstract class io/spherelabs/meteorviewmodel/commonflow/CommonFlow : kotlinx/coroutines/flow/Flow {
 	public fun <init> (Lkotlinx/coroutines/flow/Flow;)V
+	public fun bind (Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function1;)Lio/spherelabs/meteorviewmodel/commonflow/CommonJob;
+	public fun bind (Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;)Lio/spherelabs/meteorviewmodel/commonflow/CommonJob;
+	public fun bind (Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)Lio/spherelabs/meteorviewmodel/commonflow/CommonJob;
 	public fun bind (Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;)Lio/spherelabs/meteorviewmodel/commonflow/CommonJob;
 	public static synthetic fun bind$default (Lio/spherelabs/meteorviewmodel/commonflow/CommonFlow;Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)Lio/spherelabs/meteorviewmodel/commonflow/CommonJob;
 	public fun collect (Lkotlinx/coroutines/flow/FlowCollector;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
@@ -24,6 +27,9 @@ public final class io/spherelabs/meteorviewmodel/commonflow/CoroutineCommonJob :
 
 public class io/spherelabs/meteorviewmodel/commonflow/NonNullCommonFlow : io/spherelabs/meteorviewmodel/commonflow/CommonFlow {
 	public fun <init> (Lkotlinx/coroutines/flow/Flow;)V
+	public final fun bind (Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function1;)Lio/spherelabs/meteorviewmodel/commonflow/CommonJob;
+	public final fun bind (Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;)Lio/spherelabs/meteorviewmodel/commonflow/CommonJob;
+	public final fun bind (Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)Lio/spherelabs/meteorviewmodel/commonflow/CommonJob;
 	public final fun bind (Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;)Lio/spherelabs/meteorviewmodel/commonflow/CommonJob;
 }
 
