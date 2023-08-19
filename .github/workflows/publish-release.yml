@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   create-release:
-     if: ${{ github.repository == 'getspherelabs/meteor' }}
+     if: ${{ github.repository == 'getspherelabs/meteor-kmp' }}
      runs-on: ubuntu-latest
      steps:
        - name: Check out code
@@ -27,7 +27,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   publish:
     needs: create-release
-    if: ${{ github.repository == 'getspherelabs/meteor' }}
+    if: ${{ github.repository == 'getspherelabs/meteor-kmp' }}
     strategy:
       matrix:
         os: [ macos-11 ]

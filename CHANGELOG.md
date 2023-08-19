@@ -1,3 +1,10 @@
+## [0.4.3] - August 1, 2023
+
+# What's Changed
+
+- Add new bind functions
+
+
 ## [0.4.1] - August 1, 2023
 
 # What's Changed
