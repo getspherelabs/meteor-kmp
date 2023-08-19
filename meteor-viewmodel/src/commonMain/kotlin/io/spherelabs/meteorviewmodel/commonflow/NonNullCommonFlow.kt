@@ -32,7 +32,7 @@ public open class NonNullCommonFlow<out T : Any> constructor(
 
     final override fun bind(
         scope: CoroutineScope,
-        values: (T) -> Unit,
+        values: (T) -> Unit
     ): CommonJob {
         return super.bind(scope, values)
     }
@@ -40,7 +40,7 @@ public open class NonNullCommonFlow<out T : Any> constructor(
     final override fun bind(
         scope: CoroutineScope,
         values: (T) -> Unit,
-        failure: ((failure: Throwable) -> Unit),
+        failure: ((failure: Throwable) -> Unit)
     ): CommonJob {
         return super.bind(scope, values, failure = failure)
     }
@@ -52,7 +52,6 @@ public open class NonNullCommonFlow<out T : Any> constructor(
     ): CommonJob {
         return super.bind(scope, values, completion = completion)
     }
-
 }
 
 /**
