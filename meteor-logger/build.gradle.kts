@@ -59,7 +59,7 @@ kotlin {
             iosArm64Test.dependsOn(this)
             iosSimulatorArm64Test.dependsOn(this)
         }
-        val jsMain by getting {
+        val jsMain by creating {
             dependencies {
                 implementation(Libs.Kotlin.js)
             }

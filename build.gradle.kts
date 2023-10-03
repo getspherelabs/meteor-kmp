@@ -2,18 +2,20 @@ import com.diffplug.gradle.spotless.SpotlessExtension
 
 buildscript {
     val compose_ui_version by extra("1.2.0")
+    val agp_version by extra("7.4.2")
 
     dependencies {
-        classpath("com.android.tools.build:gradle:7.4.2")
+        classpath("com.android.tools.build:gradle:$agp_version")
         classpath("org.jlleitschuh.gradle:ktlint-gradle:${Version.ktlint}")
     }
 }
+
 plugins {
-    id("com.android.library").version("7.4.2").apply(false)
+    id("com.android.library").version("7.2.0").apply(false)
     kotlin("multiplatform").version("1.8.10").apply(false)
     id("org.jlleitschuh.gradle.ktlint") version Version.ktlint
     id("org.jetbrains.kotlin.jvm") version "1.8.0" apply false
-    id("com.android.application") version "7.4.2" apply false
+    id("com.android.application") version "7.2.0" apply false
     id("org.jetbrains.kotlin.android") version "1.7.0" apply false
     id("com.diffplug.spotless") version "6.17.0"
     id("com.vanniktech.maven.publish") version "0.25.2"
