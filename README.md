@@ -140,6 +140,9 @@ viewModel.effect.onEach { effect ->
 * [Orbit MVI](https://github.com/orbit-mvi/orbit-mvi)
 * [MVIKotlin](https://github.com/arkivanov/MVIKotlin)
 
+## Credits
+* [kmp-viewmodel](https://github.com/hoc081098/kmp-viewmodel/tree/master/viewmodel)
+  
 ## License
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE.md)
